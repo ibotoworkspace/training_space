@@ -1,4 +1,4 @@
-# Simple-E-learning-platform-in-laravel
+# Simple-E-learning-platform-for-Iboto Empire
 
 ------------------------------------------------
 
