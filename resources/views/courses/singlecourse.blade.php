@@ -24,23 +24,23 @@
             <hr>
             <p class = "lead">{!! $course->description !!}</p>
         
-            @if ($enroll == true && Auth::user()->role->first()->name == "Student")
-                <div class="course-content">
-                    <p class = "lead">{{ $course->description }}</p>
-                </div>
-                <div class="course-button">
-                    <a href="{{ route('course.unenroll', [$course->id]) }}" type="button" class="btn btn-primary btn-lg">Unenroll</a>
+                @if ($enroll == true)
+                    <div class="course-content">
+                        <p class = "lead">{{ $course->description }}</p>
+                    </div>
+                    <div class="course-button">
+                        <a href="{{ route('course.unenroll', [$course->id]) }}" type="button" class="btn btn-primary btn-lg">Unenroll</a>
+                        @if ($complete == false)
+                            <br></br>
+                            <a href="{{ route('course.complete', [$course->id]) }}" type="button" class="btn btn-primary btn-lg" >Mark as Complete</a>
+                            <br></br>
+                        @endif
+                    </div>
+                @else
                     @if ($complete == false)
-                        <br></br>
-                        <a href="{{ route('course.complete', [$course->id]) }}" type="button" class="btn btn-primary btn-lg" >Mark as Complete</a>
-                        <br></br>
+                        <a href="{{ route('course.enroll', [$course->id]) }}" type="button" class="btn btn-primary btn-lg" >Enroll</a>
                     @endif
-                </div>
-            @else
-                @if ($complete == false)
-                    <a href="{{ route('course.enroll', [$course->id]) }}" type="button" class="btn btn-primary btn-lg" >Enroll</a>
                 @endif
-            @endif
         </div>
     </div>
     <div class="col-md-4">
@@ -48,7 +48,7 @@
         <h3>Course Contents</h3>
         <small><em>Materials/Resources</em></small>
         <hr>
-        @if(($enroll == true) || (Auth::user()->role->first()->name == 'Instructor' || Auth::user()->role->first()->name == "Admin"))
+        @if(($enroll == true) || (Auth::user() && Auth::user()->user_role=="Admin"))
             @if(isset($course->contents))
                 <ul>
                     @foreach ($course->contents as $contents)
@@ -69,7 +69,7 @@
                             $attempt = $quiz->attempts()->where('user_id', Auth::id())->first();
                         @endphp
 
-                        @if ($attempt)
+                        @if ($attempt && $attempt->count()>0)
                             <li>
                                 <a href="{{url('quiz-result', ['quiz_id' => $quiz->id, 'user_id' => Auth::id()])}}">Quiz Attempted, View your Score</a>
                             </li>

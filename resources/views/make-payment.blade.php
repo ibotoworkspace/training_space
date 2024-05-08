@@ -17,9 +17,9 @@
                   <div class="row">
                     
                     <p>Send the sum of {{$course->fee}} to our bank account below;</p><br>
-                    <p><b>Account Name: </b>Iboto Empire Bank account name <br>
-                    <b>Account Number: </b> 0001000100 <br>
-                    <b>Bank Name:</b> GTB
+                    <p><b>Account Name: </b>Jacob Oroks<br>
+                    <b>Account Number: </b> 205 703 6013 <br>
+                    <b>Bank Name:</b> <br>
                     </p>
                   </div>
                   <hr>

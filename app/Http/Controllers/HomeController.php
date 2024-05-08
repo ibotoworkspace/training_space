@@ -7,6 +7,7 @@ use App\Course;
 use App\User;
 use App\categories;
 use App\posts;
+use App\media;
 
 class HomeController extends Controller
 {
@@ -83,5 +84,24 @@ class HomeController extends Controller
         categories::find($catid)->delete();
         \Session::flash('flash_message', 'The course category has been deleted successfully!');
         return redirect(route('create-category'));
+    }
+
+    public function createMedia()
+    {
+                
+        return view('create-media');
+    }
+    public function saveMedia(Request $request){
+
+        foreach ($request->file('media') as $file) {
+            $fileType = $file->getClientOriginalExtension();
+            $fileName = $file->getClientOriginalName();
+            $file->move(public_path('media'), $fileName);
+            Media::create([
+                'file_type' => $fileType,
+                'file_name' => $fileName
+            ]);
+        }
+        return redirect()->back()->with('success', 'Media uploaded successfully.');
     }
 }

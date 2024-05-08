@@ -24,6 +24,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('publish-post') }}">New Post</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('create-media') }}">Media Library</a>
+                    </li>
                 @endif
                 @if (Auth::check())
                     <li class="nav-item">

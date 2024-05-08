@@ -61,6 +61,8 @@ Route::post('/publish-question', 'CourseController@publishQuestion')->name('publ
 Route::get('/quiz-questions/{quiz_id}', 'CourseController@courseQuestions')->name('quiz-questions');
 Route::post('/save-answers', 'CourseController@saveAnswers')->name('save-answers');
 Route::get('/quiz-result/{quiz_id}/{user_id}', 'CourseController@quizResult')->name('quiz-result');
+Route::get('/create-media', 'HomeController@createMedia')->name('create-media');
+Route::post('/saveMedia', 'HomeController@saveMedia')->name('saveMedia');
 
 
 Route::resource('/user', 'UserController')->except('show')->middleware('auth');

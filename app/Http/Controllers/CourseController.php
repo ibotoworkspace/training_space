@@ -14,6 +14,7 @@ use App\quizes;
 use App\questions;
 use App\answers;
 use App\quiz_attempts;
+use App\media;
 
 class CourseController extends Controller
 {
@@ -191,6 +192,7 @@ class CourseController extends Controller
         $categories = categories::all();
         $courses = Course::select('id','title')->get();
         $students = User::select('id','name','user_role')->get();
+        $directory = public_path('media');
         return view('courses.create-content', compact('courses','categories','students'));
     }
 
@@ -249,12 +251,30 @@ class CourseController extends Controller
             $quizQuestion->quiz_id = $request->quiz_id;
             $quizQuestion->question = $question;
             $quizQuestion->question_type = $request->question_type[$key];
-            $quizQuestion->answer1 = $request->answer1[$key];
-            $quizQuestion->answer2 = $request->answer2[$key];
-            $quizQuestion->answer3 = $request->answer3[$key];
-            $quizQuestion->answer4 = $request->answer4[$key];
-            $quizQuestion->answer5 = $request->answer5[$key];
-            $quizQuestion->correct_answer = $request->correct_answer[$key];
+            $quizQuestion->answer1 = $request->answer1[$key] ?? "";
+            $quizQuestion->answer2 = $request->answer2[$key] ?? "";
+            $quizQuestion->answer3 = $request->answer3[$key] ?? "";
+            $quizQuestion->answer4 = $request->answer4[$key] ?? "";
+            $quizQuestion->answer5 = $request->answer5[$key] ?? "";
+            switch ($request->question_type[$key]) {
+                case 'single_choice':                    
+                    $quizQuestion->correct_answer = $request->correct_answer[$key];
+                    break;
+                case 'multiple_choice':                    
+                    $quizQuestion->correct_answer = implode("|",$request->correct_answer[$key]) ?? "";
+                    break;
+                case 'true_false':                    
+                    $quizQuestion->correct_answer = $request->correct_answer[$key] ?? "";
+                    break;
+                case 'short_answer':                    
+                    $quizQuestion->correct_answer = $request->correct_answer[$key] ?? "";
+                    break;
+                
+                default:
+                    $quizQuestion->correct_answer = $request->correct_answer[$key];
+                    break;
+            }
+            
             $quizQuestion->score = $request->score[$key];
             $quizQuestion->remarks = $request->remarks[$key];
             $quizQuestion->save();
@@ -273,7 +293,6 @@ class CourseController extends Controller
 
 
     public function saveAnswers(Request $request){
-
         
         $questions = questions::where('quiz_id',1)->get();
         foreach($questions as $key =>$qu){

@@ -39,7 +39,7 @@
         $(function() {
     
     
-            $('#wyswyg').summernote({
+            $('#wyswyg, .wyswyg').summernote({
                 height: 300, // Set the height of the editor
     
                 toolbar: [
@@ -77,10 +77,24 @@
                     ]
                 }
             });
+            
         });
-    
-    
-    
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.copy-url');
+            images.forEach(image => {
+                image.addEventListener('click', function() {
+                    const url = this.getAttribute('data-url');
+                    const input = document.createElement('input');
+                    input.value = url;
+                    document.body.appendChild(input);
+                    input.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(input);
+                    alert('URL copied to clipboard: ' + url);
+                });
+            });
+        });
     </script>
 @endif
 
