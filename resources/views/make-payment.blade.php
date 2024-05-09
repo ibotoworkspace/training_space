@@ -23,7 +23,7 @@
                     </p>
                   </div>
                   <hr>
-                  <h3>Online Payment (For Nigerian Naira) </h3>
+                  {{-- <h3>Online Payment (For Nigerian Naira) </h3>
                   <div class="row">
                     <p>Pay the Sum of {{$course->fee}} using the online payment link below; </p>
                     <div class="row">
@@ -38,7 +38,7 @@
                     </div>
                    
                   </div>
-                  <hr>
+                  <hr> --}}
                   <h3>Paypal Payment (for US Dollar)</h3>
                   <div class="row">
                     
