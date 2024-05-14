@@ -196,6 +196,17 @@ class CourseController extends Controller
         return view('courses.create-content', compact('courses','categories','students'));
     }
 
+    public function editContent($courseid)
+    {
+        $course = coursecontents::find($courseid);
+        $courses = courses::selec();
+
+        $submitbuttontext = "Save Course Content";
+        $categories = categories::all();
+        return view('courses.edit-content', compact('course', 'submitbuttontext','categories'));
+    }
+
+
     public function publishContent(Request $request){
         $input = $request->all();
         if ($request->hasFile('file_path')) {
@@ -210,6 +221,24 @@ class CourseController extends Controller
         coursecontents::create($input);
         \Session::flash('flash_message', 'A new course content has been created!');
         return redirect(route('content-form'));
+    }
+
+    public function updateContent(coursecontents $coursecontents, Request $request)
+    {
+        $input = $request->all();
+        if ($request->hasFile('file_path')) {
+            $image = $request->file('file_path');
+            $filename = $image->getClientOriginalName();
+            $image->move(public_path('images'), $filename);
+            $input['file_path'] = 'images/' . $filename;
+        }else{
+            $input['file_path'] = '';
+        }
+
+        $coursecontents->update($input);
+        \Session::flash('flash_message', 'The course content has been updated!');
+        return redirect(route('course.edit-content',[$coursecontents['id']]));
+
     }
 
     public function courseContent($courseid){

@@ -51,10 +51,10 @@
         @if(($enroll == true) || (Auth::user() && Auth::user()->user_role=="Admin"))
             @if(isset($course->contents))
                 <ul>
-                    @foreach ($course->contents as $contents)
-                        <li><a href="{{route('course-content',[$contents->id])}}">{{$contents->material_title}}</a> - <small style="color: green; font-weight: bold;"><em>({{$contents->material_type}})</em> - 
+                    @foreach ($course->contents as $content)
+                        <li><a href="{{route('course-content',[$content->id])}}">{{$content->material_title}}</a> - <small style="color: green; font-weight: bold;"><em>({{$content->material_type}})</em> - 
                         @if (Auth::user()->role->first()->name == 'Instructor' || Auth::user()->role->first()->name == "Admin")
-                            <a href="edit-course">edit</a>
+                            <a href="{{url('edit-content/'.$content->id)}}">edit</a>
                         @endif
                         </small></li>
                     @endforeach
@@ -76,7 +76,7 @@
                         @else
                             <li><a href="{{route('course-quiz',[$quiz->id])}}">{{$quiz->title}}</a> - <small style="color: green; font-weight: bold;"><em>({{$quiz->status}})</em>
                                 @if (Auth::user()->role->first()->name == 'Instructor' || Auth::user()->role->first()->name == "Admin")
-                                <a href="edit-course">edit</a>
+                                <a href="edit-content">edit</a>
                                 <a href="{{route('question-form',$quiz->id)}}">Add Question</a>
                             @endif
                             </small></li>

@@ -8,8 +8,18 @@ class coursecontents extends Model
 {
     protected $guarded = [];
 
-    public function courses()
+    public function Course()
     {
-        return $this->belongsToMany('App\Course', 'id', 'course_id');
+        return $this->hasOne('App\Course', 'id', 'course_id');
+    }
+
+    public function Category()
+    {
+        return $this->hasOne('App\Category', 'id', 'category_id');
+    }
+
+    public function Author()
+    {
+        return $this->hasOne('App\User', 'id', 'user_id');
     }
 }

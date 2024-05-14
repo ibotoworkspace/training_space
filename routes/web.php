@@ -41,6 +41,8 @@ Route::get('/course-content/{courseid}', 'CourseController@courseContent')->name
 Route::get('/course-content/{courseid}', 'CourseController@courseContent')->name('course-content');
 Route::get('/content-form', 'CourseController@contentForm')->name('content-form');
 Route::post('/publish-content', 'CourseController@publishContent')->name('publish-content');
+Route::get('/edit-content/{courseid}', 'CourseController@editContent')->name('edit-content');
+Route::post('/save-update', 'CourseController@updateContent')->name('save-update');
 
 
 // For Categories
