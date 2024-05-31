@@ -10,6 +10,7 @@ use App\Enrollments;
 use Auth;
 use Illuminate\Support\Facades\Hash;
 
+
 class UserController extends Controller
 {
 
@@ -95,12 +96,24 @@ class UserController extends Controller
     public function update(Request $request, $user)
     {
         $input = $request->all();
+        $user = User::find($user);
+
+        // dd($user);
+
         if(empty($request->password)) {
             $input = $request->except('password');
+            $user->update($input);
+        }else{
+            $password = Hash::make($request->password);
+            $input = $request->all();
+
+            $user->update($input);
+            $user->password = $password;
         }
-        $user = User::find($user);
-        $user->update($input);
         $user->role()->sync($input['role']);
+
+        $user->save();
+
         \Session::flash('flash_message', 'User was updated!');
         return redirect(route('user.index'));
     }
