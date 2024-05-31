@@ -8,6 +8,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Iboto Empire | LMS</title>
+
+    <style>
+        body{
+            background-image: url('../images/bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        #pagecontent{
+            background-color: white;
+            opacity: 0.9;
+        }
+        .row{
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
 <div class="nav-bar">
