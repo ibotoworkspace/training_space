@@ -45,11 +45,15 @@ class EnrollmentController extends Controller
         $user = Auth::user();
         $category_ids = [];
         $posts = posts::all();
+        $allcourses = null;
+        $students = null;
 
         if($user->user_role=="Admin"){
             $enrollments = Enrollments::all();
             $courses = UserCourse::all();
             $quizAttempts = quiz_attempts::all();
+            $allcourses = Course::all();
+            $students = User::where('user_role','Student')->get();
         }else{
             $courses = UserCourse::where('user_id', '=', $user->id)->get();
             $enrollments = Enrollments::where('user_id', '=', $user->id)->get();
@@ -60,6 +64,6 @@ class EnrollmentController extends Controller
             }
         }
         
-        return view('dashboard', compact('enrollments','courses','quizAttempts','posts','category_ids'));
+        return view('dashboard', compact('enrollments','courses','quizAttempts','posts','category_ids','allcourses','students'));
     }
 }
