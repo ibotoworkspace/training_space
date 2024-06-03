@@ -110,12 +110,12 @@ class UserController extends Controller
             $user->update($input);
             $user->password = $password;
         }
-        $user->role()->sync($input['role']);
+        // $user->role()->sync($input['role']);
 
         $user->save();
 
         \Session::flash('flash_message', 'User was updated!');
-        return redirect(route('user.index'));
+        return redirect()->back();
     }
 
     /**

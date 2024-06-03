@@ -7,6 +7,8 @@ use App\Course;
 use App\UserCourse;
 use App\Enrollments;
 use App\User;
+use App\quiz_attempts;
+use App\posts;
 use Auth;
 
 class EnrollmentController extends Controller
@@ -41,9 +43,23 @@ class EnrollmentController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        $courses = Course::where('user_id', '=', $user->id);
-        $courses = $courses->pluck('id')->all();
-        $enrollments = Enrollments::whereIn('course_id', $courses)->get();
-        return view('dashboard', compact('enrollments'));
+        $category_ids = [];
+        $posts = posts::all();
+
+        if($user->user_role=="Admin"){
+            $enrollments = Enrollments::all();
+            $courses = UserCourse::all();
+            $quizAttempts = quiz_attempts::all();
+        }else{
+            $courses = UserCourse::where('user_id', '=', $user->id)->get();
+            $enrollments = Enrollments::where('user_id', '=', $user->id)->get();
+            $quizAttempts = quiz_attempts::where('user_id', '=', $user->id)->get();
+
+            foreach($courses as $co){
+                $category_ids[] = $co->course->category_id; 
+            }
+        }
+        
+        return view('dashboard', compact('enrollments','courses','quizAttempts','posts','category_ids'));
     }
 }

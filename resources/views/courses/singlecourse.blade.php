@@ -17,7 +17,7 @@
                 <h6>Published on: <b>{{ $course->created_at->toFormattedDateString() }}</b></h6>
             </div>
             <div class="author">
-                <h6>Author: <b>{{ $author->name }}</b></h6>
+                <h6>Author: <b>{{ $course->Author->name ?? "" }}</b></h6>
             </div>
             <hr>
             <h3>Course Description</h3>

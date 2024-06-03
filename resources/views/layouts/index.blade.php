@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     
-    <link rel="stylesheet" type= "text/css" href="/css/app.css">
+    <link rel="stylesheet" type= "text/css" href="{{ asset('/css/app.css')}}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -11,7 +11,7 @@
 
     <style>
         body{
-            background-image: url('../images/bg.jpg');
+            background-image: url('{{ asset('images/bg.jpg') }}');
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -27,14 +27,20 @@
             bottom: 0;
             background: rgba(255, 255, 255, 0.5); /* White overlay with 50% opacity */
             z-index: -1;
+            min-height: 100%;
         }
 
         #pagecontent{
             background-color: white;
             opacity: 0.9;
+            padding-top: 20px;
+            padding-bottom: 20px;
         }
         .row{
             padding: 10px;
+        }
+        .container{            
+            width: 100% !important;
         }
     </style>
 </head>
@@ -46,8 +52,9 @@
 <div class = "container" id="pagecontent">
     @if (session('flash_message'))
         <div class="card-body">
-            <div class="alert alert-success">
-                {{ session('flash_message') }}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                {!! session('flash_message') !!}
             </div>
         </div>
     @endif

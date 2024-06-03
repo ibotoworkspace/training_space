@@ -36,4 +36,11 @@ class Course extends Model
     {
         return $this->hasMany('App\quizes', 'course_id', 'id');
     }
+
+    public function Author()
+    {
+        return $this->hasOne('App\User', 'id', 'user_id');
+    }
+
+    
 }

@@ -7,9 +7,12 @@
         </div>
     </div>
 @endif
+
+@if (Auth::user()->user_role=="Admin")
 {{-- <a href="{{ route('course.create') }}">{!! Form::button('Add New Course', ['class' => 'btn btn-secondary', 'id' => 'course_button']) !!}</a> --}}
 <a href="{{ route('user.create') }}" class="btn btn-secondary" id="course_button">Add New User</a>
 
+    
 <h1 class="my-4">All Users</h1>
 
 <table class="table">
@@ -41,4 +44,10 @@
 
         </tbody>
       </table>
+@else
+
+<h3>You don't have permission to view this link</h3>
+
+@endif
+
 @endsection

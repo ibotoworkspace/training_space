@@ -29,7 +29,7 @@ class HomeController extends Controller
     public function index()
     {
         $courses = Course::all();
-        $posts = posts::all();
+        $posts = posts::where('user_id','')->get();
         foreach ($courses as $course) {
             $course->author = User::find($course->user_id);
         }
@@ -54,7 +54,10 @@ class HomeController extends Controller
     }
 
     public function publishPost(){
-        return view('publish-post');
+        $categories = categories::select('id','category_name')->get();
+        $students = User::select('id','name')->get();
+
+        return view('publish-post',compact('categories','students'));
     }
 
     public function Post($postid){

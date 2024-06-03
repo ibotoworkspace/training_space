@@ -63,7 +63,13 @@
             
         </div>
     @endisset
-    <h1 class="my-4">All Courses</h1>
+    @if (auth())
+        <h1 class="my-4">My Course(s)</h1>
+
+    @else
+        <h1 class="my-4">All Courses</h1>
+
+    @endif
     <div class="row">
         
             @if ($courses->isEmpty())

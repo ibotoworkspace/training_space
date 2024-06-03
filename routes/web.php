@@ -36,6 +36,7 @@ Route::get('/course/{course}/unenroll', 'CourseController@unenroll')->name('cour
 Route::get('/course/{course}/complete', 'CourseController@complete')->name('course.complete');
 Route::get('/course/{course}', 'CourseController@show')->name('course.show');
 Route::get('/course-content/{courseid}', 'CourseController@courseContent')->name('course-content');
+Route::get('/complete-content/{contentId}', 'CourseController@contentComplete')->name('content-complete');
 
 // For Course Contents
 Route::get('/course-content/{courseid}', 'CourseController@courseContent')->name('course-content');
@@ -83,3 +84,5 @@ Route::get('/paystack/callback', [PaymentController::class, 'handlePaymentCallba
 Route::post('/paypal/create-payment', [PaymentController::class, 'createPaypalPayment'])->name('paypal.payment');
 Route::get('/paypal/confirm-payment', [PaymentController::class, 'confirmPaypalPayment'])->name('paypal.confirm');
 Route::get('/paypal/cancel-payment', [PaymentController::class, 'cancelPaypalPayment'])->name('paypal.cancel');
+
+Route::post('/save-payment', [PaymentController::class, 'savePayment'])->name('save-payment');

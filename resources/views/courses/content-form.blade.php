@@ -70,7 +70,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label for="user_id">Select Students (Optional):</label>
             <select name="user_id" id="user_id" class="form-control">
                 <!-- Populate options dynamically from database -->
@@ -81,7 +81,7 @@
             </select>
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label for="user_id">Author:</label>
             <select name="user_id" id="user_id" class="form-control">
                 <!-- Populate options dynamically from database -->
@@ -90,6 +90,12 @@
                     <option value="{{ $student->id }}">{{ $student->name }}</option>
                 @endforeach
             </select>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="duration">Reading Duration (In Minutes)</label>
+                <input id="duration" type="text" class="form-control" name="duration">
+            </div>
         </div>
     </div>
 

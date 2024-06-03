@@ -127,13 +127,15 @@ class PaymentController extends Controller
                 'course_id'=>$course_id
             ]);
 
+            
             // Redirect user to PayPal payment page
             return redirect($response->result->links[1]->href); // Redirect to approval_url
 
         } catch (\Exception $e) {
+            
             // Handle errors
-            \Session::flash('flash_message', 'There was an error making payment.'.$e->getMessage()->withInput());
-            return back()->withError($e->getMessage())->withInput();
+            \Session::flash('flash_message', 'There was an error making payment.'.$e->getMessage());
+            return back()->withError($e->getMessage())->withInput()->with(['flash_message'=>'Error making payment :'.$e->getMessage()]);
         }
     }
 
@@ -177,6 +179,29 @@ class PaymentController extends Controller
 
     public function cancelPaypalPayment()
     {
+        \Session::flash('flash_message', 'Payment was cancelled.');
         return redirect()->route('home');
+    }
+
+    public function savePayment(Request $request){
+
+         // Validate the form data
+         $validatedData = $request->validate([
+            'payment_method' => 'required|string',
+            'amount' => 'required|string',
+            'currency' => 'required|string',
+            'user_id' => 'required|integer',
+            'course_id' => 'required|integer',
+            'payment_status' => 'required|string',
+            'reference_no' => 'required|string',
+            'created_at' => 'required|date',
+        ]);
+
+        // Create a new payment record
+        payments::create($validatedData);
+
+        \Session::flash('flash_message', 'Your payment data has been submitted to the Admin. You will be able to access the course contents after approval. Thank you.');
+        return redirect()->route('home');
+
     }
 }

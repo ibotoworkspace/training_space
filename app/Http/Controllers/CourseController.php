@@ -15,6 +15,7 @@ use App\questions;
 use App\answers;
 use App\quiz_attempts;
 use App\media;
+use App\user_contents;
 
 class CourseController extends Controller
 {
@@ -38,13 +39,14 @@ class CourseController extends Controller
             $courses = Course::all();
         }
         if ($courses->isEmpty()) {
-            \Session::flash('course', 'Not enrolled to any courses');
+            return redirect()->route('home')->with(['flash_message'=>'Not enrolled to any courses. Select one of the courses below to enroll.']);
         } else {
             foreach ($courses as $course) {
                 $course->author = User::find($course->user_id);
             }
+            return view('courses', compact('courses'));
         }
-        return view('courses', compact('courses'));
+        
     }
 
     /**
@@ -196,6 +198,21 @@ class CourseController extends Controller
         return view('courses.create-content', compact('courses','categories','students'));
     }
 
+
+    public function contentComplete($contentId)
+    {
+        $courseinfo = coursecontents::where('id',$contentId)->first();
+        user_contents::updateOrCreate(['user_id'=>Auth::id(),'content_id'=>$contentId],[
+            'user_id'=>Auth::id(),
+            'course_id'=>$courseinfo->course_id,
+            'content_id'=>$contentId,
+            'content_enrolled'=>1,
+            'content_completed'=>1,            
+        ]);
+        \Session::flash('flash_message', 'Course content marked as completed!');
+        return redirect()->back();
+    }
+
     public function editContent($courseid)
     {
         $course = coursecontents::find($courseid);
@@ -243,7 +260,13 @@ class CourseController extends Controller
 
     public function courseContent($courseid){
         $coursecontent = coursecontents::find($courseid);
-        return view('courses.course-content', compact('coursecontent'));
+        $complete_check = user_contents::where('user_id',Auth::id())->where('content_id',$courseid)->where('content_completed',1)->get();
+        $completed = "No";
+        if(!$complete_check->isEmpty()){
+            $completed = "Yes";
+        }
+
+        return view('courses.course-content', compact('coursecontent','completed'));
     }
 
     public function quizForm(){
