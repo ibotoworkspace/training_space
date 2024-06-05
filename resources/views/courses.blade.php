@@ -1,13 +1,7 @@
 @extends('layouts.index')
 
 @section('content')
-@if (session('flash_message'))
-    <div class="card-body">
-        <div class="alert alert-success">
-            {{ session('flash_message') }}
-        </div>
-    </div>
-@endif
+
 <div class="row">
     @if (Auth::check() && (Auth::user()->role->first()->name == 'Instructor' or Auth::user()->role->first()->name == "Admin"))
     <a href="{{ route('course.create') }}" class="btn btn-secondary" id="course_button">Add New Course</a>

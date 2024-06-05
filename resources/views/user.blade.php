@@ -1,12 +1,5 @@
 @extends('layouts.index')
 @section('content')
-@if (session('flash_message'))
-    <div class="card-body">
-        <div class="alert alert-success">
-            {{ session('flash_message') }}
-        </div>
-    </div>
-@endif
 
 @if (Auth::user()->user_role=="Admin")
 {{-- <a href="{{ route('course.create') }}">{!! Form::button('Add New Course', ['class' => 'btn btn-secondary', 'id' => 'course_button']) !!}</a> --}}
@@ -21,6 +14,7 @@
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Role</th>
+            <th scope="col">Courses</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -31,6 +25,7 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->role->first()->name }}</td>
+                    <td>{{$user->courses->count()}}</td>
                     <td>
                         {!! Form::open(['method' =>"delete", 'action' => ['UserController@destroy', $user->id]]) !!}
                             <a class="btn btn-secondary" href = "{{route('user.edit', [$user->id])}}">Edit</a>
@@ -38,6 +33,7 @@
                                 <input class="btn btn-danger" type = "submit" value = "Delete">
                             {{-- </a> --}}
                         {!! Form::close() !!}
+                        <a class="btn btn-success" href = "{{route('user-dashboard', [$user->id])}}">View Dashboard</a>
                     </td>
                 </tr>
             @endforeach

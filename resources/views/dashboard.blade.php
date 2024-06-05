@@ -52,18 +52,17 @@
         margin-bottom: 20px;
     }
 
-    .btn {
+    .btn2 {
         padding: 10px 20px;
         border: none;
         border-radius: 4px;
-        background-color: rgba(255, 255, 255, 0.3);
         color: #ffffff;
         cursor: pointer;
         transition: background-color 0.3s;
     }
 
     .btn:hover {
-        background-color: rgba(255, 255, 255, 0.5);
+        background-color: rgba(158, 190, 171, 0.5);
     }
 
 
@@ -77,7 +76,7 @@
                 <div class="card-content">
                     <div class="number">{{$allcourses->count()}}</div>
                     <div class="text">Courses</div>
-                    <a class="btn" href="{{url('home')}}">View All</a>
+                    <a class="btn btn-primary" href="{{url('course-list')}}">View All</a>
                 </div>
             </div>
         </div>
@@ -86,7 +85,7 @@
                 <div class="card-content">
                     <div class="number">{{$students->count()}}</div>
                     <div class="text">Students</div>
-                    <a class="btn" href="{{url('students')}}">View All</a>
+                    <a class="btn btn-danger" href="{{url('user')}}">View All</a>
                 </div>
             </div>
         </div>
@@ -95,7 +94,7 @@
                 <div class="card-content">
                     <div class="number">{{$enrollments->count()}}</div>
                     <div class="text">New Enrollments</div>
-                    <a class="btn" href="{{url('dashboard')}}">View All</a>
+                    <a class="btn btn-success" href="{{url('dashboard')}}">View All</a>
                 </div>
             </div>
         </div>
@@ -104,7 +103,7 @@
                 <div class="card-content">
                     <div class="number">{{$posts->count()}}</div>
                     <div class="text">Announcements</div>
-                    <a class="btn" href="{{url('posts')}}">View All</a>
+                    <a class="btn btn-info" href="{{url('post-list')}}">View All</a>
                 </div>
             </div>
         </div>
@@ -134,7 +133,7 @@
                         <td>{{ $enrollment->user->name ?? "" }}</td>
                         <td>{{ $enrollment->user->email ?? "" }}</td>
                         <td>{{ $enrollment->course->title ?? "" }}</td>
-                        <td>{{$enrollment->payment->reference_no ?? ""}} <br> <small><em>{{$enrollment->payment->amount ?? ""}} {{$enrollment->payment->currency ?? ""}} / {{$enrollment->payment->payment_status ?? ""}}</em></small></td>
+                        <td>{{$enrollment->payment->reference_no ?? ""}} <br> {{$enrollment->payment->payment_method ?? ""}}  <br> <small><em>{{$enrollment->payment->amount ?? ""}} {{$enrollment->payment->currency ?? ""}} / {{$enrollment->payment->payment_status ?? ""}}</em></small></td>
                         <td>
                             <a class="btn btn-success" href = "{{route('enrollment.approve', [$enrollment->user_id ?? "", $enrollment->course_id ?? ""])}}">Approve</a>
                             <a class="btn btn-danger" href = "{{ route('enrollment.disapprove', [$enrollment->user_id ?? "", $enrollment->course_id ?? ""]) }}">Disapprove</a>
@@ -145,9 +144,16 @@
         </table>
     @endif
 @elseif(Auth::check() && (Auth::user()->role->first()->name == 'Student'))
+    
+<div class="row">
+    <div class="col-md-12"><h3 style="text-align: center;">Student ID: <b>HRSCC24-00{{Auth::id()}}</b></h3></div>
+ </div>
+        
     <div class="row">
+        
         <div class="col-md-7">
             <h3>My Courses</h3>
+
             <table class="table table-striped table-responsive" id="products">
                 <thead>
                 <tr>
@@ -162,8 +168,8 @@
                 @foreach ($courses as $co)
                     <tr>
                         <td>{{$co->Course->title}}</td>
-                        <td>{{$co->CompletedContent->where('content_completed',1)->where('user_id',Auth::id())->count() ?? ""}}/{{$co->Course->contents->count() ?? ""}}</td>
-                        <td>{{(($co->CompletedContent->where('content_completed',1)->where('user_id',Auth::id())->count() ?? 1)/(($co->Course->contents->count() ?? 0))*100)}}%</td>
+                        <td>{{$co->CompletedContent->where('content_completed',1)->where('user_id',Auth::id())->count() ?? ""}}/{{$co->Course->contents->count()>0 ? $co->Course->contents->count() : 1}}</td>
+                        <td>{{number_format((($co->CompletedContent->where('content_completed',1)->where('user_id',Auth::id())->count() ?? 1)/(($co->Course->contents->count()>0 ? $co->Course->contents->count() : 1))*100),2)}}%</td>
                         <td><a href="{{url('course/'.$co->course_id)}}" class="btn btn-primary">Continue</a></td>
                     </tr>
                 @endforeach
@@ -184,7 +190,7 @@
                 @foreach ($quizAttempts as $qza)
                     <tr>
                         <td>{{$qza->Quiz->course->title}} <br> <b>{{$qza->Quiz->title}}</b></td>
-                        <td>{{$qza->total_score}}/{{$qza->Quiz->questions->sum('score')}}</td>
+                        <td>{{$qza->total_score}}/{{$qza->Quiz->questions->sum('score')>0 ? $qza->Quiz->questions->sum('score') : 1}}</td>
                     </tr>
                 @endforeach
                 </tbody>

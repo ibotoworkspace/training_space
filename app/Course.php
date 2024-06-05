@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Course extends Model
 {
     protected $fillable = [
-        'title', 'thumbnail', 'user_id', 'authorname', 'description'
+        'title', 'thumbnail', 'user_id', 'authorname', 'description', 'fee', 'category_id'
     ];
 
     protected $table ='courses';
@@ -40,6 +40,11 @@ class Course extends Model
     public function Author()
     {
         return $this->hasOne('App\User', 'id', 'user_id');
+    }
+
+    public function Category()
+    {
+        return $this->hasOne('App\categories', 'id', 'category_id');
     }
 
     

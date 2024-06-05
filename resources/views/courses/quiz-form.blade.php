@@ -38,10 +38,10 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="category">Category</label>
-                                    <select id="category" class="form-control" name="category">
+                                    <label for="category_id">Category</label>
+                                    <select id="category_id" class="form-control" name="category_id">
                                         @foreach($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -49,9 +49,9 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="author">Author</label>
+                                    <label for="author">Instroduction</label>
                                     <select id="author" class="form-control" name="author">
-                                        @foreach($students->where('user_role','Instructor') as $author)
+                                        @foreach($students as $author)
                                             <option value="{{ $author->id }}">{{ $author->name }}</option>
                                         @endforeach
                                     </select>

@@ -23,6 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/publish-post', 'HomeController@publishPost')->name('publish-post');
 Route::post('/save-post', 'HomeController@savePost')->name('save-post');
 Route::get('/post/{postid}', 'HomeController@Post')->name('post');
+Route::get('/delete-post/{postid}', 'HomeController@deletePost')->name('delete-post');
 
 Route::get('/course', 'CourseController@index')->name('course.index');
 
@@ -73,6 +74,7 @@ Route::resource('/user', 'UserController')->except('show')->middleware('auth');
 Route::get('/user/{user}/account', 'UserController@account')->name('user.account');
 
 Route::get('/dashboard', 'EnrollmentController@dashboard')->name('dashboard')->middleware('auth');
+Route::get('/user-dashboard/{userid}', 'EnrollmentController@userDashboard')->name('user-dashboard')->middleware('auth');
 
 Route::get('/dashboard/{user}/{course}/approve', 'EnrollmentController@approve')->name('enrollment.approve');
 
@@ -86,3 +88,8 @@ Route::get('/paypal/confirm-payment', [PaymentController::class, 'confirmPaypalP
 Route::get('/paypal/cancel-payment', [PaymentController::class, 'cancelPaypalPayment'])->name('paypal.cancel');
 
 Route::post('/save-payment', [PaymentController::class, 'savePayment'])->name('save-payment');
+
+/// listings
+Route::get('/post-list', 'HomeController@postList')->name('post-list');
+Route::get('/course-list', 'HomeController@courseList')->name('course-list');
+Route::get('/payment-list', 'HomeController@paymentList')->name('payment-list');

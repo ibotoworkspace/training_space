@@ -116,7 +116,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        $submitbuttontext = "Edit Course";
+        $submitbuttontext = "Update Course";
         $categories = categories::all();
         return view('courses.edit', compact('course', 'submitbuttontext','categories'));
     }
@@ -182,7 +182,7 @@ class CourseController extends Controller
         $image->move(public_path('images'), $filename);
         $input['thumbnail'] = 'images/' . $filename;
         }else{
-            $input['thumbnail'] = 'images/placeholder.png';
+            $input['thumbnail'] = $input['oldthumbnail'];
         }
         $course->update($input);
         \Session::flash('flash_message', 'The course has been updated!');

@@ -14,16 +14,26 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('home') }}">Home</a>
                 </li>
+                @if (Auth::check() && Auth::user()->role()->first()->name != "Admin")
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('course.index') }}">My Courses</a>
                 </li>
+                @endif
                 @if (Auth::check() && Auth::user()->role()->first()->name == "Admin")
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('user.index') }}">Users</a>
+                        <a class="nav-link" href="{{ route('user.index') }}">Students/Instructors</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('publish-post') }}">New Post</a>
+                        <a class="nav-link" href="{{ route('course-list') }}">Courses</a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('post-list') }}">Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('payment-list') }}">Payments</a>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('create-media') }}">Media Library</a>
                     </li>

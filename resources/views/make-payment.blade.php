@@ -15,10 +15,10 @@
                 
                     <h3>Bank Transfer</h3>
                     
-                    <p>Send the sum of {{$course->fee}} to our bank account below;</p><br>
+                    <p>Send the sum of USD ${{$course->fee}} to our bank account below;</p><br>
                     <p><b>Account Name: </b>Jacob Oroks<br>
                     <b>Account Number: </b> 205 703 6013 <br>
-                    <b>Bank Name:</b> <br>
+                    <b>Bank Name:</b> First City Monument Bank<br>
                     </p>
                   
                   <hr>
@@ -70,6 +70,12 @@
                         <option value="online_payment">Online Payment</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label for="amount">Amount Paid</label>
+                    <input type="text" class="form-control" name="amount" value="{{ old('amount', $course->fee) }}">
+
+                </div>
         
                 <!-- Currency -->
                 <div class="form-group">
@@ -79,8 +85,7 @@
                         <option value="NGN">NGN</option>
                     </select>
                 </div>
-                <input type="hidden" name="amount" value="{{ old('amount', $course->fee) }}">
-                <!-- User ID (hidden) -->
+                
                 <input type="hidden" name="user_id" value="{{ old('user_id', Auth::id()) }}">
         
                 <!-- Course ID (hidden) -->

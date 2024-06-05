@@ -8,6 +8,7 @@ use App\User;
 use App\categories;
 use App\posts;
 use App\media;
+use App\payments;
 
 class HomeController extends Controller
 {
@@ -29,7 +30,7 @@ class HomeController extends Controller
     public function index()
     {
         $courses = Course::all();
-        $posts = posts::where('user_id','')->get();
+        $posts = posts::where('user_id',null)->get();
         foreach ($courses as $course) {
             $course->author = User::find($course->user_id);
         }
@@ -64,6 +65,20 @@ class HomeController extends Controller
         $post = posts::find($postid);
         return view('post', compact('post'));
     }
+
+    // DELETE POST
+    public function deletePost($postid){
+
+        if(Auth::user()->user_role=="Admin"){
+            $post = posts::find($postid);
+            $post->delete();
+            \Session::flash('flash_message', 'The post has beeen deleted!');
+        }else{
+            \Session::flash('flash_message', 'You don\'t have the permission to delete a post !');
+        }
+        return redirect()->route('post-list');
+    }
+
 
     public function savePost(Request $request){
         $input = $request->all();
@@ -106,5 +121,20 @@ class HomeController extends Controller
             ]);
         }
         return redirect()->back()->with('success', 'Media uploaded successfully.');
+    }
+
+    public function postList(){
+        $posts = posts::all();
+        return view('post-list', compact('posts'));
+    }
+
+    public function courseList(){
+        $courses = Course::all();
+        return view('course-list', compact('courses'));
+    }
+
+    public function paymentList(){
+        $payments = payments::all();
+        return view('payment-list', compact('payments'));
     }
 }

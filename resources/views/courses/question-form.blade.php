@@ -10,7 +10,7 @@
 
     <div id="questions-container">
         <div class="col-md-10">
-            <label for="correct_answer">Select Quiz</label>
+            <label for="quiz_id">Select Quiz</label>
             <select name="quiz_id" class="form-control">
                 @foreach ($quizes as $qz)
                     <option value="{{$qz->id}}" @if ($qz->id==$quiz_id)
@@ -78,7 +78,7 @@
                     <input type="number" name="score[]" class="form-control">
                 </div>
                 <div class="col-md-10">
-                    <label for="remarks[]">Instructions</label>
+                    <label for="remarks[]">Instructions/Rationale</label>
                     <input type="text" name="remarks[]" class="form-control">
                 </div>
             </div>
@@ -131,7 +131,7 @@
         var selectedValue = $("#question_type"+num).val();
 
         if(selectedValue=="short_answer"){
-            alert("Note: This type of Question demands that the student writes an answer, however their answers may be correct but varying in how they enter it. Therefore, provide all the acceptable variations of the question that will be accepted as correct answe.")
+            alert("Note: This type of Question demands that the student writes an answer, however their answers may be correct but varying in how they enter it. Therefore, provide all the acceptable variations of the question that will be accepted as correct answer.")
         }
         
         

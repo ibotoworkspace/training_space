@@ -26,7 +26,7 @@
         
                 @if ($enroll == true)
                     <div class="course-content">
-                        <p class = "lead">{{ $course->description }}</p>
+                        <p class = "lead">{!! $course->description !!}</p>
                     </div>
                     <div class="course-button">
                         <a href="{{ route('course.unenroll', [$course->id]) }}" type="button" class="btn btn-primary btn-lg">Unenroll</a>

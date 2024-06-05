@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Iboto Empire | LMS</title>
+    <link rel="stylesheet" href="{{asset('/css/jquery.dataTables.min.css')}}">
+    <link rel="stylesheet" href="{{asset('https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css')}}">
 
     <style>
         body{

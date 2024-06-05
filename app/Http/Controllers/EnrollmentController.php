@@ -66,4 +66,25 @@ class EnrollmentController extends Controller
         
         return view('dashboard', compact('enrollments','courses','quizAttempts','posts','category_ids','allcourses','students'));
     }
+
+    public function userDashboard($userid)
+    {
+        $user = User::find($userid);
+        $category_ids = [];
+        $posts = posts::all();
+        $allcourses = null;
+        $students = null;
+
+        
+            $courses = UserCourse::where('user_id', '=', $user->id)->get();
+            $enrollments = Enrollments::where('user_id', '=', $user->id)->get();
+            $quizAttempts = quiz_attempts::where('user_id', '=', $user->id)->get();
+
+            foreach($courses as $co){
+                $category_ids[] = $co->course->category_id; 
+            }
+        
+        
+        return view('user-dashboard', compact('enrollments','courses','quizAttempts','posts','category_ids','allcourses','students','user'));
+    }
 }
