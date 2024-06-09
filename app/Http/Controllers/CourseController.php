@@ -344,39 +344,184 @@ class CourseController extends Controller
     }
 
 
+    // public function saveAnswers(Request $request){
+        
+    //     $questions = questions::where('quiz_id',1)->get();
+    //     foreach($questions as $key =>$qu){
+    //         $correct_ans = $qu->correct_answer;
+    //         $totalScore = 0;
+    //             $passed = 0;
+    //             $failed = $questions->count();
+    //             $quiz = $questions->first()->quiz->title;
+    //         if(isset($request->{"answer_" . $qu->id})){
+
+    //             $answer = $request->{"answer_" . $qu->id};
+    //             $checkAnswer = false;
+    //             $score = 0;
+                
+    //             if($correct_ans==$answer){
+    //                 $checkAnswer = true;
+    //                 $score = $qu->score;
+    //                 $totalScore+=$score;
+    //                 $failed--;
+    //                 $passed++;
+    //             }
+
+
+    //             answers::create([
+    //                 'user_id'=>Auth::id(),
+    //                 'quiz_id'=>$qu->quiz_id,
+    //                 'question_id'=>$qu->id,
+    //                 'answer'=>$answer,
+    //                 'is_correct'=>$checkAnswer,
+    //                 'score'=>$score
+    //             ]);                
+    //         }
+    //     }
+
+    //     quiz_attempts::create([
+    //             'user_id'=>Auth::id(),
+    //             'quiz_id'=>$qu->quiz_id,
+    //             'total_score'=>$totalScore,
+    //             'attempts'=>1
+    //     ]);
+    //     // dd($questions);
+    //     return view('courses.quiz-complete', compact('totalScore', 'passed', 'failed', 'quiz'));
+    // }
+
     public function saveAnswers(Request $request){
         
-        $questions = questions::where('quiz_id',1)->get();
+        $questions = questions::where('quiz_id',$request->quiz_id)->get();
+        $totalScore = 0;
+        $passed = 0;
+        $checkAnswer = false;
+        $score = 0;
+        
+        $failed = $questions->count();
+        $quiz = $questions->first()->quiz->title;
+
         foreach($questions as $key =>$qu){
+            
             $correct_ans = $qu->correct_answer;
-            $totalScore = 0;
-                $passed = 0;
-                $failed = $questions->count();
-                $quiz = $questions->first()->quiz->title;
-            if(isset($request->{"answer_" . $qu->id})){
+            
+            switch ($qu->question_type) {
+                case 'multiple_choice':
+                    for($ans_num = 1; $ans_num<=5; $ans_num++){
+                        $answerKey = "answer" . $ans_num . "_" . $qu->id;
+    
+                        // dd($request->answer2_13);
+                        if(isset($request->{$answerKey})){
+    
+                            // dd($request->{$answerKey}." Actually is the answer given");
+    
+                            $answer = $request->{$answerKey};
+                           
+                            if($correct_ans==$answer){
+                                $checkAnswer = true;
+                                $score = $qu->score;
+                                $totalScore+=$score;
+                                $failed--;
+                                $passed++;
+                            }
+    
+                            answers::create([
+                                'user_id'=>Auth::id(),
+                                'quiz_id'=>$qu->quiz_id,
+                                'question_id'=>$qu->id,
+                                'answer'=>$answer,
+                                'is_correct'=>$checkAnswer,
+                                'score'=>$score
+                            ]);                
+                        }
+                    }
+                    break;
+                case 'single_choice':
+                    for($ans_num = 1; $ans_num<=5; $ans_num++){
+                        $answerKey = "answer_" . $qu->id;
 
-                $answer = $request->{"answer_" . $qu->id};
-                $checkAnswer = false;
-                $score = 0;
+                        // dd($request->answer2_13);
+                        if(isset($request->{$answerKey})){
+
+                            // dd($request->{$answerKey}." Actually is the answer given");
+
+                            $answer = $request->{$answerKey};
+                           
+                            
+                            if($correct_ans==$answer){
+                                $checkAnswer = true;
+                                $score = $qu->score;
+                                $totalScore+=$score;
+                                $failed--;
+                                $passed++;
+                            }
+
+                            answers::create([
+                                'user_id'=>Auth::id(),
+                                'quiz_id'=>$qu->quiz_id,
+                                'question_id'=>$qu->id,
+                                'answer'=>$answer,
+                                'is_correct'=>$checkAnswer,
+                                'score'=>$score
+                            ]);                
+                        }
+                    }
+                    break;
+                case 'true_false':
+                    for($ans_num = 1; $ans_num<=2; $ans_num++){
+                        $answerKey = "answer_" . $qu->id;
+
+                        // dd($request->answer2_13);
+                        if(isset($request->{$answerKey})){
+                            $answer = $request->{$answerKey};
+                           
+                            if($correct_ans==$answer){
+                                $checkAnswer = true;
+                                $score = $qu->score;
+                                $totalScore+=$score;
+                                $failed--;
+                                $passed++;
+                            }
+
+                            answers::create([
+                                'user_id'=>Auth::id(),
+                                'quiz_id'=>$qu->quiz_id,
+                                'question_id'=>$qu->id,
+                                'answer'=>$answer,
+                                'is_correct'=>$checkAnswer,
+                                'score'=>$score
+                            ]);                
+                        }
+                    }
+                    break;
                 
-                if($correct_ans==$answer){
-                    $checkAnswer = true;
-                    $score = $qu->score;
-                    $totalScore+=$score;
-                    $failed--;
-                    $passed++;
-                }
+                default:
+                    $acceptableAns = explode('|',str_replace(' ', '', $correct_ans));
+                    $answerKey = "answer1_" . $qu->id;
+                        
+                    $answer = $request->{$answerKey};
 
+                    
+                    
+                    if (in_array($answer, $acceptableAns)) {
+                        $checkAnswer = true;
+                        $score = $qu->score;
+                        $totalScore+=$score;
+                        $failed--;
+                        $passed++;
 
-                answers::create([
-                    'user_id'=>Auth::id(),
-                    'quiz_id'=>$qu->quiz_id,
-                    'question_id'=>$qu->id,
-                    'answer'=>$answer,
-                    'is_correct'=>$checkAnswer,
-                    'score'=>$score
-                ]);                
+                        answers::create([
+                            'user_id'=>Auth::id(),
+                            'quiz_id'=>$qu->quiz_id,
+                            'question_id'=>$qu->id,
+                            'answer'=>$answer,
+                            'is_correct'=>$checkAnswer,
+                            'score'=>$score
+                        ]);
+                        
+                    }
+                    break;
             }
+                
         }
 
         quiz_attempts::create([

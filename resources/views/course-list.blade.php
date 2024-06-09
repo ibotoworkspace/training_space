@@ -8,7 +8,7 @@
             <a href="{{url('course.create')}}" class="btn btn-primary">New Course</a>
         </div>
         <h3>All Courses</h3>
-       <div class="col-md-9">
+       <div class="col-md-12">
         <table class="table table-striped table-responsive" style="width: 100%" id="products">
             <thead>
             <tr>
@@ -36,9 +36,6 @@
             @endforeach
             </tbody>
         </table>
-       </div>
-       <div class="col-md-3">
-
        </div>
     </div>
 @endif

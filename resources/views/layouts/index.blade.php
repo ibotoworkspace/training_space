@@ -66,7 +66,11 @@
 <div class="footer">
     @include('layouts.footer')
 </div>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> --}}
+<script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
@@ -134,6 +138,86 @@
             });
         });
     </script>
+@endif
+@if (isset($pagetype) && $pagetype=="report")
+
+	<script src="{{asset('/js/jquery.dataTables.min.js')}}"></script>
+	<script src="{{asset('/js/dataTables.buttons.min.js')}}"></script>
+	<script src="{{asset('/js/jszip.min.js')}}"></script>
+	<script src="{{asset('/js/buttons.print.min.js')}}"></script>
+    <script src="{{asset('/js/dataTables.fixedHeader.min.js')}}"></script>
+    <script src="{{asset('/js/dataTables.select.min.js')}}"></script>
+    <script src="{{asset('/js/dataTables.searchPanes.min.js')}}"></script>
+	<script src="{{asset('/js/pdfmake.min.js')}}"></script>
+	<script src="{{asset('/js/vfs_fonts.js')}}"></script>
+	<script src="{{asset('/js/buttons.html5.min.js')}}"></script>
+	<script src="{{asset('/js/buttons.colVis.min.js')}}"></script>
+
+
+	<script>
+
+
+		// TABLES WITH FILTERS
+		$('#products thead tr').clone(true).appendTo( '#products thead' );
+		$('#products thead tr:eq(1) th:not(:last)').each( function (i) {
+			var title = $(this).text();
+			$(this).html( '<input type="text" class="form-control" placeholder="Search '+title+'" value="" />' );
+
+			$( 'input', this ).on( 'keyup change', function () {
+				if ( table.column(i).search() !== this.value ) {
+					table
+						.column(i)
+						.search( this.value )
+						.draw();
+				}
+			} );
+		} );
+
+
+		var table = $('#products,.products2').DataTable( {
+			orderCellsTop: true,
+			fixedHeader: true,
+			"paging": true,
+			"footer": false,
+			"pageLength": 100,
+			"filter": true,
+			"ordering": true,
+			deferRender: true,
+			dom: 'Bfrtip',
+			"order": [0, "asc"],
+
+			buttons: [{
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: ':not(:last-child)'
+                }
+            },
+			{
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: ':not(:last-child)'
+                }
+            },
+			{
+                extend: 'copyHtml5',
+                exportOptions: {
+                    columns: ':not(:last-child)'
+                }
+            },
+
+				'csv', 'print','colvis',
+
+			]
+		});
+
+
+
+
+
+		$('.buttons-pdf').click(function(){
+			$("#products th:last-child, #products td:last-child").remove();
+		})
+	</script>
 @endif
 
 </body>
