@@ -1,7 +1,7 @@
 <h3>New Course Form</h3>
 <hr>
             <div class="form-group">
-                {!! Form::hidden('oldthumbnail', $course->thumbnail, ['class' => 'form-control']) !!}
+                {!! Form::hidden('oldthumbnail', $course->thumbnail ?? "", ['class' => 'form-control']) !!}
 
                 {!! Form::label('title', 'Course Title:') !!}
                 {!! Form::text('title', null, ['class' => 'form-control']) !!}

@@ -312,7 +312,8 @@ class CourseController extends Controller
                 case 'single_choice':                    
                     $quizQuestion->correct_answer = $request->correct_answer[$key];
                     break;
-                case 'multiple_choice':                    
+                case 'multiple_choice':  
+                    dd($request->correct_answer[$key]);                  
                     $quizQuestion->correct_answer = implode("|",$request->correct_answer[$key]) ?? "";
                     break;
                 case 'true_false':                    

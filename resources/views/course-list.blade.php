@@ -5,7 +5,7 @@
 @php $pagetype = "report"; @endphp
     <div class="container mt-5">
         <div class="row">
-            <a href="{{url('course.create')}}" class="btn btn-primary">New Course</a>
+            <a href="{{url('course/create')}}" class="btn btn-primary">New Course</a>
         </div>
         <h3>All Courses</h3>
        <div class="col-md-12">

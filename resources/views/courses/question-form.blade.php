@@ -191,7 +191,7 @@
             <!-- Add inputs for answer2, answer3, answer4, answer5 -->
             <div class="col-md-4">
                 <label for="correct_answer">Correct Answer</label>
-                <select name="correct_answer[][]" class="form-control" multiple>
+                <select name="correct_answer[]" class="form-control" multiple>
                     <option value="answer1">Answer A</option>
                     <option value="answer2">Answer B</option>
                     <option value="answer3">Answer C</option>

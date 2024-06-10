@@ -52,6 +52,7 @@
                     <hr>
                     <fieldset>
                         <legend><h2>{!!$qu->question!!}</h2></legend>
+
                         <small><em>Question Type: {{$qu->question_type}}</em></small>
 
                         @switch($qu->question_type)
@@ -146,13 +147,13 @@
                             @default
                             @if ($qu->answer1!="")
                                 <div class="answer_container">
-                                    <input type="text" id="answer1_{{$qu->id}}" name="answer1_{{$qu->id}}" value="answer1" class="form-control" data-ansnum="1" data-qid="{{$qu->id}}"/>
+                                    <input type="text" id="answer1_{{$qu->id}}" name="answer1_{{$qu->id}}" value="answer1" data-ansnum="1" data-qid="{{$qu->id}}"/>
                                     <label for="answer1_{{$qu->id}}">{{$qu->answer1}}</label>
                                 </div>
                         @endif
                                 
                         @endswitch                       
-
+                        <small><i>Note: {{$qu->remarks}}</i></small><br>
                         
                     </fieldset>
 
@@ -164,7 +165,7 @@
 
                     @if(!$loop->last)
                         <!-- Display next button for all questions except the last one -->
-                        <a href="#" class="btn btn-primary btn-lg right float-right" id="next-question-button">Next</a>
+                        <a href="#" class="btn btn-primary btn-lg right float-right" data-ansnum="" id="next-question-button" onclick="nextQuestion({{$qu->id}})">Next</a>
                     @endif
                 </div>
             @endforeach
@@ -175,43 +176,46 @@
 @endsection
 
 <script>
-    // Define JavaScript function to handle the submission and navigation
+    // Define JavaScript function to handle the submission and navigation    
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variable to store the selected answer number
+            let selectedAnsNum = null;
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Variable to store the selected answer number
-        let selectedAnsNum = null;
+            // Select all radio buttons with the class 'answer-radio'
+            const radioButtons = document.querySelectorAll('.answer-radio');
 
-        // Select all radio buttons with the class 'answer-radio'
-        const radioButtons = document.querySelectorAll('.answer-radio');
-
-        // Add a click event listener to each radio button
-        radioButtons.forEach(function(radio) {
-            radio.addEventListener('click', function() {
-                // Retrieve the value of the data-ansnum attribute
-                selectedAnsNum = this.getAttribute('data-ansnum');
-                questionId = this.getAttribute('data-qid');
+            // Add a click event listener to each radio button
+            radioButtons.forEach(function(radio) {
+                radio.addEventListener('click', function() {
+                    // Retrieve the value of the data-ansnum attribute
+                    selectedAnsNum = this.getAttribute('data-ansnum');
+                    // questionId = this.getAttribute('data-qid');
+                    const nextQuestionButton = document.getElementById('next-question-button');
+                    nextQuestionButton.setAttribute('data-ansnum', selectedAnsNum);
+                });
             });
+
+            // elect the button that will trigger the nextQuestion function
+                //     const nextQuestionButton = document.getElementById('next-question-button');
+
+                //     // Add a click event listener to the button
+                //     nextQuestionButton.addEventListener('click', function() {
+                //         alert("e clicklim");
+                //         // Ensure a radio button has been selected
+                //         if (selectedAnsNum !== null) {
+                //             // Call the nextQuestion function with the stored ansnumber
+                //             // Assuming you have a question variable defined, replace 'questionVariable' with the actual variable
+                //             nextQuestion(selectedAnsNum, questionId);
+                //         } else {
+                //             alert('Please select an answer first.');
+                //         }
+                //     });
         });
-
-        // Select the button that will trigger the nextQuestion function
-        const nextQuestionButton = document.getElementById('next-question-button');
-
-        // Add a click event listener to the button
-        nextQuestionButton.addEventListener('click', function() {
-            // Ensure a radio button has been selected
-            if (selectedAnsNum !== null) {
-                // Call the nextQuestion function with the stored ansnumber
-                // Assuming you have a question variable defined, replace 'questionVariable' with the actual variable
-                nextQuestion(selectedAnsNum, questionId);
-            } else {
-                alert('Please select an answer first.');
-            }
-        });
-    });
-    function nextQuestion(ansNumber, currentQuestionId) {
-
+    function nextQuestion(currentQuestionId) {
+        const ansNumber = $("#next-question-button").data("ansnum");
+        alert(ansNumber);
         // Get the selected answer for the current question
-        const selectedAnswer = document.querySelector(`#form input[name=answer${ansNumber}_${currentQuestionId}]:checked`);
+        const selectedAnswer = document.querySelector(`#answer${ansNumber}_${currentQuestionId}:checked`);
         
         if (!selectedAnswer) {
             alert('Please select an answer.');
@@ -279,20 +283,21 @@
     }
 
     // Function to initialize radio buttons with stored answers
-    // function initializeRadioButtons() {
-    //     // Get all radio buttons
-    //     const radioButtons = document.querySelectorAll('input[type="radio"]');
-    //     radioButtons.forEach((radioButton) => {
-    //         const questionId = radioButton.getAttribute('data-question-id');
-    //         const storedAnswer = retrieveAnswer(questionId, ansNumber);
-    //         if (storedAnswer === radioButton.value) {
-    //             radioButton.checked = true;
-    //         }
-    //     });
-    // }
+    function initializeRadioButtons() {
+        // Get all radio buttons
+        const radioButtons = document.querySelectorAll('input[type="radio"]');
+        radioButtons.forEach((radioButton) => {
+            const questionId = radioButton.getAttribute('data-qid');
+            const ansNumber = radioButton.getAttribute('data-ansnum');
+            const storedAnswer = retrieveAnswer(questionId, ansNumber);
+            if (storedAnswer === radioButton.value) {
+                radioButton.checked = true;
+            }
+        });
+    }
 
     // Add event listener for DOMContentLoaded event to initialize radio buttons
-    // document.addEventListener('DOMContentLoaded', initializeRadioButtons);
+    document.addEventListener('DOMContentLoaded', initializeRadioButtons);
 
 
     // Function to disable page refresh
