@@ -89,7 +89,7 @@
     <div style="text-align: center;">
         <button type="button" id="add-question" class="btn btn-primary center">Add More Question</button>
     </div>
-    <div>
+    <div style="margin-bottom: 30px;">
         <button type="submit" class="btn btn-success" style="float: right;">Submit Quiz Questions</button>
     </div>
 </form>
@@ -99,6 +99,12 @@
     document.getElementById('add-question').addEventListener('click', function() {
         const container = document.getElementById('questions-container');
         const question = container.querySelector('.question');
+
+        // Detach Summernote from the original textarea
+        $(question).find('textarea.wyswyg').each(function() {
+                    $(this).summernote('destroy');
+                });
+
         const clone = question.cloneNode(true);
         
         // Update id and onchange attributes for the cloned question_type element
@@ -123,7 +129,91 @@
         clone.appendChild(deleteButton);
         
         container.appendChild(clone);
+
+        // Reinitialize Summernote for the newly added textarea
+        $(clone).find('textarea.wyswyg').each(function() {
+            $(this).summernote({
+                height: 300, // Set the height of the editor    
+                toolbar: [
+                    ['style', ['undo','redo','style']], // Style dropdown (e.g., paragraph, code)
+                    ['font', ['bold', 'italic', 'underline', 'clear','strikethrough', 'superscript', 'subscript']], // Font style (bold, italic, underline)
+                    ['fontname', ['fontname']], // Font family
+                    ['fontsize', ['fontsize']], // Font size
+                    ['fontsizeunit', ['fontsizeunit']], // Font size
+                    ['color', ['forecolor', 'backcolor']], // Text color and background color
+                    ['para', ['ul', 'ol', 'paragraph']], // Lists (unordered, ordered), paragraph formatting
+                    ['height', ['height']], // Line height
+                    ['table', ['table']], // Insert table
+                    ['insert', ['link', 'picture', 'video', 'hr']], // Insert links, images, videos, horizontal rule
+                    ['view', ['fullscreen', 'codeview','help']], // Fullscreen mode, code view, help
+                ],
+                popover: {
+                    image: [
+                        ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
+                        ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                        ['remove', ['removeMedia']]
+                    ],
+                    link: [
+                        ['link', ['linkDialogShow', 'unlink']]
+                    ],
+                    table: [
+                        ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
+                        ['delete', ['deleteRow', 'deleteCol', 'deleteTable']],
+                    ],
+                    air: [
+                        ['color', ['color']],
+                        ['font', ['bold', 'underline', 'clear']],
+                        ['para', ['ul', 'paragraph']],
+                        ['table', ['table']],
+                        ['insert', ['link', 'picture']]
+                    ]
+                }
+            });
+        });
+
+        // Reinitialize Summernote for the original textarea
+        $(question).find('textarea.wyswyg').each(function() {
+            $(this).summernote({
+                height: 300, // Set the height of the editor    
+                toolbar: [
+                    ['style', ['undo','redo','style']], // Style dropdown (e.g., paragraph, code)
+                    ['font', ['bold', 'italic', 'underline', 'clear','strikethrough', 'superscript', 'subscript']], // Font style (bold, italic, underline)
+                    ['fontname', ['fontname']], // Font family
+                    ['fontsize', ['fontsize']], // Font size
+                    ['fontsizeunit', ['fontsizeunit']], // Font size
+                    ['color', ['forecolor', 'backcolor']], // Text color and background color
+                    ['para', ['ul', 'ol', 'paragraph']], // Lists (unordered, ordered), paragraph formatting
+                    ['height', ['height']], // Line height
+                    ['table', ['table']], // Insert table
+                    ['insert', ['link', 'picture', 'video', 'hr']], // Insert links, images, videos, horizontal rule
+                    ['view', ['fullscreen', 'codeview','help']], // Fullscreen mode, code view, help
+                ],
+                popover: {
+                    image: [
+                        ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
+                        ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                        ['remove', ['removeMedia']]
+                    ],
+                    link: [
+                        ['link', ['linkDialogShow', 'unlink']]
+                    ],
+                    table: [
+                        ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
+                        ['delete', ['deleteRow', 'deleteCol', 'deleteTable']],
+                    ],
+                    air: [
+                        ['color', ['color']],
+                        ['font', ['bold', 'underline', 'clear']],
+                        ['para', ['ul', 'paragraph']],
+                        ['table', ['table']],
+                        ['insert', ['link', 'picture']]
+                    ]
+                }
+            });
+        });
     });
+
+    
 
     // Event listener for select element change
     function reloadChoices(num){
@@ -191,7 +281,7 @@
             <!-- Add inputs for answer2, answer3, answer4, answer5 -->
             <div class="col-md-4">
                 <label for="correct_answer">Correct Answer</label>
-                <select name="correct_answer[]" class="form-control" multiple>
+                <select name="correct_answer[`+num+`][]" class="form-control" multiple>
                     <option value="answer1">Answer A</option>
                     <option value="answer2">Answer B</option>
                     <option value="answer3">Answer C</option>

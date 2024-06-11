@@ -40,11 +40,14 @@
         <div style="text-align: right; clear: both;">
             <span style="color: red; font-size: 18px; font-weight: bold;">Time Remaining: 
             <div id="countdown" style="display: inline"></div></span>
+            <h4>Quiz Attempts: {{$attempts}} of {{$questions[0]->quiz->allowed_attempts}}</h4>
         </div>
     <div class="container">       
         <form id="form" method="post" action="{{route("save-answers")}}"> 
             @csrf      
             <input type="hidden" name="quiz_id" value="{{$questions[0]->quiz_id}}">
+            <input type="hidden" name="attempts" value="{{$attempts}}">
+
             @foreach ($questions as $key => $qu)
                 
                 <div id="question{{ $qu->id }}" class="question"style="display: {{ $loop->first ? 'block' : 'none' }}">
