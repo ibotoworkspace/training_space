@@ -9,6 +9,7 @@ use App\categories;
 use App\posts;
 use App\media;
 use App\payments;
+use Illuminate\Support\Facades\Artisan;
 
 class HomeController extends Controller
 {
@@ -136,5 +137,17 @@ class HomeController extends Controller
     public function paymentList(){
         $payments = payments::all();
         return view('payment-list', compact('payments'));
+    }
+
+    // ARTISAN CONTROLLERS
+    public function Artisan1($command) {
+        $artisan = Artisan::call($command);
+        $output = Artisan::output();
+        return dd($output);
+    }
+
+    public function Artisan2($command, $param) {
+        $output = Artisan::call($command.":".$param);
+        return dd($output);
     }
 }
