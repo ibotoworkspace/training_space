@@ -54,6 +54,23 @@
             <div class="col-md-4">
                 <img src="/images/advert.jpg" width="100%" height="auto" alt="ADVERT">
             </div>
+
+            <div class="fb-page" 
+            data-href="https://www.facebook.com/training4skilldevelopment/"
+            data-tabs="timeline" 
+            data-width="" 
+            data-height="" 
+            data-small-header="false" 
+            data-adapt-container-width="true" 
+            data-hide-cover="false" 
+            data-show-facepile="true">
+           <blockquote cite="https://www.facebook.com/training4skilldevelopment/" class="fb-xfbml-parse-ignore">
+               <a href="https://www.facebook.com/training4skilldevelopment/">Training 4 Skill Development</a>
+           </blockquote>
+           <div id="fb-root"></div>
+           <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0"></script>
+       
+       </div>
             
         </div>
     @endisset
