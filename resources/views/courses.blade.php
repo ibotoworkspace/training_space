@@ -13,7 +13,7 @@
 <div class="container">
     @isset($posts)       
     
-        <div class="row">
+        <div class="row" style="background-color: black; opacity: 0.8;">
             <div class="col-md-8">
                 <style>
                     .carousel-item {
