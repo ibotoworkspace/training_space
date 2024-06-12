@@ -243,9 +243,9 @@
                         return in_array($post->category_id, $category_ids);
                     }) as $post)
                     <tr>
-                        <td>{{$pos->title}}</td>
-                        <td>{{$pos->Author->name}}</td>
-                        <td>{{$pos->created_at}}</td>
+                        <td>{{$post->title}}</td>
+                        <td>{{$post->Author->name}}</td>
+                        <td>{{$post->created_at}}</td>
                         <td> <a href="{{ route('post', $post->id) }}" class="btn btn-primary">Read</a></td>
                     </tr>
                 @endforeach

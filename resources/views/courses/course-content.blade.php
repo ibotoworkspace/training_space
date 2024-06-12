@@ -4,9 +4,18 @@
     #delayed-link {
         display: none; /* Initially hidden */
     }
+
+    .course-image img{
+        width: 100%; 
+        height: auto;
+    }
+
+    iframe{
+        width: 100%;
+    }
 </style>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12" style="position: relative; over-flow: contain;">
         <div>
             <div class="course-title">
                 <h1 class = "display-4">{{ $coursecontent->title }}</h4>

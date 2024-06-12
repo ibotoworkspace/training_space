@@ -45,6 +45,8 @@ Route::get('/content-form', 'CourseController@contentForm')->name('content-form'
 Route::post('/publish-content', 'CourseController@publishContent')->name('publish-content');
 Route::get('/edit-content/{courseid}', 'CourseController@editContent')->name('edit-content');
 Route::post('/save-update', 'CourseController@updateContent')->name('save-update');
+Route::get('/download-certificate/{courseid}', 'CourseController@downloadCertificate');
+
 
 
 // For Categories
@@ -56,6 +58,7 @@ Route::get('/delete-category/{catid}', 'HomeController@deleteCategory')->name('d
 Route::get('/course-quiz/{quizid}', 'CourseController@courseQuiz')->name('course-quiz');
 Route::get('/quiz-form', 'CourseController@quizForm')->name('quiz-form');
 Route::post('/publish-quiz', 'CourseController@publishQuiz')->name('publish-quiz');
+Route::get('/all-quizzes', 'CourseController@allQuizzes')->name('all-quizzes');
 
 
 // For Quiz Questions

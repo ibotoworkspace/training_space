@@ -1,5 +1,7 @@
 @extends('layouts.index')
 @section('content')
+<script id="dsq-count-scr" src="//iboto-empire-lms.disqus.com/count.js" async></script>
+
 <div class="row">
     <div class="col-md-8">
         <div class="jumbotron">
@@ -17,7 +19,10 @@
                 <h6>Published on: <b>{{ $course->created_at->toFormattedDateString() }}</b></h6>
             </div>
             <div class="author">
-                <h6>Author: <b>{{ $course->Author->name ?? "" }}</b></h6>
+                <h6>Instructor: <b>{{ $course->Author->name ?? "" }}</b> | <small>{{$course->Author->about}}</small></h6>
+            </div>
+            <div class="author">
+                <h6>Course Fee: <b>{{ $course->fee ?? "" }}USD</b></h6>
             </div>
             <hr>
             <h3>Course Description</h3>
@@ -61,18 +66,21 @@
                 </ul>
 
                 @if(isset($course->quizes)  && $course->quizes->isNotEmpty())
+                    <h3>Course Assessment/Quizes</h3>
                     <ul>
-                        @foreach ($course->quizes as $quiz)
+                        @foreach ($course->quizes->where('start_date', '<=', $now)
+                        ->where('end_date', '>=', $now) as $quiz)
 
                             {{-- Check if the user has attempted the quiz --}}
                         @php
-                            $attempt = $quiz->attempts()->where('user_id', Auth::id())->first();
+                            $attempts = $quiz->attempts()->where('user_id', Auth::id())->get();
                         @endphp
 
-                        @if ($attempt && $attempt->count()==$quiz->attempts_allowed)
-                            <li>
-                                <a href="{{url('quiz-result', ['quiz_id' => $quiz->id, 'user_id' => Auth::id()])}}">Quiz Attempted, View your Score</a>
-                            </li>
+                        @if ($attempts && $attempts->count()==$quiz->attempts_allowed)
+                                <li>
+                                    <a href="{{url('quiz-result', ['quiz_id' => $quiz->id, 'user_id' => Auth::id()])}}">Quiz Attempted, View your Score</a>
+                                </li>
+                           
                         @else
                             <li><a href="{{route('course-quiz',[$quiz->id])}}">{{$quiz->title}}</a> - <small style="color: green; font-weight: bold;"><em>({{$quiz->status}})</em>
                                 @if (Auth::user()->role->first()->name == 'Instructor' || Auth::user()->role->first()->name == "Admin")
@@ -85,6 +93,21 @@
                             
                         @endforeach
                     </ul>
+                @endif
+
+                @if(isset($course->userCourse)  && $course->userCourse->isNotEmpty())
+                    <h3>Coursemates / Members</h3>
+                    <ul>
+                        @foreach ($course->userCourse as $enr)
+                                <li>
+                                    <a href="#">{{$enr->user->name}} - <small>Joined: {{$enr->created_at}}</small></a>
+                                </li>
+                        @endforeach
+                    </ul>
+                @endif
+
+                @if ($complete==1)
+                    <a href="{{url('download-certificate/'.$course->id)}}" class="btn btn-primary">Download Certificate</a>
                 @endif
             @else           
         
@@ -112,4 +135,30 @@
 
     </div>
 </div>
+@if(($enroll == true))
+    <div class="row">
+        <h3>Course Discussion Board</h3>
+        <div class="col-md-12">
+            <div id="disqus_thread"></div>
+            <script>
+                /**
+                *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+                *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+                /*
+                var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+                */
+                (function() { // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                s.src = 'https://iboto-empire-lms.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        </div>
+    </div>
+@endif
 @endsection

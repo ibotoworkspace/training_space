@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Course;
 use Auth;
+use PDF;
 use App\UserCourse;
 use App\Enrollments;
 use App\categories;
@@ -16,6 +17,8 @@ use App\answers;
 use App\quiz_attempts;
 use App\media;
 use App\user_contents;
+
+use Carbon\Carbon;
 
 class CourseController extends Controller
 {
@@ -96,16 +99,17 @@ class CourseController extends Controller
     {
         if (Auth::check()) {
             $user = Auth::user();
-            $text = UserCourse::where('user_id' , '=', $user->id)->where('course_id', '=', $course->id)->get()->first();
+            $text = UserCourse::where('user_id', '=', $user->id)->where('course_id', '=', $course->id)->get()->first();
             $enroll = (isset($text))?$text->course_enrolled:'';
-            $comp = UserCourse::where('user_id', '=', $user->id)->where('course_id', '=', $course->id)->get()->first();
-            $complete = (isset($comp) && $comp->course_completed == 1)?$comp->course_completed:false;
+            // $comp = UserCourse::where('user_id', '=', $user->id)->where('course_id', '=', $course->id)->get()->first();
+            $complete = (isset($text) && $text->course_completed == 1)?$text->course_completed:false;
         } else {
             $enroll = false;
             $complete = false;
         }
         $author = User::find($course->user_id);
-        return view('courses.singlecourse', compact('course', 'author', 'enroll', 'complete'));
+        $now = Carbon::now();
+        return view('courses.singlecourse', compact('course', 'author', 'enroll', 'complete', 'now'));
     }
 
     /**
@@ -346,7 +350,7 @@ class CourseController extends Controller
 
         $attempted = quiz_attempts::select('attempts')->where('quiz_id',$quiz_id)->where('user_id',Auth::id())->get();
         if(!$attempted->isEmpty()){
-            if($attempted->max('attempts')>=$questions[0]->quiz->allowed_attempts){
+            if($attempted->count()>=$questions[0]->quiz->attempts_allowed){
 
                 \Session::flash('flash_message', 'You have reached the maximum number of attempts for this quiz');
 
@@ -367,7 +371,6 @@ class CourseController extends Controller
 
     public function saveAnswers(Request $request){
         // dd($request);
-
         $questions = questions::where('quiz_id',$request->quiz_id)->get();
         $totalScore = 0;
         $passed = 0;
@@ -469,7 +472,8 @@ class CourseController extends Controller
                         'question_id'=>$qu->id,
                         'answer'=>$answer,
                         'is_correct'=>$checkAnswer,
-                        'score'=>$score
+                        'score'=>$score,
+                        'attempt'=>$attempts->attempts
                     ]);  
                     break;
                 
@@ -512,9 +516,37 @@ class CourseController extends Controller
     }
 
     public function quizResult($quiz_id,$user_id){
-        $quiz_result = answers::where('quiz_id',$quiz_id)->where('user_id',$user_id)->get();
+        $quiz_result = answers::where('quiz_id',$quiz_id)
+        ->where('user_id',$user_id)
+        ->get();
         // dd($quiz_result);
         return view('courses.quiz-result', compact('quiz_result'));
+    }
+
+    public function downloadCertificate($courseid)
+    {
+        $course = Course::where('id',$courseid)->first();
+        $data = [
+            'studentName' => Auth::user()->name,
+            'courseName' => $course->title,
+            'category' => $course->category->category_name
+        ];
+
+        // $pdf = PDF::loadView('courses.certificate', $data);
+
+        $pdf = PDF::loadView('courses.certificate', $data)
+                  ->setPaper('a4', 'landscape');
+
+        return $pdf->download('courses.certificate.pdf');
+    }
+
+    public function allQuizzes()
+    {
+        // Fetch all quizzes from the database
+        $quizzes = quizes::all();
+
+        // Pass the quizzes to the view
+        return view('all-quizes', compact('quizzes'));
     }
 
     /**

@@ -84,7 +84,7 @@
                                 {{-- <a href = "{{ route('course.show', [$course->id]) }}">{!! Html::image( '/storage/'.$course->thumbnail, 'Thumbnail') !!}</a> --}}
                                 <div class="card-body">
                                     <h2 class="card-title"><a href = "{{ route('course.show', [$course->id]) }}">{{ $course['title'] }}</a></h2>
-                                    <p class="card-text">{!! str_limit($course['description'], 200, '...') !!}</p>
+                                    <p class="card-text">{!!  \Illuminate\Support\Str::limit($course['description'], 200, '...') !!}</p>
                                 </div>
                                 <div class="card-footer text-muted">
                                     Author: {{ $course->author['name'] }}

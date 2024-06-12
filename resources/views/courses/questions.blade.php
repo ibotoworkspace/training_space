@@ -40,7 +40,7 @@
         <div style="text-align: right; clear: both;">
             <span style="color: red; font-size: 18px; font-weight: bold;">Time Remaining: 
             <div id="countdown" style="display: inline"></div></span>
-            <h4>Quiz Attempts: {{$attempts}} of {{$questions[0]->quiz->allowed_attempts}}</h4>
+            <h4>Quiz Attempts: {{$attempts}} of {{$questions[0]->quiz->attempts_allowed}}</h4>
         </div>
     <div class="container">       
         <form id="form" method="post" action="{{route("save-answers")}}"> 
@@ -216,7 +216,7 @@
         });
     function nextQuestion(currentQuestionId) {
         const ansNumber = $("#next-question-button").data("ansnum");
-        alert(ansNumber);
+        // alert(ansNumber);
         // Get the selected answer for the current question
         const selectedAnswer = document.querySelector(`#answer${ansNumber}_${currentQuestionId}:checked`);
         
@@ -231,12 +231,9 @@
             question.style.display = 'none';
         });
 
-        
-
-
         // Unhide the next question
         const nextQuestionId = parseInt(currentQuestionId) + 1;
-        alert("Next Question Number: "+nextQuestionId);
+        // alert("Next Question Number: "+nextQuestionId);
         const nextQuestion = document.getElementById(`question${nextQuestionId}`);
         if (nextQuestion) {
             nextQuestion.style.display = 'block';

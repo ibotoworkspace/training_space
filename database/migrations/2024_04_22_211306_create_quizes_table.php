@@ -26,6 +26,8 @@ class CreateQuizesTable extends Migration
             $table->enum('status', ['draft', 'published'])->default('draft');
             $table->integer('author')->unsigned()->nullable();
             $table->text('remarks')->nullable();
+            $table->integer('attempts_allowed',10)->nullable();
+
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
