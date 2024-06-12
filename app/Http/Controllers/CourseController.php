@@ -529,15 +529,25 @@ class CourseController extends Controller
         $data = [
             'studentName' => Auth::user()->name,
             'courseName' => $course->title,
-            'category' => $course->category->category_name
+            'category' => $course->category->category_name,
+            'studentId' => "HRSCC24-00".Auth::id(),
         ];
 
-        // $pdf = PDF::loadView('courses.certificate', $data);
-
         $pdf = PDF::loadView('courses.certificate', $data)
-                  ->setPaper('a4', 'landscape');
+        ->setPaper('a4', 'landscape');
 
-        return $pdf->download('courses.certificate.pdf');
+        $fileName = $courseId . '_' . $studentName . '.pdf';
+        $filePath = public_path('certificates/' . $fileName);
+
+        // Ensure the certificates directory exists
+        if (!File::exists(public_path('certificates'))) {
+        File::makeDirectory(public_path('certificates'), 0755, true);
+        }
+
+        // Save the PDF to the specified path
+        $pdf->save($filePath);
+
+        return view('courses.certificates', ['fileName' => $fileName]);
     }
 
     public function allQuizzes()

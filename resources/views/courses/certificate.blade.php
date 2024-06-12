@@ -12,15 +12,16 @@
             padding: 0;
         }
         .container {
-            width: 100%;
-            height: 100vh;
+            width: 90%;
+            height: 80%;
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 5%;
         }
         .certificate {
-            width: 1000px;
-            height: 700px;
+            width: 90%;
+            height: 80%;
             border: 10px solid #1c87c9;
             padding: 50px;
             background: #fff url('path-to-pattern-image') center no-repeat;
@@ -28,6 +29,19 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             position: relative;
             box-sizing: border-box;
+        }
+
+        logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 150px;
+        }
+        .partners {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
         }
         .title {
             font-size: 48px;
@@ -63,12 +77,13 @@
 <body>
     <div class="container">
         <div class="certificate">
+            <img src="{{ public_path('images/logo.jpg') }}" alt="Logo" class="logo">
             <div class="title">Certificate of Completion</div>
             <div class="subtitle">This is to certify that</div>
             <div class="content">
                 <strong>{{ $studentName }}</strong><br>
                 has successfully completed the course<br>
-                <strong>{{ $courseName }}</strong>.
+                <strong>{{ $courseId }}</strong>.
             </div>
             <div class="signature">
                 <img src="{{ asset('path-to-signature-image') }}" alt="Signature">
@@ -76,6 +91,9 @@
             </div>
             <div class="date">
                 Date: {{ date('F j, Y') }}
+            </div>
+            <div class="partners">
+                <img src="{{ public_path('images/partners.jpg') }}" alt="Partners">
             </div>
         </div>
     </div>
