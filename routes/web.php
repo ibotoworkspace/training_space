@@ -22,6 +22,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/publish-post', 'HomeController@publishPost')->name('publish-post');
 Route::post('/save-post', 'HomeController@savePost')->name('save-post');
+Route::post('/save-post-update', 'HomeController@savePostUpdate')->name('save-post-update');
+Route::get('/update-post/{postid}', 'HomeController@updatePost')->name('update-post');
+
 Route::get('/post/{postid}', 'HomeController@Post')->name('post');
 Route::get('/delete-post/{postid}', 'HomeController@deletePost')->name('delete-post');
 

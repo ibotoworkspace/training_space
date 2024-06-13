@@ -67,6 +67,13 @@ class HomeController extends Controller
         return view('post', compact('post'));
     }
 
+    public function updatePost($postid){
+        $categories = categories::select('id','category_name')->get();
+        $students = User::select('id','name')->get();
+        $post = posts::find($postid);
+        return view('update-post', compact('post','categories','students'));
+    }
+
     // DELETE POST
     public function deletePost($postid){
 
@@ -91,12 +98,32 @@ class HomeController extends Controller
             $image->move(public_path('slides'), $filename);
             $input['featured'] = 'slides/' . $filename;
         }else{
-            $input['featured'] = 'images/placeholder.png';
+            $input['featured'] = '';
         }
        
         posts::create($input);
         \Session::flash('flash_message', 'A new post has been created!');
         return redirect(route('publish-post'));
+    }
+
+    public function savePostUpdate(Request $request){
+        $post = posts::where('id',$request->post_id)->first();
+
+        $input = $request->except(['post_id', 'old_featured']);
+
+        // $input['thumbnail'] = $request->file('thumbnail')->store('public/images');
+        if ($request->hasFile('featured')) {
+            $image = $request->file('featured');
+            $filename = $image->getClientOriginalName();
+            $image->move(public_path('slides'), $filename);
+            $input['featured'] = 'slides/' . $filename;
+        }else{
+            $input['featured'] = $request->old_featured;
+        }
+       
+        posts::updateOrCreate(['id'=>$request->post_id],$input);
+        \Session::flash('flash_message', 'The post has been created!');
+        return redirect()->back();
     }
 
     public function deleteCategory($catid){

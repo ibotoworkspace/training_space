@@ -10,8 +10,9 @@
                         <h2>{{ $post->title }}</h2>
                         <h5>{{ $post->subtitle }}</h5>
                         <div class="row" style="justify-content: center; align-content: center;">
-                            <img src="{{ asset($post->featured) }}" alt="{{ $post->title }}" class="img-fluid mb-3">
-
+                            @if ($post->featured!="")                                  
+                                <img src="{{ asset($post->featured) }}" alt="{{ $post->title }}" class="img-fluid mb-3">
+                            @endif
                         </div>
                         <p>{!! $post->description !!}</p>
                     </div>
