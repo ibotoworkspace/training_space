@@ -88,6 +88,7 @@
                     if (!$(this).data('summernote-initialized')) {
                         $(this).summernote({
                             height: 300, // Set the height of the editor    
+                            dialogsInBody: true,
                             toolbar: [
                                 ['style', ['undo','redo','style']], // Style dropdown (e.g., paragraph, code)
                                 ['font', ['bold', 'italic', 'underline', 'clear','strikethrough', 'superscript', 'subscript']], // Font style (bold, italic, underline)

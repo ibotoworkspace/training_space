@@ -27,11 +27,14 @@
                 <tr>
                     <td>{{$co->title ?? ""}}</td>
                     <td>{{$co->Category->category_name ?? ""}}</td>
-                    <td>{{$co->fee ?? ""}}NGN</td>
+                    <td>{{$co->fee ?? ""}}</td>
                     <td>{{$co->Author->name ?? ""}}</td>
                     <th>{{$co->userCourse ? $co->userCourse->count() : 0 }}</th>
                     <td>{{$co->created_at ?? ""}}</td>
-                    <td><a href="{{url('course/'.$co->id)}}" class="btn btn-primary">View</a></td>
+                    <td class="btn-group">                        
+                        <a href="{{ route('course.edit', [$co->id]) }}" class="btn btn-secondary">Edit Course</a>
+                        <a href="{{url('course/'.$co->id)}}" class="btn btn-primary">View</a>
+                    </td>
                 </tr>
             @endforeach
             </tbody>

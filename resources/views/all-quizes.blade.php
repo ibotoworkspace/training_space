@@ -16,7 +16,6 @@
                         <th>ID</th>
                         <th>Title</th>
                         <th>Subtitle</th>
-                        <th>Description</th>
                         <th>Course ID</th>
                         <th>Category ID</th>
                         <th>Duration</th>
@@ -24,9 +23,9 @@
                         <th>End Date</th>
                         <th>Status</th>
                         <th>Author</th>
-                        <th>Remarks</th>
                         <th>Attempts Allowed</th>
                         <th>Created At</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,7 +34,6 @@
                             <td>{{ $quiz->id }}</td>
                             <td>{{ $quiz->title }}</td>
                             <td>{{ $quiz->subtitle }}</td>
-                            <td>{{ $quiz->description }}</td>
                             <td>{{ $quiz->course_id }}</td>
                             <td>{{ $quiz->category_id }}</td>
                             <td>{{ $quiz->duration }}</td>
@@ -43,9 +41,15 @@
                             <td>{{ $quiz->end_date }}</td>
                             <td>{{ $quiz->status }}</td>
                             <td>{{ $quiz->author }}</td>
-                            <td>{{ $quiz->remarks }}</td>
                             <td>{{ $quiz->attempts_allowed }}</td>
                             <td>{{ $quiz->created_at }}</td>
+                            <td class="btn-group">
+                                <a href="{{route('course-quiz',[$quiz->id])}}" class="btn btn-primary">View</a>
+                                    @if (Auth::user()->role->first()->name == 'Instructor' || Auth::user()->role->first()->name == "Admin")
+                                    <a href="edit-content" class="btn btn-secondary">edit</a>
+                                    <a href="{{route('question-form',$quiz->id)}}" class="btn btn-info">Add Question</a>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

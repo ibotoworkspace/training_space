@@ -23,12 +23,15 @@
             
             @foreach ($posts as $po)
                 <tr>
-                    <td>{{$po->title}} br <small>{{$po->subtitle}}</small></td>
+                    <td>{{$po->title}} <br> <small>{{$po->subtitle}}</small></td>
                     <td>{{$po->category->category_name}}</td>
                     <td>{{$po->SentTo->name ?? ""}}</td>
                     <td>{{$po->Author->name ?? ""}}</td>
                     <td>{{$po->created_at}}</td>
-                    <td><a href="{{url('delete-post/'.$po->id)}}" onclick="confirm()">Delete</a></td>
+                    <td class="btn-group">
+                        <a href="{{url('post/'.$po->id)}}" class="btn btn-primary">View</a>
+                        <a href="{{url('delete-post/'.$po->id)}}" class="btn btn-danger" onclick="confirm('Are you sure want to delete this post?')">Delete</a>
+                    </td>
                 </tr>
             @endforeach
             </tbody>
