@@ -10,7 +10,7 @@
     <title>Iboto Empire | LMS</title>
     <link rel="stylesheet" href="{{asset('/css/jquery.dataTables.min.css')}}">
     <link rel="stylesheet" href="{{asset('https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css')}}">
-
+    <meta name="meta_csrf-token" content="{{ csrf_token() }}">
     <style>
         body{
             background-image: url('{{ asset('images/bg.jpg') }}');
@@ -122,12 +122,41 @@
                                     ['table', ['table']],
                                     ['insert', ['link', 'picture']]
                                 ]
+                            },
+                            callbacks: {
+                                onImageUpload: function(files) {
+                                    uploadImage(files[0]);
+                                }
                             }
                         });    
                         $(this).data('summernote-initialized', true);  
                     }
                 });
             }           
+
+            function uploadImage(file) {
+                let data = new FormData();
+                data.append("file", file);
+                
+                // Add CSRF token to the FormData
+                data.append("_token", $('meta[name="meta_csrf-token"]').attr('content'));
+
+                $.ajax({
+                    url: '{{ route('upload.image') }}',
+                    method: 'POST',
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.url) {
+                            $('#wyswyg').summernote('insertImage', response.url);
+                        }
+                    },
+                    error: function(response) {
+                        console.error('Error uploading image:', response.responseText);
+                    }
+                });
+            }
             
         });
 

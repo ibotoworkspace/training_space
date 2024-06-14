@@ -10,6 +10,8 @@ use App\posts;
 use App\media;
 use App\payments;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
+
 
 class HomeController extends Controller
 {
@@ -149,6 +151,36 @@ class HomeController extends Controller
             ]);
         }
         return redirect()->back()->with('success', 'Media uploaded successfully.');
+    }
+
+    public function uploadSImage(Request $request){
+          
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                $fileType = $file->getClientOriginalExtension();
+                $filename = $file->getClientOriginalName();
+                $path = public_path('media');
+    
+                // Ensure the directory exists
+                if (!File::isDirectory($path)) {
+                    File::makeDirectory($path, 0777, true, true);
+                }
+    
+                // Move the file to the public/media directory
+                $file->move($path, $filename);
+
+                
+                Media::create([
+                    'file_type' => $fileType,
+                    'file_name' => $filename
+                ]);
+    
+                $url = asset('media/' . $filename);
+    
+                return response()->json(['url' => $url]);
+            }else{
+                return response()->json(['error' => 'File not found.'], 400);
+            }
     }
 
     public function postList(){

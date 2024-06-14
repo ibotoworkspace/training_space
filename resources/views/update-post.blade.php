@@ -45,7 +45,7 @@
                         <label for="user_id">Send To (Optional):</label>
                         <select name="user_id" id="user_id" class="form-control">
                             <!-- Populate options dynamically from database -->
-                            <option value="{{$post->user_id}}" selected>{{$post->SentTo->name}}</option>
+                            <option value="{{$post->user_id ?? ""}}" selected>{{$post->SentTo ? $post->SentTo->name : ""}}</option>
                             @foreach($students as $student)
                                 <option value="{{ $student->id }}">{{ $student->name }}</option>
                             @endforeach

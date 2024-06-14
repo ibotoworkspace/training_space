@@ -74,6 +74,9 @@ Route::get('/quiz-result/{quiz_id}/{user_id}', 'CourseController@quizResult')->n
 Route::get('/create-media', 'HomeController@createMedia')->name('create-media');
 Route::post('/saveMedia', 'HomeController@saveMedia')->name('saveMedia');
 
+// Summernote Upload
+Route::post('/upload-image', 'HomeController@uploadSImage')->name('upload.image');
+
 
 Route::resource('/user', 'UserController')->except('show')->middleware('auth');
 

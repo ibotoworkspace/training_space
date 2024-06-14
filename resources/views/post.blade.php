@@ -1,5 +1,10 @@
 @extends('layouts.index')
 @section('content')
+<style>
+    p img{
+        margin: 10px;
+    }
+</style>
 @php $pagetype = "wyswyg"; @endphp
 <div class="container">
     <div class="container">
@@ -29,23 +34,9 @@
                     <li>Click on the Course</li>
                     <li>Click on Enroll</li>
                 </ul>
-
-                <div class="fb-page" 
-                data-href="https://www.facebook.com/training4skilldevelopment/"
-                data-tabs="timeline" 
-                data-width="" 
-                data-height="" 
-                data-small-header="false" 
-                data-adapt-container-width="true" 
-                data-hide-cover="false" 
-                data-show-facepile="true">
-               <blockquote cite="https://www.facebook.com/training4skilldevelopment/" class="fb-xfbml-parse-ignore">
-                   <a href="https://www.facebook.com/training4skilldevelopment/">Training 4 Skill Development</a>
-               </blockquote>
-           </div>
-           <div id="fb-root"></div>
-           <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0"></script>
-       
+                <div class="fb-page" data-href="https://www.facebook.com/training4skilldevelopment" data-tabs="timeline" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/training4skilldevelopment" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/training4skilldevelopment">Iboto Empire</a></blockquote></div>
+                </div><div id="fb-root"></div>
+                <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v20.0&appId=213102155499064" nonce="yM5pKQrV"></script>
             </div>
         </div>
     </div></div>
