@@ -10,7 +10,7 @@
 
     <div id="questions-container">
         <div class="col-md-10">
-            <label for="correct_answer">Select Quiz</label>
+            <label for="quiz_id">Select Quiz</label>
             <select name="quiz_id" class="form-control">
                 @foreach ($quizes as $qz)
                     <option value="{{$qz->id}}" @if ($qz->id==$quiz_id)
@@ -78,7 +78,7 @@
                     <input type="number" name="score[]" class="form-control">
                 </div>
                 <div class="col-md-10">
-                    <label for="remarks[]">Instructions</label>
+                    <label for="remarks[]">Instructions/Rationale</label>
                     <input type="text" name="remarks[]" class="form-control">
                 </div>
             </div>
@@ -89,7 +89,7 @@
     <div style="text-align: center;">
         <button type="button" id="add-question" class="btn btn-primary center">Add More Question</button>
     </div>
-    <div>
+    <div style="margin-bottom: 30px;">
         <button type="submit" class="btn btn-success" style="float: right;">Submit Quiz Questions</button>
     </div>
 </form>
@@ -99,6 +99,12 @@
     document.getElementById('add-question').addEventListener('click', function() {
         const container = document.getElementById('questions-container');
         const question = container.querySelector('.question');
+
+        // Detach Summernote from the original textarea
+        $(question).find('textarea.wyswyg').each(function() {
+                    $(this).summernote('destroy');
+                });
+
         const clone = question.cloneNode(true);
         
         // Update id and onchange attributes for the cloned question_type element
@@ -123,7 +129,91 @@
         clone.appendChild(deleteButton);
         
         container.appendChild(clone);
+
+        // Reinitialize Summernote for the newly added textarea
+        $(clone).find('textarea.wyswyg').each(function() {
+            $(this).summernote({
+                height: 300, // Set the height of the editor    
+                toolbar: [
+                    ['style', ['undo','redo','style']], // Style dropdown (e.g., paragraph, code)
+                    ['font', ['bold', 'italic', 'underline', 'clear','strikethrough', 'superscript', 'subscript']], // Font style (bold, italic, underline)
+                    ['fontname', ['fontname']], // Font family
+                    ['fontsize', ['fontsize']], // Font size
+                    ['fontsizeunit', ['fontsizeunit']], // Font size
+                    ['color', ['forecolor', 'backcolor']], // Text color and background color
+                    ['para', ['ul', 'ol', 'paragraph']], // Lists (unordered, ordered), paragraph formatting
+                    ['height', ['height']], // Line height
+                    ['table', ['table']], // Insert table
+                    ['insert', ['link', 'picture', 'video', 'hr']], // Insert links, images, videos, horizontal rule
+                    ['view', ['fullscreen', 'codeview','help']], // Fullscreen mode, code view, help
+                ],
+                popover: {
+                    image: [
+                        ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
+                        ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                        ['remove', ['removeMedia']]
+                    ],
+                    link: [
+                        ['link', ['linkDialogShow', 'unlink']]
+                    ],
+                    table: [
+                        ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
+                        ['delete', ['deleteRow', 'deleteCol', 'deleteTable']],
+                    ],
+                    air: [
+                        ['color', ['color']],
+                        ['font', ['bold', 'underline', 'clear']],
+                        ['para', ['ul', 'paragraph']],
+                        ['table', ['table']],
+                        ['insert', ['link', 'picture']]
+                    ]
+                }
+            });
+        });
+
+        // Reinitialize Summernote for the original textarea
+        $(question).find('textarea.wyswyg').each(function() {
+            $(this).summernote({
+                height: 300, // Set the height of the editor    
+                toolbar: [
+                    ['style', ['undo','redo','style']], // Style dropdown (e.g., paragraph, code)
+                    ['font', ['bold', 'italic', 'underline', 'clear','strikethrough', 'superscript', 'subscript']], // Font style (bold, italic, underline)
+                    ['fontname', ['fontname']], // Font family
+                    ['fontsize', ['fontsize']], // Font size
+                    ['fontsizeunit', ['fontsizeunit']], // Font size
+                    ['color', ['forecolor', 'backcolor']], // Text color and background color
+                    ['para', ['ul', 'ol', 'paragraph']], // Lists (unordered, ordered), paragraph formatting
+                    ['height', ['height']], // Line height
+                    ['table', ['table']], // Insert table
+                    ['insert', ['link', 'picture', 'video', 'hr']], // Insert links, images, videos, horizontal rule
+                    ['view', ['fullscreen', 'codeview','help']], // Fullscreen mode, code view, help
+                ],
+                popover: {
+                    image: [
+                        ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
+                        ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                        ['remove', ['removeMedia']]
+                    ],
+                    link: [
+                        ['link', ['linkDialogShow', 'unlink']]
+                    ],
+                    table: [
+                        ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
+                        ['delete', ['deleteRow', 'deleteCol', 'deleteTable']],
+                    ],
+                    air: [
+                        ['color', ['color']],
+                        ['font', ['bold', 'underline', 'clear']],
+                        ['para', ['ul', 'paragraph']],
+                        ['table', ['table']],
+                        ['insert', ['link', 'picture']]
+                    ]
+                }
+            });
+        });
     });
+
+    
 
     // Event listener for select element change
     function reloadChoices(num){
@@ -131,7 +221,7 @@
         var selectedValue = $("#question_type"+num).val();
 
         if(selectedValue=="short_answer"){
-            alert("Note: This type of Question demands that the student writes an answer, however their answers may be correct but varying in how they enter it. Therefore, provide all the acceptable variations of the question that will be accepted as correct answe.")
+            alert("Note: This type of Question demands that the student writes an answer, however their answers may be correct but varying in how they enter it. Therefore, provide all the acceptable variations of the question that will be accepted as correct answer.")
         }
         
         
@@ -191,7 +281,7 @@
             <!-- Add inputs for answer2, answer3, answer4, answer5 -->
             <div class="col-md-4">
                 <label for="correct_answer">Correct Answer</label>
-                <select name="correct_answer[][]" class="form-control" multiple>
+                <select name="correct_answer[`+num+`][]" class="form-control" multiple>
                     <option value="answer1">Answer A</option>
                     <option value="answer2">Answer B</option>
                     <option value="answer3">Answer C</option>

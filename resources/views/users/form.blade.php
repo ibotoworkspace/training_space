@@ -6,11 +6,15 @@
     {!! Form::label('email', 'Email: ') !!}
     {!! Form::email('email', null, ['class' => 'form-control']) !!}
 </div>
-{{-- @guest --}}
 <div class="form-group">
+    {!! Form::label('name', 'About Me: ') !!}
+    {!! Form::textarea('about', null, ['class' => 'form-control']) !!}
+</div>
+{{-- @guest --}}
+{{-- <div class="form-group">
     <label for="role" class="col-form-label">Select Role: </label>
     {!! Form::select('role', $roles, null, array('class' => 'form-control')); !!}
-</div>
+</div> --}}
 {{-- @endguest --}}
 <div class="form-group">
         {!! Form::label('password', 'Password: ') !!}

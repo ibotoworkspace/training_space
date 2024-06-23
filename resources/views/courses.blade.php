@@ -1,13 +1,7 @@
 @extends('layouts.index')
 
 @section('content')
-@if (session('flash_message'))
-    <div class="card-body">
-        <div class="alert alert-success">
-            {{ session('flash_message') }}
-        </div>
-    </div>
-@endif
+
 <div class="row">
     @if (Auth::check() && (Auth::user()->role->first()->name == 'Instructor' or Auth::user()->role->first()->name == "Admin"))
     <a href="{{ route('course.create') }}" class="btn btn-secondary" id="course_button">Add New Course</a>
@@ -19,7 +13,7 @@
 <div class="container">
     @isset($posts)       
     
-        <div class="row">
+        <div class="row" style="background-color: black; opacity: 0.8;">
             <div class="col-md-8">
                 <style>
                     .carousel-item {
@@ -60,10 +54,33 @@
             <div class="col-md-4">
                 <img src="/images/advert.jpg" width="100%" height="auto" alt="ADVERT">
             </div>
+
+            <div class="fb-page" 
+            data-href="https://www.facebook.com/training4skilldevelopment/"
+            data-tabs="timeline" 
+            data-width="" 
+            data-height="" 
+            data-small-header="false" 
+            data-adapt-container-width="true" 
+            data-hide-cover="false" 
+            data-show-facepile="true">
+           <blockquote cite="https://www.facebook.com/training4skilldevelopment/" class="fb-xfbml-parse-ignore">
+               <a href="https://www.facebook.com/training4skilldevelopment/">Training 4 Skill Development</a>
+           </blockquote>
+           <div id="fb-root"></div>
+           <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0"></script>
+       
+       </div>
             
         </div>
     @endisset
-    <h1 class="my-4">All Courses</h1>
+    @if (auth())
+        <h1 class="my-4">My Course(s)</h1>
+
+    @else
+        <h1 class="my-4">All Courses</h1>
+
+    @endif
     <div class="row">
         
             @if ($courses->isEmpty())
@@ -84,7 +101,7 @@
                                 {{-- <a href = "{{ route('course.show', [$course->id]) }}">{!! Html::image( '/storage/'.$course->thumbnail, 'Thumbnail') !!}</a> --}}
                                 <div class="card-body">
                                     <h2 class="card-title"><a href = "{{ route('course.show', [$course->id]) }}">{{ $course['title'] }}</a></h2>
-                                    <p class="card-text">{!! str_limit($course['description'], 200, '...') !!}</p>
+                                    <p class="card-text">{!!  \Illuminate\Support\Str::limit($course['description'], 200, '...') !!}</p>
                                 </div>
                                 <div class="card-footer text-muted">
                                     Author: {{ $course->author['name'] }}

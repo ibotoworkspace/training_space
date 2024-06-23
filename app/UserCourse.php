@@ -20,4 +20,8 @@ class UserCourse extends Model
         return $this->belongsTo('App\Course', 'course_id');
     }
 
+    public function CompletedContent(){
+        return $this->hasMany('App\user_contents', 'course_id', 'course_id'); 
+    }
+
 }

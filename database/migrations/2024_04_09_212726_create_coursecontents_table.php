@@ -26,6 +26,8 @@ class CreateCoursecontentsTable extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->string('file_path')->nullable();
+            $table->string('duration')->nullable();
+
             // Foreign key constraints
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('author')->references('id')->on('users')->onDelete('cascade');

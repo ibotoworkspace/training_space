@@ -1,5 +1,6 @@
 <?php
-
+use Illuminate\Support\Str;
+// $slug = Str::slug('Laravel 5 Framework', '-');
 return [
 
     /*
@@ -88,7 +89,7 @@ return [
 
     'prefix' => env(
         'CACHE_PREFIX',
-        str_slug(env('APP_NAME', 'laravel'), '_').'_cache'
+        $slug = Str::slug(env('APP_NAME', 'laravel'), '_').'_cache'
     ),
 
 ];

@@ -13,6 +13,7 @@
 
                 <div class="published">
                     <h6>Duration: <b>{{ $quiz->duration }} minutes</b></h6>
+                    <h4>No of Attempts: {{$quiz->attempts_allowed}}</h4>
                     <p>Opens On: {{$quiz->start_date}}, Closes On: {{$quiz->end_date}}</p>
                 </div>
                 <div class="author">

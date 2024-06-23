@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Course;
 use Auth;
+use PDF;
 use App\UserCourse;
 use App\Enrollments;
 use App\categories;
@@ -15,6 +16,9 @@ use App\questions;
 use App\answers;
 use App\quiz_attempts;
 use App\media;
+use App\user_contents;
+
+use Carbon\Carbon;
 
 class CourseController extends Controller
 {
@@ -38,13 +42,14 @@ class CourseController extends Controller
             $courses = Course::all();
         }
         if ($courses->isEmpty()) {
-            \Session::flash('course', 'Not enrolled to any courses');
+            return redirect()->route('home')->with(['flash_message'=>'Not enrolled to any courses. Select one of the courses below to enroll.']);
         } else {
             foreach ($courses as $course) {
                 $course->author = User::find($course->user_id);
             }
+            return view('courses', compact('courses'));
         }
-        return view('courses', compact('courses'));
+        
     }
 
     /**
@@ -94,16 +99,17 @@ class CourseController extends Controller
     {
         if (Auth::check()) {
             $user = Auth::user();
-            $text = UserCourse::where('user_id' , '=', $user->id)->where('course_id', '=', $course->id)->get()->first();
+            $text = UserCourse::where('user_id', '=', $user->id)->where('course_id', '=', $course->id)->get()->first();
             $enroll = (isset($text))?$text->course_enrolled:'';
-            $comp = UserCourse::where('user_id', '=', $user->id)->where('course_id', '=', $course->id)->get()->first();
-            $complete = (isset($comp) && $comp->course_completed == 1)?$comp->course_completed:false;
+            // $comp = UserCourse::where('user_id', '=', $user->id)->where('course_id', '=', $course->id)->get()->first();
+            $complete = (isset($text) && $text->course_completed == 1)?$text->course_completed:false;
         } else {
             $enroll = false;
             $complete = false;
         }
         $author = User::find($course->user_id);
-        return view('courses.singlecourse', compact('course', 'author', 'enroll', 'complete'));
+        $now = Carbon::now();
+        return view('courses.singlecourse', compact('course', 'author', 'enroll', 'complete', 'now'));
     }
 
     /**
@@ -114,7 +120,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        $submitbuttontext = "Edit Course";
+        $submitbuttontext = "Update Course";
         $categories = categories::all();
         return view('courses.edit', compact('course', 'submitbuttontext','categories'));
     }
@@ -180,7 +186,7 @@ class CourseController extends Controller
         $image->move(public_path('images'), $filename);
         $input['thumbnail'] = 'images/' . $filename;
         }else{
-            $input['thumbnail'] = 'images/placeholder.png';
+            $input['thumbnail'] = $input['oldthumbnail'];
         }
         $course->update($input);
         \Session::flash('flash_message', 'The course has been updated!');
@@ -194,6 +200,21 @@ class CourseController extends Controller
         $students = User::select('id','name','user_role')->get();
         $directory = public_path('media');
         return view('courses.create-content', compact('courses','categories','students'));
+    }
+
+
+    public function contentComplete($contentId)
+    {
+        $courseinfo = coursecontents::where('id',$contentId)->first();
+        user_contents::updateOrCreate(['user_id'=>Auth::id(),'content_id'=>$contentId],[
+            'user_id'=>Auth::id(),
+            'course_id'=>$courseinfo->course_id,
+            'content_id'=>$contentId,
+            'content_enrolled'=>1,
+            'content_completed'=>1,            
+        ]);
+        \Session::flash('flash_message', 'Course content marked as completed!');
+        return redirect()->back();
     }
 
     public function editContent($courseid)
@@ -243,7 +264,13 @@ class CourseController extends Controller
 
     public function courseContent($courseid){
         $coursecontent = coursecontents::find($courseid);
-        return view('courses.course-content', compact('coursecontent'));
+        $complete_check = user_contents::where('user_id',Auth::id())->where('content_id',$courseid)->where('content_completed',1)->get();
+        $completed = "No";
+        if(!$complete_check->isEmpty()){
+            $completed = "Yes";
+        }
+
+        return view('courses.course-content', compact('coursecontent','completed'));
     }
 
     public function quizForm(){
@@ -268,14 +295,16 @@ class CourseController extends Controller
 
     // FOR QUIZ QUESTIONS
     public function questionForm($quiz_id){
-        $quizes = quizes::select('id','title')->get();
+        $quizes = quizes::select('id','title','subtitle')->get();
         
         return view('courses.create-question', compact('quizes','quiz_id'));
     }
 
     public function publishQuestion(Request $request){
-
+        // dd($request);
+        
         foreach ($request->question as $key => $question) {
+            
             $quizQuestion = new questions();
             $quizQuestion->quiz_id = $request->quiz_id;
             $quizQuestion->question = $question;
@@ -289,8 +318,9 @@ class CourseController extends Controller
                 case 'single_choice':                    
                     $quizQuestion->correct_answer = $request->correct_answer[$key];
                     break;
-                case 'multiple_choice':                    
-                    $quizQuestion->correct_answer = implode("|",$request->correct_answer[$key]) ?? "";
+                case 'multiple_choice':  
+                    // dd($request->correct_answer[$key+1]);                  
+                    $quizQuestion->correct_answer = implode("|",$request->correct_answer[$key+1]) ?? "";
                     break;
                 case 'true_false':                    
                     $quizQuestion->correct_answer = $request->correct_answer[$key] ?? "";
@@ -308,68 +338,225 @@ class CourseController extends Controller
             $quizQuestion->remarks = $request->remarks[$key];
             $quizQuestion->save();
         }
-    
-        return redirect()->back()->with('success', 'Quiz questions added successfully!');
+        \Session::flash('flash_message', 'Quiz questions added successfully!');
+
+        return redirect()->back();
     
     }
 
     public function courseQuestions($quiz_id){
         $questions = questions::where('quiz_id',$quiz_id)->get();
         $duration = $questions->first()->quiz->duration;
+
+        $attempted = quiz_attempts::select('attempts')->where('quiz_id',$quiz_id)->where('user_id',Auth::id())->get();
+        if(!$attempted->isEmpty()){
+            if($attempted->count()>=$questions[0]->quiz->attempts_allowed){
+
+                \Session::flash('flash_message', 'You have reached the maximum number of attempts for this quiz');
+
+                return redirect()->back();
+            }else{
+                $attempts = $attempted->max('attempts')+1;
+
+                return view('courses.questions', compact('questions', 'duration','attempts'));
+            }
+        }else{
+            $attempts = 1;
+
+            return view('courses.questions', compact('questions', 'duration','attempts'));
+        }
         // dd($questions);
-        return view('courses.questions', compact('questions', 'duration'));
     }
 
 
     public function saveAnswers(Request $request){
+        // dd($request);
+        $questions = questions::where('quiz_id',$request->quiz_id)->get();
+        $totalScore = 0;
+        $passed = 0;
+        $checkAnswer = false;
+        $score = 0;
         
-        $questions = questions::where('quiz_id',1)->get();
+        $failed = $questions->count();
+        $quiz = $questions->first()->quiz->title;
+
         foreach($questions as $key =>$qu){
+            
             $correct_ans = $qu->correct_answer;
-            $totalScore = 0;
-                $passed = 0;
-                $failed = $questions->count();
-                $quiz = $questions->first()->quiz->title;
-            if(isset($request->{"answer_" . $qu->id})){
+            
+            switch ($qu->question_type) {
+                case 'multiple_choice':
+                    $acceptableAns = explode('|',str_replace(' ', '', $correct_ans));
+                    $check_corrects = [];
+                    for($ans_num = 1; $ans_num<=5; $ans_num++){
+                        $answerKey = "answer" . $ans_num . "_" . $qu->id;
+    
+                        // dd($request->answer2_13);
+                        if(isset($request->{$answerKey}) && $request->{$answerKey}!=""){
+    
+                            // dd($request->{$answerKey}." Actually is the answer given");
+    
+                            $answer = $request->{$answerKey};
+                           
+                            if (in_array($answer, $acceptableAns)) {
+                                $check_corrects[] = true;
+                            }else{
+                                $check_corrects[] = false;
+                            }               
+                        }                       
+                    }
+                    if (in_array(!false, $check_corrects, true)) {
+                        $checkAnswer = true;
+                        $score = $qu->score;
+                        $totalScore+=$score;
+                        $failed--;
+                        $passed++;
+                    }
 
-                $answer = $request->{"answer_" . $qu->id};
-                $checkAnswer = false;
-                $score = 0;
+                    answers::create([
+                        'user_id'=>Auth::id(),
+                        'quiz_id'=>$qu->quiz_id,
+                        'question_id'=>$qu->id,
+                        'answer'=>$answer,
+                        'is_correct'=>$checkAnswer,
+                        'score'=>$score
+                    ]);
+                    break;
+                case 'single_choice':
+                    for($ans_num = 1; $ans_num<=5; $ans_num++){
+                        $answerKey = "answer_" . $qu->id;
+
+                        // dd($request->answer2_13);
+                        if(isset($request->{$answerKey}) && $request->{$answerKey}!=""){
+
+                            // dd($request->{$answerKey}." Actually is the answer given");
+
+                            $answer = $request->{$answerKey};     
+                        }                        
+                    }
+                    if($correct_ans==$answer){
+                        $checkAnswer = true;
+                        $score = $qu->score;
+                        $totalScore+=$score;
+                        $failed--;
+                        $passed++;
+                    }   
+                    answers::create([
+                        'user_id'=>Auth::id(),
+                        'quiz_id'=>$qu->quiz_id,
+                        'question_id'=>$qu->id,
+                        'answer'=>$answer,
+                        'is_correct'=>$checkAnswer,
+                        'score'=>$score
+                    ]);  
+                    break;
+                case 'true_false':
+                    for($ans_num = 1; $ans_num<=2; $ans_num++){
+                        $answerKey = "answer_" . $qu->id;
+
+                        // dd($request->answer2_13);
+                        if(isset($request->{$answerKey})){
+                            $answer = $request->{$answerKey};
+                        }
+                    }
+                    if($correct_ans==$answer){
+                        $checkAnswer = true;
+                        $score = $qu->score;
+                        $totalScore+=$score;
+                        $failed--;
+                        $passed++;
+                    }
+                    answers::create([
+                        'user_id'=>Auth::id(),
+                        'quiz_id'=>$qu->quiz_id,
+                        'question_id'=>$qu->id,
+                        'answer'=>$answer,
+                        'is_correct'=>$checkAnswer,
+                        'score'=>$score,
+                        'attempt'=>$attempts->attempts
+                    ]);  
+                    break;
                 
-                if($correct_ans==$answer){
-                    $checkAnswer = true;
-                    $score = $qu->score;
-                    $totalScore+=$score;
-                    $failed--;
-                    $passed++;
-                }
-
-
-                answers::create([
-                    'user_id'=>Auth::id(),
-                    'quiz_id'=>$qu->quiz_id,
-                    'question_id'=>$qu->id,
-                    'answer'=>$answer,
-                    'is_correct'=>$checkAnswer,
-                    'score'=>$score
-                ]);                
+                case 'short_answer':
+                    $acceptableAns = explode(',',str_replace(' ', '', $correct_ans));
+                    $answerKey = "answer1_" . $qu->id;                        
+                    $answer = $request->{$answerKey};                                   
+                    
+                    if (in_array($answer, $acceptableAns)) {
+                        $checkAnswer = true;
+                        $score = $qu->score;
+                        $totalScore+=$score;
+                        $failed--;
+                        $passed++;
+                    }
+                    answers::create([
+                        'user_id'=>Auth::id(),
+                        'quiz_id'=>$qu->quiz_id,
+                        'question_id'=>$qu->id,
+                        'answer'=>$answer,
+                        'is_correct'=>$checkAnswer,
+                        'score'=>$score
+                    ]);                        
+                   
+                    break;
+                default:
+                    break;
             }
+                
         }
 
         quiz_attempts::create([
                 'user_id'=>Auth::id(),
                 'quiz_id'=>$qu->quiz_id,
                 'total_score'=>$totalScore,
-                'attempts'=>1
+                'attempts'=>$request->attempts
         ]);
         // dd($questions);
         return view('courses.quiz-complete', compact('totalScore', 'passed', 'failed', 'quiz'));
     }
 
     public function quizResult($quiz_id,$user_id){
-        $quiz_result = answers::where('quiz_id',$quiz_id)->where('user_id',$user_id)->get();
+        $quiz_result = answers::where('quiz_id',$quiz_id)
+        ->where('user_id',$user_id)
+        ->get();
         // dd($quiz_result);
         return view('courses.quiz-result', compact('quiz_result'));
+    }
+
+    public function downloadCertificate($courseid)
+    {
+        $course = Course::where('id',$courseid)->first();
+        $data = [
+            'studentName' => Auth::user()->name,
+            'courseName' => $course->title,
+            'category' => $course->category->category_name,
+            'studentId' => "HRSCC24-00".Auth::id(),
+        ];
+
+        $pdf = PDF::loadView('courses.certificate', $data)
+        ->setPaper('a4', 'landscape');
+
+        $fileName = $courseId . '_' . $studentName . '.pdf';
+        $filePath = public_path('certificates/' . $fileName);
+
+        // Ensure the certificates directory exists
+        if (!File::exists(public_path('certificates'))) {
+        File::makeDirectory(public_path('certificates'), 0755, true);
+        }
+
+        // Save the PDF to the specified path
+        $pdf->save($filePath);
+
+        return view('courses.certificates', ['fileName' => $fileName]);
+    }
+
+    public function allQuizzes()
+    {
+        // Fetch all quizzes from the database
+        $quizzes = quizes::all();
+
+        // Pass the quizzes to the view
+        return view('all-quizes', compact('quizzes'));
     }
 
     /**

@@ -1,6 +1,6 @@
 @section('header')
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" id= "navbar-logo" >{{ Html::image('images/logo.jpg', 'LOGO', array('class'=> 'logo')) }}</a>
+    <a class="navbar-brand" id= "navbar-logo" href="/" >{{ Html::image('images/logo.jpg', 'LOGO', array('class'=> 'logo')) }}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -14,16 +14,30 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('home') }}">Home</a>
                 </li>
+                @if (Auth::check() && Auth::user()->role()->first()->name != "Admin")
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('course.index') }}">My Courses</a>
                 </li>
+                @endif
                 @if (Auth::check() && Auth::user()->role()->first()->name == "Admin")
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('user.index') }}">Users</a>
+                        <a class="nav-link" href="{{ route('user.index') }}">Students/Instructors</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('publish-post') }}">New Post</a>
+                        <a class="nav-link" href="{{ route('course-list') }}">Courses</a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('post-list') }}">Posts</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('all-quizzes') }}">Quiz Bank</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('payment-list') }}">Payments</a>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('create-media') }}">Media Library</a>
                     </li>

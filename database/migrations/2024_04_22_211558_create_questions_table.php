@@ -15,16 +15,16 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('quiz_id')->unsigned()->nullable();
+            $table->integer('quiz_id',10)->unsigned()->nullable();
             $table->text('question');
-            $table->enum('question_type', ['multiple_choice', 'true_false', 'short_answer'])->default('multiple_choice');
-            $table->string('answer1')->nullable();
-            $table->string('answer2')->nullable();
-            $table->string('answer3')->nullable();
-            $table->string('answer4')->nullable();
-            $table->string('answer5')->nullable();
-            $table->enum('correct_answer', ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'])->nullable();
-            $table->integer('score')->default(1);
+            $table->string('question_type', 100)->nullable();
+            $table->string('answer1',255)->nullable();
+            $table->string('answer2',255)->nullable();
+            $table->string('answer3',255)->nullable();
+            $table->string('answer4',255)->nullable();
+            $table->string('answer5',255)->nullable();
+            $table->string('correct_answer', 100)->nullable();
+            $table->integer('score',5)->default(1);
             $table->text('remarks')->nullable();
             $table->timestamps();
 

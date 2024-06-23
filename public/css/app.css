@@ -617,7 +617,7 @@ pre code {
 
 @media (min-width: 1200px) {
   .container {
-    max-width: 1140px;
+    max-width: 98% !important;
   }
 }
 
@@ -9964,7 +9964,7 @@ a.text-dark:focus {
 }
 
   body {
-    min-width: 992px !important;
+    width: 992px !important;
   }
 
   .container {

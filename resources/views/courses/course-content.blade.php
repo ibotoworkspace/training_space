@@ -1,8 +1,21 @@
 @extends('layouts.index')
 @section('content')
+<style>
+    #delayed-link {
+        display: none; /* Initially hidden */
+    }
 
+    .course-image img{
+        width: 100%; 
+        height: auto;
+    }
+
+    iframe{
+        width: 100%;
+    }
+</style>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12" style="position: relative; over-flow: contain;">
         <div>
             <div class="course-title">
                 <h1 class = "display-4">{{ $coursecontent->title }}</h4>
@@ -20,7 +33,7 @@
                     <h6>Published on: <b>{{ $coursecontent->created_at->toFormattedDateString() }}</b></h6>
                 </div>
                 <div class="author">
-                    <h6>Author: <b>{{ $coursecontent->user_id }}</b></h6>
+                    <h6>Author: <b>{{ $coursecontent->Author->name }}</b></h6>
                 </div>
                 <hr>
                 <h3>{{ $coursecontent->material_title }}</h3>
@@ -35,18 +48,25 @@
             
             <p class = "lead">{!! $coursecontent->description !!}</p>
         
-            {{-- @if ($enroll == true && Auth::user()->role->first()->name == "Student") --}}
-               
+            @if ($completed=="No")
+
                 <div class="course-button">
-                    {{-- @if ($complete == false) --}}
                         <br></br>
-                        <a href="{{ route('course.complete', [$coursecontent->id]) }}" type="button" class="btn btn-primary btn-lg" >Mark as Complete</a>
-                        <br></br>
-                    {{-- @endif --}}
+                        <a href="{{ route('content-complete', [$coursecontent->id]) }}" type="button" class="btn btn-primary btn-lg delayed-link" id="delayed-link">Mark as Complete</a>   
                 </div>
+                
+            @endif
+               
+                
            
         </div>
     </div>
     
 </div>
+<script>
+    // Set a timeout to show the link after 10 minutes (600,000 milliseconds)
+    setTimeout(function() {
+        document.getElementById('delayed-link').style.display = 'inline';
+    }, {{$coursecontent->duration ?? 1}}0000); // 600000 milliseconds = 10 minutes
+</script>
 @endsection
