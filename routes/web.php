@@ -73,6 +73,9 @@ Route::post('/save-answers', 'CourseController@saveAnswers')->name('save-answers
 Route::get('/quiz-result/{quiz_id}/{user_id}', 'CourseController@quizResult')->name('quiz-result');
 Route::get('/create-media', 'HomeController@createMedia')->name('create-media');
 Route::post('/saveMedia', 'HomeController@saveMedia')->name('saveMedia');
+Route::get('/edit-questions/{quiz_id}', 'CourseController@editQuestions')->name('edit-questions');
+Route::get('/edit-question/{question_id}', 'CourseController@editQuestion')->name('edit-question');
+
 
 // Summernote Upload
 Route::post('/upload-image', 'HomeController@uploadSImage')->name('upload.image');

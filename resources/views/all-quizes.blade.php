@@ -34,19 +34,20 @@
                             <td>{{ $quiz->id }}</td>
                             <td>{{ $quiz->title }}</td>
                             <td>{{ $quiz->subtitle }}</td>
-                            <td>{{ $quiz->course_id }}</td>
-                            <td>{{ $quiz->category_id }}</td>
+                            <td>{{ $quiz->course->title ?? '' }}</td>
+                            <td>{{ $quiz->Category->category_name ?? '' }}</td>
                             <td>{{ $quiz->duration }}</td>
                             <td>{{ $quiz->start_date }}</td>
                             <td>{{ $quiz->end_date }}</td>
                             <td>{{ $quiz->status }}</td>
-                            <td>{{ $quiz->author }}</td>
+                            <td>{{ $quiz->Author->name }}</td>
                             <td>{{ $quiz->attempts_allowed }}</td>
                             <td>{{ $quiz->created_at }}</td>
                             <td class="btn-group">
                                 <a href="{{route('course-quiz',[$quiz->id])}}" class="btn btn-primary">View</a>
-                                    @if (Auth::user()->role->first()->name == 'Instructor' || Auth::user()->role->first()->name == "Admin")
-                                    <a href="edit-content" class="btn btn-secondary">edit</a>
+                                @if (Auth::user()->role->first()->name == 'Instructor' || Auth::user()->role->first()->name == "Admin")
+                                    <a href="{{route('edit-content',$quiz->id)}}" class="btn btn-secondary">Edit</a>
+                                    <a href="{{route('edit-questions',$quiz->id)}}" class="btn btn-info">Edit Questions</a>
                                     <a href="{{route('question-form',$quiz->id)}}" class="btn btn-info">Add Question</a>
                                 @endif
                             </td>

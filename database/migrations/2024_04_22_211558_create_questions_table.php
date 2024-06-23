@@ -26,6 +26,7 @@ class CreateQuestionsTable extends Migration
             $table->string('correct_answer', 100)->nullable();
             $table->integer('score',5)->default(1);
             $table->text('remarks')->nullable();
+            $table->integer('ordering')->nullable();
             $table->timestamps();
 
             $table->foreign('quiz_id')->references('id')->on('quizes')->onDelete('cascade');

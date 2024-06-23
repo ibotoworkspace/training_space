@@ -11,7 +11,7 @@
 
     <div class="container"> 
             <button onclick="printDiv('pagecontent')" class="btn btn-primary float-right"><i class="fas fa-print"></i> Print this Page</button>      
-            <h2>Quiz Title: {{$quiz_result[0]->Quiz->title}}</h2>
+            <h2>Quiz Title: {{$quiz_result[0]->Quiz->title ?? ''}}</h2>
             @php
                 $num_attempts = $quiz_result->max('attempt');
             @endphp

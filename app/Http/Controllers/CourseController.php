@@ -220,7 +220,7 @@ class CourseController extends Controller
     public function editContent($courseid)
     {
         $course = coursecontents::find($courseid);
-        $courses = courses::selec();
+        
 
         $submitbuttontext = "Save Course Content";
         $categories = categories::all();
@@ -366,6 +366,16 @@ class CourseController extends Controller
             return view('courses.questions', compact('questions', 'duration','attempts'));
         }
         // dd($questions);
+    }
+
+    public function editQuestions($quiz_id){
+        $questions = questions::where('quiz_id',$quiz_id)->get();
+        return view('all-questions',compact('questions'));
+    }
+
+    public function editQuestion($question_id){
+        $question = questions::where('id',$question_id)->get();
+        // return view('edit-question',compact('question'));
     }
 
 
