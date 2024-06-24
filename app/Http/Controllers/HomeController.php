@@ -9,6 +9,7 @@ use App\categories;
 use App\posts;
 use App\media;
 use App\payments;
+use Auth;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 
