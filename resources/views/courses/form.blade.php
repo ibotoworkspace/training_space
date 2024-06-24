@@ -23,8 +23,8 @@
                     {!! Form::select('category', $categories->pluck('category_name', 'id'), null, ['class' => 'form-control', 'id' => 'category']) !!}
                 </div>
                 <div class="form-group col-md-4">
-                    {!! Form::label('fee', 'Course Fee (NGN):') !!}
-                    {!! Form::text('fee', null, ['class' => 'form-control']) !!}
+                    {!! Form::label('fee', 'Course Fee (USD):') !!}
+                    {!! Form::number('fee', null, ['class' => 'form-control']) !!}
                 </div>
                 
             </div>
