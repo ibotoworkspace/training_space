@@ -185,7 +185,7 @@ class HomeController extends Controller
     }
 
     public function postList(){
-        $posts = posts::where('user_id','')->get();
+        $posts = posts::where('user_id','!=','')->get();
         return view('post-list', compact('posts'));
     }
 
