@@ -14,7 +14,7 @@
             <tr>
                 <th>Title</th>
                 <th>Category</th>
-                <th>Fee</th>
+                <th>Fee(USD)</th>
                 <th>Instructor</th>
                 <th># of Students</th>
                 <th>Date Published</th>

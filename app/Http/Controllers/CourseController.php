@@ -218,14 +218,14 @@ class CourseController extends Controller
     }
 
     public function editContent($courseid)
-    {
-        $course = coursecontents::find($courseid);       
+    {        
+        $content = coursecontents::where('id',$courseid)->first();             
         $courses = Course::select('id','title')->get();
-        $submitbuttontext = "Save Course Content";
+        $submitbuttontext = "Update Course Content";
         $categories = categories::all();
         $students = User::select('id','name','user_role')->get();
 
-        return view('courses.edit-content', compact('course', 'submitbuttontext','categories','courses','students'));
+        return view('courses.edit-content', compact('content', 'submitbuttontext','categories','courses','students'));
     }
 
 
@@ -245,21 +245,21 @@ class CourseController extends Controller
         return redirect(route('content-form'));
     }
 
-    public function updateContent(coursecontents $coursecontents, Request $request)
+    public function updateContent(Request $request)
     {
-        $input = $request->all();
+        $input = $request->except('old_file_path','created_at','updated_at');
         if ($request->hasFile('file_path')) {
             $image = $request->file('file_path');
             $filename = $image->getClientOriginalName();
             $image->move(public_path('images'), $filename);
             $input['file_path'] = 'images/' . $filename;
         }else{
-            $input['file_path'] = '';
+            $input['file_path'] = $request['old_file_path'];
         }
 
-        $coursecontents->update($input);
+        coursecontents::updateOrCreate(['id'=>$request->id],$input);
         \Session::flash('flash_message', 'The course content has been updated!');
-        return redirect(route('course.edit-content',[$coursecontents['id']]));
+        return redirect()->back();
 
     }
 
@@ -626,6 +626,14 @@ class CourseController extends Controller
         return view('all-quizes', compact('quizzes'));
     }
 
+    public function contentList(){
+        // Fetch all quizzes from the database
+        $contents = coursecontents::all();
+
+        // Pass the quizzes to the view
+        return view('contents-list', compact('contents'));
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -647,6 +655,14 @@ class CourseController extends Controller
         \Session::flash('flash_message', 'Question Deleted successfully!');
         return redirect()->back();
     }
+    public function deleteContent($r)
+    {
+        $course = coursecontents::find($r);
+        $course->delete();
+        \Session::flash('flash_message', 'Course content deleted successfully!');
+        return redirect()->back();
+    }
+
     public function destroy($r)
     {
         $course = Course::find($r);

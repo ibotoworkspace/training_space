@@ -49,6 +49,7 @@ Route::post('/publish-content', 'CourseController@publishContent')->name('publis
 Route::get('/edit-content/{courseid}', 'CourseController@editContent')->name('edit-content');
 Route::post('/save-update', 'CourseController@updateContent')->name('save-update');
 Route::get('/download-certificate/{courseid}', 'CourseController@downloadCertificate');
+Route::get('/delete-content/{quiz_id}', 'CourseController@deleteContent')->name('delete-content');
 
 
 
@@ -110,6 +111,7 @@ Route::post('/save-payment', [PaymentController::class, 'savePayment'])->name('s
 Route::get('/post-list', 'HomeController@postList')->name('post-list');
 Route::get('/course-list', 'HomeController@courseList')->name('course-list');
 Route::get('/payment-list', 'HomeController@paymentList')->name('payment-list');
+Route::get('/content-list', 'CourseController@contentList')->name('content-list');
 
 // ARTISAN COMMANDS
 Route::get('/artisan1/{command}', 'HomeController@Artisan1');

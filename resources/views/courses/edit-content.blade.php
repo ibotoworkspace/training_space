@@ -3,8 +3,7 @@
 @php
     $pagetype = "wyswyg";
 @endphp
-<div class="container">
-        {!! Form::model($course, ['method' => 'PATCH', 'files' => 'true', 'action' => ['CourseController@update',  $course->id ?? ""], 'id' => 'course_create_form']) !!}
+<div class="container" style="padding-bottom: 30px;">
         @include('courses.edit-content-form')
 </div>
 @endsection
