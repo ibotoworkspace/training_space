@@ -1,6 +1,10 @@
 @extends('layouts.index')
 @section('content')
-
+<style>
+    table{
+        font-size: 0.8em;
+    }
+</style>
 @if (Auth::check() && (Auth::user()->role->first()->name == 'Instructor' or Auth::user()->role->first()->name == "Admin"))
     @php $pagetype = "report"; @endphp
     <div class="container mt-5">
@@ -18,7 +22,7 @@
                         <th>Subtitle</th>
                         <th>Course ID</th>
                         <th>Category ID</th>
-                        <th>Duration</th>
+                        <th>Duration (Minutes)</th>
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Status</th>
@@ -44,11 +48,11 @@
                             <td>{{ $quiz->attempts_allowed }}</td>
                             <td>{{ $quiz->created_at }}</td>
                             <td class="btn-group">
-                                <a href="{{route('course-quiz',[$quiz->id])}}" class="btn btn-primary">View</a>
+                                <a href="{{route('course-quiz',[$quiz->id])}}" class="btn btn-primary btn-xs">View</a>
                                 @if (Auth::user()->role->first()->name == 'Instructor' || Auth::user()->role->first()->name == "Admin")
-                                    <a href="{{route('edit-content',$quiz->id)}}" class="btn btn-secondary">Edit</a>
-                                    <a href="{{route('edit-questions',$quiz->id)}}" class="btn btn-info">Edit Questions</a>
-                                    <a href="{{route('question-form',$quiz->id)}}" class="btn btn-info">Add Question</a>
+                                    <a href="{{route('edit-quiz',$quiz->id)}}" class="btn btn-secondary btn-xs">Edit</a>
+                                    <a href="{{route('edit-questions',$quiz->id)}}" class="btn btn-info btn-xs">Edit Questions</a>
+                                    <a href="{{route('question-form',$quiz->id)}}" class="btn btn-warning btn-xs">Add Question</a>
                                 @endif
                             </td>
                         </tr>

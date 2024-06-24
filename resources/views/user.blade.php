@@ -26,14 +26,14 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->role->first()->name }}</td>
                     <td>{{$user->courses->count()}}</td>
-                    <td>
+                    <td class="btn-group">
+                        <a class="btn btn-success" href = "{{route('user-dashboard', [$user->id])}}">View Dashboard</a>
                         {!! Form::open(['method' =>"delete", 'action' => ['UserController@destroy', $user->id]]) !!}
                             <a class="btn btn-secondary" href = "{{route('user.edit', [$user->id])}}">Edit</a>
                             {{-- <a class="btn btn-danger" href = "{{ route('user.destroy', [$user->id]) }}"> --}}
                                 <input class="btn btn-danger" type = "submit" value = "Delete">
                             {{-- </a> --}}
                         {!! Form::close() !!}
-                        <a class="btn btn-success" href = "{{route('user-dashboard', [$user->id])}}">View Dashboard</a>
                     </td>
                 </tr>
             @endforeach

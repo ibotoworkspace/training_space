@@ -77,9 +77,14 @@
                     <label for="score">Question Score</label>
                     <input type="number" name="score[]" class="form-control">
                 </div>
-                <div class="col-md-10">
-                    <label for="remarks[]">Instructions/Rationale</label>
-                    <input type="text" name="remarks[]" class="form-control">
+                <div class="col-md-2">
+                    <label for="ordering">Ordering</label>
+                    <input type="number" name="ordering[]" class="form-control">
+                </div>
+                <div class="col-md-8">
+                    <label for="remarks">Instructions/Rationale</label>
+                    <textarea name="remarks[]" class="form-control"></textarea>
+                    {{-- <input type="text" name="remarks[]" class="form-control"> --}}
                 </div>
             </div>
             <hr>

@@ -8,7 +8,7 @@
         <label for="course_id">Course Name:</label>
         <select name="course_id" id="course_id" class="form-control">
             <!-- Populate options dynamically from database -->
-            <option value="{{ $course->course_id }}" selected>{{ $course->course->title }}</option>
+            <option value="{{ $course->course_id ?? "" }}" selected>{{ $course->course->title ?? "" }}</option>
 
             @foreach($courses as $course)
                 <option value="{{ $course->id }}">{{ $course->title }}</option>
@@ -32,7 +32,7 @@
             <label for="category_id">Category:</label>
             <select name="category_id" id="category_id" class="form-control">
                 <!-- Populate options dynamically from database -->
-                <option value="{{ $course->category }}" selected>{{ $category->Category->category_name }}</option>
+                <option value="{{ $course->category }}" selected>{{ $category->Category->category_name ?? "" }}</option>
 
                 @foreach($categories as $category)
                     <option value="{{ $category->id }}">{{ $category->category_name }}</option>
@@ -78,7 +78,7 @@
             <label for="user_id">Author:</label>
             <select name="user_id" id="user_id" class="form-control">
                 <!-- Populate options dynamically from database -->
-                <option value="{{$course->user_id}}" selected>{{$course->Author->name}}</option>
+                <option value="{{$course->user_id}}" selected>{{$course->Author->name ?? ""}}</option>
                 @foreach($students->where('user_role','Author') as $student)
                     <option value="{{ $student->id }}">{{ $student->name }}</option>
                 @endforeach

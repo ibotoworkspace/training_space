@@ -1,6 +1,11 @@
 @extends('layouts.index')
 @section('content')
 
+<style>
+    td{
+        font-size: 0.8em;
+    }
+</style>
 @if (Auth::check() && (Auth::user()->role->first()->name == 'Instructor' or Auth::user()->role->first()->name == "Admin"))
     @php $pagetype = "report"; @endphp
     <div class="container mt-5">
@@ -14,14 +19,9 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Question</th>
-                        <th>Type</th>
-                        <th>1st Answer</th>
-                        <th>2nd Answer</th>
-                        <th>3rd Answer</th>
-                        <th>4th Answer</th>
-                        <th>5th Answer</th>
-                        <th>Correct Answer</th>
+                        <th style="width: 50% !important;">Type/ Question</th>
+                        <th>Answers</th>
+                       
                         <th>Score</th>
                         <th>Rationale</th>
                         <th>Action</th>
@@ -30,15 +30,21 @@
                 <tbody>
                     @foreach($questions as $ques)
                         <tr>
-                            <td>{{ $ques->id }}</td>
-                            <td style="width: 50% !important;">{{ $ques->question }}</td>
-                            <td>{{ $ques->question_type }}</td>
-                            <td>{{ $ques->answer1 }}</td>
-                            <td>{{ $ques->answer2 }}</td>
-                            <td>{{ $ques->answer3 }}</td>
-                            <td>{{ $ques->answer4 }}</td>
-                            <td>{{ $ques->answer5 }}</td>
-                            <td>{{ $ques->correct_answer }}</td>
+                            <td>{{ $ques->ordering }}</td>
+                            <td style="width: 50% !important;">
+                                <i>Type: {{ ucwords(str_replace("_"," ",$ques->question_type)) }}</i> <br>
+                                {!! $ques->question !!}
+                            </td>
+                            <td style="white-space: nowrap;"> 
+                                <ul>
+                                    {!! $ques->answer1!="" ? "<li> Answer1: <b>".$ques->answer1."</b></li>" : ""!!}
+                                    {!! $ques->answer2!="" ? "<li> Answer2: <b>".$ques->answer2."</b></li>" : ""!!}
+                                    {!! $ques->answer3!="" ? "<li> Answer3: <b>".$ques->answer3."</b></li>" : ""!!}
+                                    {!! $ques->answer4!="" ? "<li> Answer4: <b>".$ques->answer4."</b></li>" : ""!!}
+                                    {!! $ques->answer5!="" ? "<li> Answer5: <b>".$ques->answer5."</b></li>" : ""!!}
+                                </ul>
+                                <i>Correct Answer: <b>{{ ucwords($ques->correct_answer) }}</b></i>
+                            </td>
                             <td>{{ $ques->score }}</td>
                             <td>{{ $ques->remarks }}</td>
                             <td class="btn-group">

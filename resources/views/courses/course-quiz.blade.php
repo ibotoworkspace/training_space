@@ -7,7 +7,7 @@
             <div class="course-title">
                 <h1 class = "display-4">{{ $quiz->title }}</h4>
                 <h3>{{ $quiz->subtitle }}</h3>
-                <h6>Course: {{ $quiz->course->title }} | <em><small>Category: {{$quiz->Category->category_name}}</small></em></h3>
+                <h6>Course: {{ $quiz->course->title ?? "" }} | <em><small>Category: {{$quiz->Category->category_name ?? ""}}</small></em></h3>
             </div>           
                
 

@@ -60,7 +60,11 @@ Route::get('/delete-category/{catid}', 'HomeController@deleteCategory')->name('d
 // For Quizes
 Route::get('/course-quiz/{quizid}', 'CourseController@courseQuiz')->name('course-quiz');
 Route::get('/quiz-form', 'CourseController@quizForm')->name('quiz-form');
+Route::get('/edit-quiz/{quiz_id}', 'CourseController@editQuiz')->name('edit-quiz');
+
 Route::post('/publish-quiz', 'CourseController@publishQuiz')->name('publish-quiz');
+Route::post('/update-quiz', 'CourseController@updateQuiz')->name('update-quiz');
+
 Route::get('/all-quizzes', 'CourseController@allQuizzes')->name('all-quizzes');
 
 
@@ -75,7 +79,7 @@ Route::get('/create-media', 'HomeController@createMedia')->name('create-media');
 Route::post('/saveMedia', 'HomeController@saveMedia')->name('saveMedia');
 Route::get('/edit-questions/{quiz_id}', 'CourseController@editQuestions')->name('edit-questions');
 Route::get('/edit-question/{question_id}', 'CourseController@editQuestion')->name('edit-question');
-
+Route::post('/update-question', 'CourseController@updateQuestion')->name('update-question');
 
 // Summernote Upload
 Route::post('/upload-image', 'HomeController@uploadSImage')->name('upload.image');

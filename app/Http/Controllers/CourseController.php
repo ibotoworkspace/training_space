@@ -198,7 +198,7 @@ class CourseController extends Controller
         $categories = categories::all();
         $courses = Course::select('id','title')->get();
         $students = User::select('id','name','user_role')->get();
-        $directory = public_path('media');
+        // $directory = public_path('media');
         return view('courses.create-content', compact('courses','categories','students'));
     }
 
@@ -220,10 +220,12 @@ class CourseController extends Controller
     public function editContent($courseid)
     {
         $course = coursecontents::find($courseid);       
-
+        $courses = Course::select('id','title')->get();
         $submitbuttontext = "Save Course Content";
         $categories = categories::all();
-        return view('courses.edit-content', compact('course', 'submitbuttontext','categories'));
+        $students = User::select('id','name','user_role')->get();
+
+        return view('courses.edit-content', compact('course', 'submitbuttontext','categories','courses','students'));
     }
 
 
@@ -279,12 +281,27 @@ class CourseController extends Controller
         return view('courses.create-quiz', compact('courses','categories','students'));
     }
 
+    public function editQuiz($quiz_id){
+        $quiz = quizes::where('id',$quiz_id)->first();
+        $categories = categories::all();
+        $courses = Course::select('id','title')->get();
+        $students = User::select('id','name','user_role')->get();
+        return view('courses.update-quiz', compact('courses','categories','students','quiz'));
+    }
+
     public function publishQuiz(Request $request){
-        $input = $request->except('files');
+        $input = $request->all();
     //    dd($input);
         quizes::create($input);
         \Session::flash('flash_message', 'A new quiz has been created!');
         return redirect(route('quiz-form'));
+    }
+
+    public function updateQuiz(Request $request){
+        $input = $request->except('quiz_id');
+        quizes::updateOrCreate(['id'=>$request->quiz_id],$input);
+        \Session::flash('flash_message', 'The quiz has been updated!');
+        return redirect()->back();
     }
 
     public function courseQuiz($quizid){
@@ -343,6 +360,47 @@ class CourseController extends Controller
     
     }
 
+    public function updateQuestion(Request $request){
+            
+            $quizQuestion = questions::where('id',$request->qid)->first();
+
+            $quizQuestion->question = $request->question;
+            $quizQuestion->question_type = $request->question_type;
+            $quizQuestion->answer1 = $request->answer1 ?? "";
+            $quizQuestion->answer2 = $request->answer2 ?? "";
+            $quizQuestion->answer3 = $request->answer3 ?? "";
+            $quizQuestion->answer4 = $request->answer4 ?? "";
+            $quizQuestion->answer5 = $request->answer5 ?? "";
+            switch ($request->question_type) {
+                case 'single_choice':                    
+                    $quizQuestion->correct_answer = $request->correct_answer;
+                    break;
+                case 'multiple_choice':  
+                    // dd($request->correct_answer[$key+1]);                  
+                    $quizQuestion->correct_answer = implode("|",$request->correct_answer) ?? "";
+                    break;
+                case 'true_false':                    
+                    $quizQuestion->correct_answer = $request->correct_answer ?? "";
+                    break;
+                case 'short_answer':                    
+                    $quizQuestion->correct_answer = $request->correct_answer ?? "";
+                    break;
+                
+                default:
+                    $quizQuestion->correct_answer = $request->correct_answer;
+                    break;
+            }
+            
+            $quizQuestion->score = $request->score;
+            $quizQuestion->remarks = $request->remarks;
+            $quizQuestion->save();
+        
+        \Session::flash('flash_message', 'Quiz questions updated successfully!');
+
+        return redirect()->back();
+    
+    }
+
     public function courseQuestions($quiz_id){
         $questions = questions::where('quiz_id',$quiz_id)->get();
         $duration = $questions->first()->quiz->duration;
@@ -373,8 +431,8 @@ class CourseController extends Controller
     }
 
     public function editQuestion($question_id){
-        $question = questions::where('id',$question_id)->get();
-        // return view('edit-question',compact('question'));
+        $question = questions::where('id',$question_id)->first();
+        return view('courses.update-question',compact('question'));
     }
 
 
