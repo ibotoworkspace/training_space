@@ -632,12 +632,26 @@ class CourseController extends Controller
      * @param  \App\r  $r
      * @return \Illuminate\Http\Response
      */
+    public function deleteQuiz($r)
+    {
+        $course = quizes::find($r);
+        $course->delete();
+        \Session::flash('flash_message', 'Quiz Deleted successfully!');
+        return redirect()->back();
+    }
+
+    public function deleteQuestion($r)
+    {
+        $course = questions::find($r);
+        $course->delete();
+        \Session::flash('flash_message', 'Question Deleted successfully!');
+        return redirect()->back();
+    }
     public function destroy($r)
     {
         $course = Course::find($r);
         $course->delete();
-        \Session::flash('flash_message', 'Course Deleted!');
-        // dd($course);
-        return redirect(route('course.index'));
+        \Session::flash('flash_message', 'Course Deleted Successfully!');
+        return redirect()->back();
     }
 }
