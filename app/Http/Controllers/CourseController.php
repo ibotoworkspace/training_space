@@ -219,8 +219,7 @@ class CourseController extends Controller
 
     public function editContent($courseid)
     {
-        $course = coursecontents::find($courseid);
-        
+        $course = coursecontents::find($courseid);       
 
         $submitbuttontext = "Save Course Content";
         $categories = categories::all();
