@@ -34,6 +34,7 @@
                     <td class="btn-group">                        
                         <a href="{{ route('course.edit', [$co->id]) }}" class="btn btn-secondary">Edit Course</a>
                         <a href="{{url('course/'.$co->id)}}" class="btn btn-primary">View</a>
+                        <a href="{{url('course-students',[$co->id])}}" class="btn btn-info btn-xs">Students</a>
                         {!! Form::open(['method' =>"delete", 'action' => ['CourseController@destroy', $co->id]]) !!}                        
                                 <input class="btn btn-danger" type = "submit" value = "Delete" onclick="confirm('Are you sure want to delete this Course?')">
                         {!! Form::close() !!}

@@ -33,8 +33,8 @@ Route::get('/course', 'CourseController@index')->name('course.index');
 Route::resource('/course', 'CourseController')->except('index', 'show')->middleware('auth');
 
 Route::get('/course/{course}/enroll', 'CourseController@enroll')->name('course.enroll');
-
-Route::get('/course/{course}/unenroll', 'CourseController@unenroll')->name('course.unenroll');
+Route::get('/unenroll/{course_id}/{user_id}', 'CourseController@adminUnenroll')->name('unenroll');
+Route::get('/issue-certificate/{course_id}/{user_id}', 'CourseController@issueCertificate')->name('issue-certificate');
 
 // For Courses
 Route::get('/course/{course}/complete', 'CourseController@complete')->name('course.complete');
@@ -48,7 +48,8 @@ Route::get('/content-form', 'CourseController@contentForm')->name('content-form'
 Route::post('/publish-content', 'CourseController@publishContent')->name('publish-content');
 Route::get('/edit-content/{courseid}', 'CourseController@editContent')->name('edit-content');
 Route::post('/save-update', 'CourseController@updateContent')->name('save-update');
-Route::get('/download-certificate/{courseid}', 'CourseController@downloadCertificate');
+Route::get('/course-students/{course_id}', 'CourseController@courseStudents')->name('course-students');
+Route::get('/download-certificate/{courseid}/{user_id}', 'CourseController@downloadCertificate');
 Route::get('/delete-content/{quiz_id}', 'CourseController@deleteContent')->name('delete-content');
 
 

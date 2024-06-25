@@ -17,8 +17,8 @@ use App\answers;
 use App\quiz_attempts;
 use App\media;
 use App\user_contents;
-
 use Carbon\Carbon;
+use File;
 
 class CourseController extends Controller
 {
@@ -112,6 +112,11 @@ class CourseController extends Controller
         return view('courses.singlecourse', compact('course', 'author', 'enroll', 'complete', 'now'));
     }
 
+    public function courseStudents($course_id){
+        $students = UserCourse::where('course_id',$course_id)->get();
+        return view('course-students',compact('students'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -159,6 +164,25 @@ class CourseController extends Controller
                     ->delete();
         \Session::flash('flash_message', 'You have been unenrolled from the course!');
         return redirect(route('home'));
+    }
+
+    public function adminUnenroll($course_id,$user_id)
+    {
+        //detach record from user-course.
+        UserCourse::where('user_id', '=', $user_id)
+                    ->where('course_id', '=', $course_id)
+                    ->delete();
+        \Session::flash('flash_message', 'You have unenrolled the user from the course!');
+        return redirect()->back();
+    }
+
+    public function issueCertificate($course_id,$user_id){
+        UserCourse::where('user_id', '=', $user_id)
+                    ->where('course_id', '=', $course_id)
+                    ->update(['course_completed' => 2]);
+        \Session::flash('flash_message', 'Certificate Issued to the Participant!');
+        return redirect()->back();
+
     }
 
     public function complete(Course $course)
@@ -590,20 +614,21 @@ class CourseController extends Controller
         return view('courses.quiz-result', compact('quiz_result'));
     }
 
-    public function downloadCertificate($courseid)
+    public function downloadCertificate($courseid,$user_id)
     {
         $course = Course::where('id',$courseid)->first();
+        $student = User::where('id',$user_id)->first();
         $data = [
-            'studentName' => Auth::user()->name,
+            'studentName' => $student->name,
             'courseName' => $course->title,
             'category' => $course->category->category_name,
-            'studentId' => "HRSCC24-00".Auth::id(),
+            'studentId' => "HRSCC24-00".$user_id,
         ];
 
         $pdf = PDF::loadView('courses.certificate', $data)
-        ->setPaper('a4', 'landscape');
+        ->setPaper('a4', 'portrait');
 
-        $fileName = $courseId . '_' . $studentName . '.pdf';
+        $fileName = $courseid . '_' . $data['studentName'] . '.pdf';
         $filePath = public_path('certificates/' . $fileName);
 
         // Ensure the certificates directory exists

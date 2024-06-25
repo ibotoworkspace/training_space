@@ -170,7 +170,12 @@
                         <td>{{$co->Course->title}}</td>
                         <td>{{$co->CompletedContent->where('content_completed',1)->where('user_id',Auth::id())->count() ?? ""}}/{{$co->Course->contents->count()>0 ? $co->Course->contents->count() : 1}}</td>
                         <td>{{number_format((($co->CompletedContent->where('content_completed',1)->where('user_id',Auth::id())->count() ?? 1)/(($co->Course->contents->count()>0 ? $co->Course->contents->count() : 1))*100),2)}}%</td>
-                        <td><a href="{{url('course/'.$co->course_id)}}" class="btn btn-primary">Continue</a></td>
+                        <td class="btn-group">
+                            <a href="{{url('course/'.$co->course_id)}}" class="btn btn-primary">Open Course</a>
+                            @if ($co->userCourse->where('content_completed',2)->where('user_id',Auth::id())->first())
+                                <a href="{{url('download-certificate/'.$co->id.'/'.Auth::id())}}" class="btn btn-primary">Download Certificate</a>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

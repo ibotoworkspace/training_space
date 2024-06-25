@@ -34,7 +34,7 @@
                             <td>{{ $cont->Course->title }}</td>
                             <td>{{ $cont->material_type ?? '' }}</td>
                             <td>{{ $cont->Category->category_name ?? '' }}</td>
-                          
+                            <td>{{$course->userCourse->count()}}</td>
                             <td>{{ $cont->Author->name }}</td>
                            
                             <td class="btn-group">

@@ -106,9 +106,9 @@
                     </ul>
                 @endif
 
-                @if ($complete==1)
+                {{-- @if ($complete==2)
                     <a href="{{url('download-certificate/'.$course->id)}}" class="btn btn-primary">Download Certificate</a>
-                @endif
+                @endif --}}
             @else           
         
                 <div class="alert alert-info">

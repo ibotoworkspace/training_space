@@ -13,15 +13,15 @@
         }
         .container {
             width: 90%;
-            height: 80%;
+            height: 90%;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 5%;
+            margin: auto;
         }
         .certificate {
-            width: 90%;
-            height: 80%;
+            width: 85%;
+            height: 95%;
             border: 10px solid #1c87c9;
             padding: 50px;
             background: #fff url('path-to-pattern-image') center no-repeat;
@@ -29,25 +29,28 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             position: relative;
             box-sizing: border-box;
-        }
-
-        logo {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 150px;
+            font-family: Arial, Helvetica, sans-serif;
         }
         .partners {
             position: absolute;
-            bottom: 20px;
+            bottom: 50px;
             width: 100%;
             text-align: center;
         }
-        .title {
-            font-size: 48px;
+        .title2 {
+            font-size: 28px;
             font-weight: bold;
             color: #333;
             margin-bottom: 20px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .title {
+            font-size: 25px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            font-family: 'Times New Roman', Times, serif;
         }
         .subtitle {
             font-size: 24px;
@@ -68,8 +71,8 @@
         }
         .date {
             margin-top: 30px;
-            text-align: right;
-            font-size: 16px;
+            text-align: left;
+            font-size: 14px;
             color: #555;
         }
     </style>
@@ -77,24 +80,42 @@
 <body>
     <div class="container">
         <div class="certificate">
-            <img src="{{ public_path('images/logo.jpg') }}" alt="Logo" class="logo">
-            <div class="title">Certificate of Completion</div>
-            <div class="subtitle">This is to certify that</div>
-            <div class="content">
-                <strong>{{ $studentName }}</strong><br>
-                has successfully completed the course<br>
-                <strong>{{ $courseId }}</strong>.
+            <div style="text-align: left;">
+                <img src="{{ public_path('images/certlogo.jpg') }}" alt="Logo" class="logo" style="width: 220px;">
+
             </div>
-            <div class="signature">
-                <img src="{{ asset('path-to-signature-image') }}" alt="Signature">
-                <br>Authorized Signature
+            <p>
+                As a testament to his expertise and knowledge in the <br>ever-evolving word of {{$courseName}},
+            </p>
+            <p> <span class="title">{{$studentName}}</span> <br>
+                ________________________________________ <br>
+                <span style="font-family: 'Times New Roman', Times, serif"><b><i>has been awarded a</i></b></span>
+            </p>
+            <p class="title2"><i>Certificate of Specialization <br> and Competency in {{$courseName}}</i></p>
+          
+            <p>Based on the successful completeion of all the required theories <br> and practical of HRS Academy {{$courseName}} modules.</p>
+            <div style="width: 50%; float: left;">
+                <div class="signature">
+                    <b>Jacob Oroks Mism CTS <br>
+                    Academic Counselor</b> <br><br>
+                    <img src="{{ asset('images/sign.jpg') }}" alt="Signature" style="width: 60px;">
+                    <br>Authorized Signature
+                </div>
+    
+                <div class="date">
+                    Date Issued: {{ date('F j, Y') }}
+                </div>
             </div>
-            <div class="date">
-                Date: {{ date('F j, Y') }}
+            <div style="width: 50%; float: right;">
+                <img src="{{ asset('images/certbadge.jpg') }}" alt="Badge" style="width: 160px;">
             </div>
-            <div class="partners">
-                <img src="{{ public_path('images/partners.jpg') }}" alt="Partners">
+
+
+
+            <div style="justify-content: center; text-align: center; position: relative; clear: both; margin-top: 50px;">
+                <img src="{{ asset('images/partners.jpg') }}" alt="Partners" style="width: 60%; margin: auto">
             </div>
+           
         </div>
     </div>
 </body>
