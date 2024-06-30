@@ -618,6 +618,7 @@ class CourseController extends Controller
     {
         $course = Course::where('id',$courseid)->first();
         $student = User::where('id',$user_id)->first();
+        $category = $course->Category ? $course->Category->category_name : "";
         $data = [
             'studentName' => $student->name,
             'courseName' => $course->title,
