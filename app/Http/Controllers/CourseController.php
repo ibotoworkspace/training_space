@@ -622,7 +622,7 @@ class CourseController extends Controller
         $data = [
             'studentName' => $student->name,
             'courseName' => $course->title,
-            'category' => $course->Category->category_name,
+            'category' => $category,
             'studentId' => "HRSCC24-00".$user_id,
         ];
 
