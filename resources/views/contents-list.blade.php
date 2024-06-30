@@ -30,12 +30,12 @@
                     @foreach($contents as $cont)
                         <tr>
                             <td>{{ $cont->id }}</td>
-                            <td>{{ $cont->material_title }}</td>
-                            <td>{{ $cont->Course->title }}</td>
-                            <td>{{ $cont->material_type ?? '' }}</td>
-                            <td>{{ $cont->Category->category_name ?? '' }}</td>
-                            <td>{{$course->userCourse->count()}}</td>
-                            <td>{{ $cont->Author->name }}</td>
+                            <td>{{ $cont->material_title ?? "" }}</td>
+                            <td>{{ $cont->Course ? $cont->Course->title : "" }}</td>
+                            <td>{{ $cont->material_type ?? "" ?? '' }}</td>
+                            <td>{{ $cont->Category ? $cont->Category->category_name : '' }}</td>
+                            <td>{{$cont->userCourse ? $cont->userCourse->count() : ""}}</td>
+                            <td>{{ $cont->Author ? $cont->Author->name : "" }}</td>
                            
                             <td class="btn-group">
                                 <a href="{{route('course-content',[$cont->id])}}" class="btn btn-primary btn-xs">View</a>
