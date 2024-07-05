@@ -8,7 +8,9 @@
 @if (Auth::check() && (Auth::user()->role->first()->name == 'Instructor' or Auth::user()->role->first()->name == "Admin"))
     @php $pagetype = "report"; @endphp
     <div class="container mt-5">
-      
+        <div class="row">
+            <a href="{{url('quiz-form')}}" class="btn btn-primary">Create New Quiz</a>
+        </div>
         <h3>Quiz Bank | All Course Quizes</h3>
        <div class="col-md-12">
             @if($quizzes->isEmpty())
