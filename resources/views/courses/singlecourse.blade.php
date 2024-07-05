@@ -34,7 +34,7 @@
                         <p class = "lead">{!! $course->description !!}</p>
                     </div>
                     <div class="course-button">
-                        <a href="{{ route('course.unenroll', [$course->id]) }}" type="button" class="btn btn-primary btn-lg">Unenroll</a>
+                        <a href="{{ route('course.unenroll', [$course->id,Auth::user()->id]) }}" type="button" class="btn btn-primary btn-lg">Unenroll</a>
                         @if ($complete == false)
                             <br></br>
                             <a href="{{ route('course.complete', [$course->id]) }}" type="button" class="btn btn-primary btn-lg" >Mark as Complete</a>
