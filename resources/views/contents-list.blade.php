@@ -8,7 +8,9 @@
 @if (Auth::check() && (Auth::user()->role->first()->name == 'Instructor' or Auth::user()->role->first()->name == "Admin"))
     @php $pagetype = "report"; @endphp
     <div class="container mt-5">
-      
+        <div class="row">
+            <a href="{{url('content-form')}}" class="btn btn-primary">New Course Content</a>
+        </div>
         <h3>Course Contents | All Course Contents</h3>
        <div class="col-md-12">
             @if($contents->isEmpty())
