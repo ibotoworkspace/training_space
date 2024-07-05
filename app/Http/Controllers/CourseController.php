@@ -100,7 +100,7 @@ class CourseController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             $text = UserCourse::where('user_id', '=', $user->id)->where('course_id', '=', $course->id)->get()->first();
-            $enroll = (isset($text))? true : false;
+            $enroll = (isset($text))?$text->course_enrolled:'';
             // $comp = UserCourse::where('user_id', '=', $user->id)->where('course_id', '=', $course->id)->get()->first();
             $complete = (isset($text) && $text->course_completed == 1)?$text->course_completed:false;
         } else {
