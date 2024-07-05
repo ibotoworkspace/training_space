@@ -112,7 +112,7 @@
 
 
 
-            <div style="justify-content: center; text-align: center; position: relative; clear: both; margin-top: 20px;">
+            <div style="justify-content: center; text-align: center; position: relative; clear: both; margin-top: 40px;">
                 <img src="{{ asset('images/partners.jpg') }}" alt="Partners" style="width: 50%; margin: auto">
             </div>
            
