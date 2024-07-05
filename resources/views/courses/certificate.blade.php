@@ -76,7 +76,7 @@
             color: #555;
         }
     </style>
-</head>
+</head> 
 <body>
     <div class="container">
         <div class="certificate">
@@ -107,13 +107,13 @@
                 </div>
             </div>
             <div style="width: 50%; float: right;">
-                <img src="{{ asset('images/certbadge.jpg') }}" alt="Badge" style="width: 160px;">
+                <img src="{{ asset('images/certbadge.jpg') }}" alt="Badge" style="width: 140px;">
             </div>
 
 
 
-            <div style="justify-content: center; text-align: center; position: relative; clear: both; margin-top: 50px;">
-                <img src="{{ asset('images/partners.jpg') }}" alt="Partners" style="width: 60%; margin: auto">
+            <div style="justify-content: center; text-align: center; position: relative; clear: both; margin-top: 20px;">
+                <img src="{{ asset('images/partners.jpg') }}" alt="Partners" style="width: 50%; margin: auto">
             </div>
            
         </div>
