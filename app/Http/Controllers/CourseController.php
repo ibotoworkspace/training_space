@@ -109,6 +109,7 @@ class CourseController extends Controller
         }
         $author = User::find($course->user_id);
         $now = Carbon::now();
+        dd($enroll);
         return view('courses.singlecourse', compact('course', 'author', 'enroll', 'complete', 'now'));
     }
 
