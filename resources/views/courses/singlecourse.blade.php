@@ -53,7 +53,7 @@
         <h3>Course Contents</h3>
         <small><em>Materials/Resources</em></small>
         <hr>
-        @if(($enroll == 1) || (Auth::user() && Auth::user()->user_role=="Admin"))
+        @if(($enroll !="") || (Auth::user() && Auth::user()->user_role=="Admin"))
             @if(isset($course->contents))
                 <ul>
                     @foreach ($course->contents as $content)
