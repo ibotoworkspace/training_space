@@ -33,7 +33,7 @@ Route::get('/course', 'CourseController@index')->name('course.index');
 Route::resource('/course', 'CourseController')->except('index', 'show')->middleware('auth');
 
 Route::get('/course/{course}/enroll', 'CourseController@enroll')->name('course.enroll');
-Route::get('/unenroll/{course_id}/{user_id}', 'CourseController@adminUnenroll')->name('unenroll');
+Route::get('/unenroll/{course_id}/{user_id}', 'CourseController@adminUnenroll')->name('course.unenroll');
 Route::get('/issue-certificate/{course_id}/{user_id}', 'CourseController@issueCertificate')->name('issue-certificate');
 
 // For Courses
