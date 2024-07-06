@@ -376,6 +376,7 @@ class CourseController extends Controller
             
             $quizQuestion->score = $request->score[$key];
             $quizQuestion->remarks = $request->remarks[$key];
+            $quizQuestion->ordering = $request->ordering[$key];
             $quizQuestion->save();
         }
         \Session::flash('flash_message', 'Quiz questions added successfully!');
