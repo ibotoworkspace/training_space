@@ -8,11 +8,12 @@
         /* Hide all questions by default */
         .question {
             display: none;
-        }          
+        } 
+          
 
         /* Show the first question */
         .question:first-of-type {
-            display: block;
+            display: block !important;
         }
 
          /* Style for the radio button */
@@ -132,90 +133,118 @@
 @endsection
 
 <script>
-  
+    // Define JavaScript function to handle the submission and navigation    
+    document.addEventListener('DOMContentLoaded', function() {
+        // Variable to store the selected answer number
+        let selectedAnsNum = null;
+
+        // Select all radio buttons with the class 'answer-radio'
+        const radioButtons = document.querySelectorAll('.answer-radio');
+
+        // Add a click event listener to each radio button
+        radioButtons.forEach(function(radio) {
+            radio.addEventListener('click', function() {
+                // Retrieve the value of the data-ansnum attribute
+                selectedAnsNum = this.getAttribute('data-ansnum');
+                // Update the corresponding next button with the selected answer number
+                const questionId = this.getAttribute('data-qid');
+                const nextQuestionButton = document.getElementById(`next-question-button-${questionId}`);
+                nextQuestionButton.setAttribute('data-ansnum', selectedAnsNum);
+            });
+        });
+    });
+
+    // function nextQuestion(currentQuestionId) {
+    //     const ansNumber = document.getElementById(`next-question-button-${currentQuestionId}`).getAttribute('data-ansnum');
+
+    //     // Get the selected answer for the current question
+    //     const selectedAnswer = document.querySelector(`#answer${ansNumber}_${currentQuestionId}:checked`);
+        
+    //     if (!selectedAnswer) {
+    //         alert('Please select an answer.');
+    //         return;
+    //     }
+        
+    //     // Hide all questions
+    //     const questions = document.querySelectorAll('.question');
+    //     questions.forEach((question) => {
+    //         question.style.display = 'none';
+    //     });
+
+    //     // Unhide the next question
+    //     const nextQuestionId = currentQuestionId + 1;
+    //     const nextQuestion = document.getElementById(`question${nextQuestionId}`);
+    //     if (nextQuestion) {
+    //         nextQuestion.style.display = 'block';
+    //     } else {
+    //         // If there is no next question, display a message or perform other actions
+    //         alert('You have come to the end of this quiz. Thank you for participating!');
+    //     }
+    // }
+
     function nextQuestion(currentQuestionId) {
-    // Get all questions
-    const questions = document.querySelectorAll('.question');
+        // Get the list of all questions
+        const questions = document.querySelectorAll('.question');
 
-    // Find the current question by its ID
-    let currentQuestion = document.getElementById(`question${currentQuestionId}`);
+        // Find the index of the current question
+        let currentIndex = null;
+        questions.forEach((question, index) => {
+            if (question.id === `question${currentQuestionId}`) {
+                currentIndex = index;
+            }
+        });
 
-    // Ensure the current question is found
-    if (!currentQuestion) {
-        alert('An error occurred. Please try again.');
-        return;
-    }
+        // Ensure we found the current question
+        if (currentIndex === null) {
+            alert('An error occurred. Please try again.');
+            return;
+        }
 
-    // Check if an answer is selected
-    const ansNumber = document.getElementById(`next-question-button-${currentQuestionId}`).getAttribute('data-ansnum');
-    const selectedAnswer = document.querySelector(`#answer${ansNumber}_${currentQuestionId}:checked`);
-    if (!selectedAnswer) {
-        alert('Please select an answer.');
-        return;
-    }
+        // Check if an answer is selected
+        const ansNumber = document.getElementById(`next-question-button-${currentQuestionId}`).getAttribute('data-ansnum');
+        const selectedAnswer = document.querySelector(`#answer${ansNumber}_${currentQuestionId}:checked`);
+        if (!selectedAnswer) {
+            alert('Please select an answer.');
+            return;
+        }
 
-    // Hide the current question
-    console.log(currentQuestion);
-    currentQuestion.style.display = 'none';
-    document.getElementById('question1').style.display = 'none';
-
-
-    // Show the next question by finding the next sibling in the DOM
-    let nextQuestion = currentQuestion.nextElementSibling;
-    while (nextQuestion && !nextQuestion.classList.contains('question')) {
-        nextQuestion = nextQuestion.nextElementSibling;
-    }
-
-    if (nextQuestion) {
         // Hide the current question
-        nextQuestion.style.display = 'block';
-    } else {
-        // If no more questions, submit the form
-        alert('You have come to the end of this quiz. Thank you for participating!');
-        document.getElementById('form').submit();
-    }
+        questions[currentIndex].style.display = 'none';
 
-    // Countdown timer
-    const duration = {{$duration}}; // Duration in minutes
-    const countdownElement = document.getElementById('countdown');
-    let timeRemaining = duration * 60; // Convert minutes to seconds
-
-    function updateCountdown() {
-        const minutes = Math.floor(timeRemaining / 60);
-        const seconds = timeRemaining % 60;
-        countdownElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        timeRemaining--;
-
-        if (timeRemaining < 0) {
-            clearInterval(timer);
-            countdownElement.textContent = 'Time Up!';
-            // Optionally, you can submit the form automatically here
-            // document.querySelector('form').submit();
+        // Show the next question if it exists
+        const nextIndex = currentIndex + 1;
+        if (nextIndex < questions.length) {
+            questions[nextIndex].style.display = 'block';
+        } else {
+            // If no more questions, submit the form
+            alert('You have come to the end of this quiz. Thank you for participating!');
+            document.getElementById('form').submit();
         }
     }
 
-    const timer = setInterval(updateCountdown, 1000);
-}
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Variable to store the selected answer number
-    let selectedAnsNum = null;
+    document.addEventListener('DOMContentLoaded', function() {
+        // Countdown timer
+        const duration = {{$duration}}; // Duration in minutes
+        const countdownElement = document.getElementById('countdown');
+        let timeRemaining = duration * 60; // Convert minutes to seconds
 
-    // Select all radio buttons with the class 'answer-radio'
-    const radioButtons = document.querySelectorAll('.answer-radio');
+        function updateCountdown() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            countdownElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            timeRemaining--;
 
-    // Add a click event listener to each radio button
-    radioButtons.forEach(function(radio) {
-        radio.addEventListener('click', function() {
-            // Retrieve the value of the data-ansnum attribute
-            selectedAnsNum = this.getAttribute('data-ansnum');
-            // Update the corresponding next button with the selected answer number
-            const questionId = this.getAttribute('data-qid');
-            const nextQuestionButton = document.getElementById(`next-question-button-${questionId}`);
-            nextQuestionButton.setAttribute('data-ansnum', selectedAnsNum);
-        });
+            if (timeRemaining < 0) {
+                clearInterval(timer);
+                countdownElement.textContent = 'Time Up!';
+                // Optionally, you can submit the form automatically here
+                // document.querySelector('form').submit();
+            }
+        }
+
+        const timer = setInterval(updateCountdown, 1000);
     });
-});
 
     // Function to store selected answers in local storage
     function storeAnswer(questionId, answer, ansNumber) {

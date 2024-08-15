@@ -359,8 +359,11 @@ class CourseController extends Controller
                     $quizQuestion->correct_answer = $request->correct_answer[$key];
                     break;
                 case 'multiple_choice':  
-                    // dd($request->correct_answer[$key+1]);                  
-                    $quizQuestion->correct_answer = implode("|",$request->correct_answer[$key+1]) ?? "";
+                     if (isset($request->correct_answer[$key]) && is_array($request->correct_answer[$key])) {
+                        $quizQuestion->correct_answer = implode("|", $request->correct_answer[$key]);
+                    } else {
+                        $quizQuestion->correct_answer = "";
+                    }
                     break;
                 case 'true_false':                    
                     $quizQuestion->correct_answer = $request->correct_answer[$key] ?? "";

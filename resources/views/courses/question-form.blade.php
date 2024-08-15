@@ -3,7 +3,7 @@
         border: 3px solid black !important;
     }
 </style>
-<h3>Publish Quiz for a Course</h3>
+<h3>Publish Questions for a Quiz</h3>
 
 <form method="POST" action="{{ route('publish-question') }}">
     @csrf
@@ -33,7 +33,7 @@
             </div>
 
             <div class="col-md-12">
-                <label for="question">Question <span class="qnum">1</span></label>
+                <label>Question <span class="qnum">1</span></label>
                 
                 <textarea name="question[]" class="wyswyg"></textarea>
             </div>
@@ -59,7 +59,6 @@
                     <label for="answer5">E</label>
                     <input type="text" name="answer5[]" class="form-control">
                 </div>
-
                 <!-- Add inputs for answer2, answer3, answer4, answer5 -->
                 <div class="col-md-4">
                     <label for="correct_answer">Correct Answer</label>
@@ -108,7 +107,7 @@
         // Detach Summernote from the original textarea
         $(question).find('textarea.wyswyg').each(function() {
                     $(this).summernote('destroy');
-                });
+        });
 
         const clone = question.cloneNode(true);
         
