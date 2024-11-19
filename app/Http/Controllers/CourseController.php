@@ -453,6 +453,7 @@ class CourseController extends Controller
         // dd($questions);
     }
 
+
     public function editQuestions($quiz_id){
         $questions = questions::where('quiz_id',$quiz_id)->get();
         return view('all-questions',compact('questions'));
@@ -514,7 +515,8 @@ class CourseController extends Controller
                         'question_id'=>$qu->id,
                         'answer'=>$answer,
                         'is_correct'=>$checkAnswer,
-                        'score'=>$score
+                        'score'=>$score,
+                        'attempt'=>$request->attempts
                     ]);
                     break;
                 case 'single_choice':
@@ -525,7 +527,6 @@ class CourseController extends Controller
                         if(isset($request->{$answerKey}) && $request->{$answerKey}!=""){
 
                             // dd($request->{$answerKey}." Actually is the answer given");
-
                             $answer = $request->{$answerKey};     
                         }                        
                     }
@@ -542,7 +543,8 @@ class CourseController extends Controller
                         'question_id'=>$qu->id,
                         'answer'=>$answer,
                         'is_correct'=>$checkAnswer,
-                        'score'=>$score
+                        'score'=>$score,
+                        'attempt'=>$request->attempts
                     ]);  
                     break;
                 case 'true_false':
@@ -568,7 +570,7 @@ class CourseController extends Controller
                         'answer'=>$answer,
                         'is_correct'=>$checkAnswer,
                         'score'=>$score,
-                        'attempt'=>$attempts->attempts
+                        'attempt'=>$request->attempts
                     ]);  
                     break;
                 
@@ -590,7 +592,8 @@ class CourseController extends Controller
                         'question_id'=>$qu->id,
                         'answer'=>$answer,
                         'is_correct'=>$checkAnswer,
-                        'score'=>$score
+                        'score'=>$score,
+                        'attempt'=>$request->attempts
                     ]);                        
                    
                     break;
@@ -662,6 +665,85 @@ class CourseController extends Controller
 
         // Pass the quizzes to the view
         return view('contents-list', compact('contents'));
+    }
+
+    public function uploadQuizQuestions(){
+        $categories = categories::all();
+        $courses = Course::select('id','title')->get();
+        $students = User::select('id','name','user_role')->get();
+        return view('courses.upload-create-quiz', compact('courses','categories','students'));
+    }
+
+    public function uploadQuiz(Request $request)
+    {
+        $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'quiz_file' => 'required|file|mimes:csv,txt',
+            'questions_file' => 'required|file|mimes:csv,txt',
+        ]);
+
+        $input = $request->except(['quiz_file','questions_file']); 
+
+        
+        // $input = $request->only([
+        //     'course_id', 'category', 'duration', 'start_date', 'end_date', 'status', 
+        //     'author', 'remarks', 'attempts_allowed'
+        // ]);
+        $quiz = quizes::create($input);
+
+        $filePath = $request->file('quiz_file')->getRealPath();
+
+        if (($file = fopen($filePath, "r")) !== FALSE) {
+            // Read and discard the first line (header)
+            fgetcsv($file, 1000, ',');
+            while (($data = fgetcsv($file, 1000, ',')) !== FALSE) {
+                $quiz->title = $data[0] ?? '';
+                $quiz->subtitle = $data[1] ?? '';
+                $quiz->description = $data[2] ?? '';
+                $quiz->save();
+            }
+            fclose($file);
+        }
+
+        // Process the questions file
+        $this->processQuestionsFile($request->file('questions_file'), $quiz->id);
+        
+
+        \Session::flash('flash_message', 'A new quiz has been created!');
+        return redirect(route('all-quizzes'));    }
+
+    /**
+     * Process the questions file and save each question to the database.
+     */
+    
+    protected function processQuestionsFile($file, $quizId)
+    {
+        
+        $filePath = $file->getRealPath();
+        if (($file = fopen($filePath, "r")) !== FALSE) {
+            // Read and discard the first line (header)
+            fgetcsv($file, 1000, ',');
+
+            while (($data = fgetcsv($file, 1000, ',')) !== FALSE) {
+                
+                $question = new questions();
+                $question->quiz_id = $quizId;
+                $question->question = $data[0] ?? '';
+                $question->question_type = $data[1] ?? 'single_choice';
+                $question->answer1 = $data[2] ?? '';
+                $question->answer2 = $data[3] ?? '';
+                $question->answer3 = $data[4] ?? '';
+                $question->answer4 = $data[5] ?? '';
+                $question->answer5 = $data[6] ?? '';
+                $question->correct_answer = $data[7] ?? '';
+                $question->score = $data[8] ?? 1;
+                $question->remarks = $data[9] ?? '';
+                $question->ordering = $data[10] ?? 1;
+                $question->save();
+            }
+
+            fclose($file);
+        }
     }
 
     /**

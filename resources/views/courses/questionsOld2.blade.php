@@ -113,7 +113,7 @@
                                 @endif
                         @endswitch
                         
-                        {{-- <small><i>Rationale: {{$qu->remarks}}</i></small><br> --}}
+                        <small><i>Note: {{$qu->remarks}}</i></small><br>
                     </fieldset>
 
                     @if($loop->last)                            
@@ -134,55 +134,88 @@
 <script>
   
     function nextQuestion(currentQuestionId) {
-        // Find the current question by its ID
-        let currentQuestion = document.getElementById(`question${currentQuestionId}`);
+    // Get all questions
+    const questions = document.querySelectorAll('.question');
 
-        // Ensure the current question is found
-        if (!currentQuestion) {
-            alert('An error occurred. Please try again.');
-            return;
-        }
+    // Find the current question by its ID
+    let currentQuestion = document.getElementById(`question${currentQuestionId}`);
 
-        // Hide the current question if it exists
-        currentQuestion.style.display = 'none';
+    // Ensure the current question is found
+    if (!currentQuestion) {
+        alert('An error occurred. Please try again.');
+        return;
+    }
 
-        // Find and show the next question
-        let nextQuestion = currentQuestion.nextElementSibling;
-        while (nextQuestion && !nextQuestion.classList.contains('question')) {
-            nextQuestion = nextQuestion.nextElementSibling;
-        }
+    // Check if an answer is selected
+    const ansNumber = document.getElementById(`next-question-button-${currentQuestionId}`).getAttribute('data-ansnum');
+    const selectedAnswer = document.querySelector(`#answer${ansNumber}_${currentQuestionId}:checked`);
+    if (!selectedAnswer) {
+        alert('Please select an answer.');
+        return;
+    }
 
-        // Display the next question if it exists, otherwise submit the form
-        if (nextQuestion) {
-            nextQuestion.style.display = 'block';
-        } else {
-            alert('You have come to the end of this quiz. Thank you for participating!');
-            document.getElementById('form').submit();
+    // Hide the current question
+    console.log(currentQuestion);
+    currentQuestion.style.display = 'none';
+    document.getElementById('question1').style.display = 'none';
+
+
+    // Show the next question by finding the next sibling in the DOM
+    let nextQuestion = currentQuestion.nextElementSibling;
+    while (nextQuestion && !nextQuestion.classList.contains('question')) {
+        nextQuestion = nextQuestion.nextElementSibling;
+    }
+
+    if (nextQuestion) {
+        // Hide the current question
+        nextQuestion.style.display = 'block';
+    } else {
+        // If no more questions, submit the form
+        alert('You have come to the end of this quiz. Thank you for participating!');
+        document.getElementById('form').submit();
+    }
+
+    // Countdown timer
+    const duration = {{$duration}}; // Duration in minutes
+    const countdownElement = document.getElementById('countdown');
+    let timeRemaining = duration * 60; // Convert minutes to seconds
+
+    function updateCountdown() {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        countdownElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        timeRemaining--;
+
+        if (timeRemaining < 0) {
+            clearInterval(timer);
+            countdownElement.textContent = 'Time Up!';
+            // Optionally, you can submit the form automatically here
+            // document.querySelector('form').submit();
         }
     }
 
+    const timer = setInterval(updateCountdown, 1000);
+}
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const duration = {{$duration}};
-        const countdownElement = document.getElementById('countdown');
-        let timeRemaining = duration * 60;
+document.addEventListener('DOMContentLoaded', function() {
+    // Variable to store the selected answer number
+    let selectedAnsNum = null;
 
-        function updateCountdown() {
-            const minutes = Math.floor(timeRemaining / 60);
-            const seconds = timeRemaining % 60;
-            countdownElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-            timeRemaining--;
+    // Select all radio buttons with the class 'answer-radio'
+    const radioButtons = document.querySelectorAll('.answer-radio');
 
-            if (timeRemaining < 0) {
-                clearInterval(timer);
-                countdownElement.textContent = 'Time Up!';
-                document.getElementById('form').submit();  // Automatically submit the form
-            }
-        }
-
-        const timer = setInterval(updateCountdown, 1000);
+    // Add a click event listener to each radio button
+    radioButtons.forEach(function(radio) {
+        radio.addEventListener('click', function() {
+            // Retrieve the value of the data-ansnum attribute
+            selectedAnsNum = this.getAttribute('data-ansnum');
+            // Update the corresponding next button with the selected answer number
+            const questionId = this.getAttribute('data-qid');
+            const nextQuestionButton = document.getElementById(`next-question-button-${questionId}`);
+            nextQuestionButton.setAttribute('data-ansnum', selectedAnsNum);
+        });
     });
-
+});
 
     // Function to store selected answers in local storage
     function storeAnswer(questionId, answer, ansNumber) {
@@ -222,6 +255,6 @@
         // Cancel the event to prevent the default action
         event.preventDefault();
         // Prompt the user with a custom message
-        event.returnValue = 'Please, are you sure you want to save/leave the page. This current Quiz Attempt will be closed. Do you want to proceed?';
+        event.returnValue = 'Please, are you sure you want to save/leave the page.';
     });
 </script>

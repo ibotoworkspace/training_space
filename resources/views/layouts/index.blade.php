@@ -63,8 +63,7 @@
                 {!! session('flash_message') !!}
             </div>
         </div>
-    @endif
-    
+    @endif   
 
     @yield('content')
 </div>

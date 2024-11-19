@@ -64,6 +64,11 @@ Route::get('/course-quiz/{quizid}', 'CourseController@courseQuiz')->name('course
 Route::get('/quiz-form', 'CourseController@quizForm')->name('quiz-form');
 Route::get('/edit-quiz/{quiz_id}', 'CourseController@editQuiz')->name('edit-quiz');
 
+
+Route::get('/upload-quiz-form', 'CourseController@uploadQuizQuestions')->name('upload-quiz-form');
+Route::post('/uploadQuiz', 'CourseController@uploadQuiz')->name('uploadQuiz');
+
+
 Route::post('/publish-quiz', 'CourseController@publishQuiz')->name('publish-quiz');
 Route::post('/update-quiz', 'CourseController@updateQuiz')->name('update-quiz');
 

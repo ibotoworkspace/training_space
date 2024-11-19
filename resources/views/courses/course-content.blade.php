@@ -13,6 +13,10 @@
     iframe{
         width: 100%;
     }
+
+    p img{
+        margin: 5px !important;
+    }
 </style>
 <div class="row">
     <div class="col-md-12" style="position: relative; over-flow: contain;">

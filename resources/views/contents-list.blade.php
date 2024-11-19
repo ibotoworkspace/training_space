@@ -19,11 +19,12 @@
             <table class="table table-striped table-responsive" style="width: 100%" id="products">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Code</th>
                         <th>Title</th>
                         <th>Course</th>
                         <th>Type</th>
                         <th>Category</th>
+                        <th>Read By</th>
                         <th>Author</th>
                         <th>Action</th>
                     </tr>
@@ -36,7 +37,7 @@
                             <td>{{ $cont->Course ? $cont->Course->title : "" }}</td>
                             <td>{{ $cont->material_type ?? "" ?? '' }}</td>
                             <td>{{ $cont->Category ? $cont->Category->category_name : '' }}</td>
-                            <td>{{$cont->userCourse ? $cont->userCourse->count() : ""}}</td>
+                            <td>{{$cont->userCourse ? $cont->userCourse->count() : 0}}</td>
                             <td>{{ $cont->Author ? $cont->Author->name : "" }}</td>
                            
                             <td class="btn-group">

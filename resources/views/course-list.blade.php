@@ -12,6 +12,7 @@
         <table class="table table-striped table-responsive" style="width: 100%" id="products">
             <thead>
             <tr>
+                <th>Code</th>
                 <th>Title</th>
                 <th>Category</th>
                 <th>Fee(USD)</th>
@@ -25,6 +26,7 @@
             
             @foreach ($courses as $co)
                 <tr>
+                    <td>{{$co->id}}</td>
                     <td>{{$co->title ?? ""}}</td>
                     <td>{{$co->Category->category_name ?? ""}}</td>
                     <td>{{$co->fee ?? ""}}</td>

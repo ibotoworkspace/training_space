@@ -51,8 +51,7 @@ class HomeController extends Controller
 
 
     public function publishCategory(Request $request){
-        $input = $request->all();
-       
+        $input = $request->all();       
         categories::create($input);
         \Session::flash('flash_message', 'A new course category has been created!');
         return redirect(route('create-category'));
@@ -61,7 +60,6 @@ class HomeController extends Controller
     public function publishPost(){
         $categories = categories::select('id','category_name')->get();
         $students = User::select('id','name')->get();
-
         return view('publish-post',compact('categories','students'));
     }
 
@@ -79,7 +77,6 @@ class HomeController extends Controller
 
     // DELETE POST
     public function deletePost($postid){
-
         if(Auth::user()->user_role=="Admin"){
             $post = posts::find($postid);
             $post->delete();

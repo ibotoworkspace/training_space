@@ -14,6 +14,7 @@
     <table class="table">
         <thead class="thead-dark">
         <tr>
+            <th>Code</th>
             <th scope="col">Category Name</th>
             <th scope="col">Description</th>
             <th scope="col">Actions</th>
@@ -22,6 +23,7 @@
         <tbody>
             @foreach ($categories as $cat)
                 <tr>
+                    <td>{{$cat->id}}</td>
                     <td>{{ $cat->category_name }}</td>
                     <td>{{ $cat->description }}</td>
                     <td>

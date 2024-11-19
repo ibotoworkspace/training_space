@@ -10,7 +10,9 @@
     @php $pagetype = "report"; @endphp
     <div class="container mt-5">
       
-        <h3>Quiz: {{$questions[0]->quiz->title}} | Questions</h3>
+        @if(!$questions->isEmpty()))
+            <h3>Quiz: {{$questions ? $questions[0]->quiz->title : 'No Questions'}} | Questions</h3>
+        @endif
        <div class="col-md-12">
             @if($questions->isEmpty())
             <p>No Questions available at the moment.</p>

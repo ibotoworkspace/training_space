@@ -8,8 +8,9 @@
 @if (Auth::check() && (Auth::user()->role->first()->name == 'Instructor' or Auth::user()->role->first()->name == "Admin"))
     @php $pagetype = "report"; @endphp
     <div class="container mt-5">
-        <div class="row">
+        <div class="row btn-group">
             <a href="{{url('quiz-form')}}" class="btn btn-primary">Create New Quiz</a>
+            <a href="{{url('upload-quiz-form')}}" class="btn btn-success float-right" style="float: right !important">Upload Quiz From File</a>
         </div>
         <h3>Quiz Bank | All Course Quizes</h3>
        <div class="col-md-12">
@@ -19,7 +20,7 @@
             <table class="table table-striped table-responsive" style="width: 100%" id="products">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Code</th>
                         <th>Title</th>
                         <th>Subtitle</th>
                         <th>Course ID</th>

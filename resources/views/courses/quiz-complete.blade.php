@@ -12,7 +12,7 @@
         <p>Correct Answers: {{$passed}} </p>
         <p>Wrong Answers: {{$failed}} </p>
         <p>Thank you.</p>
-        
+
         
 
     </div>
