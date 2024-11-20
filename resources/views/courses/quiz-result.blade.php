@@ -37,10 +37,26 @@
 
                             <fieldset>
                                 <legend><h5><small>Question {{$qnum++}}:</small> {!!$qr->Question->question!!}</h5></legend>
-                                <small><em>Question Type: {{ucwords(str_replace('_', ' ', $qr->Question->question_type))}}</em></small> 
-                                {{-- <small>Answer: </small> --}}
-                                {{-- <h5>{{$qr->answer_text}} - </h5> --}}
-                                <h5>{!!$qr->is_correct==1?"<span style='color: green'>Correct Answer</span>" : "<span style='color: red'>Wrong Answer</span>"!!}</h5>
+                                <small><em>Question Type: {{ucwords(str_replace('_', ' ', $qr->Question->question_type))}}</em></small>
+                                @php
+                                    $answer = $qr->answer;
+                                @endphp 
+                                @if ($qr->Question->question_type=="multiple_choice")
+
+                                    @php
+                                        $answers = explode('|',$answer);                                        
+                                    @endphp
+                                    <small>Your Answer(s):</small>
+                                    <ul>
+                                        @foreach ($answers as $answer)
+                                            <li><small>{{$qr->Question->$answer}} </small></li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <br><small>Your Answer: {{$qr->Question->$answer}} </small>
+                                @endif
+                                --> (<span>{!!$qr->is_correct==1?"<span style='color: green'>Correct Answer</span>" : "<span style='color: red'>Wrong Answer</span>"!!}</span>)
+                                <p><span style="font-size: 0.8em; font-weight: bold;">Rationale: </span>{{$qr->Question->remarks}}</p>
                             </fieldset> 
                             
                     @endforeach

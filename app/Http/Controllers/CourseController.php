@@ -435,7 +435,7 @@ class CourseController extends Controller
 
         $attempted = quiz_attempts::select('attempts')->where('quiz_id',$quiz_id)->where('user_id',Auth::id())->get();
         if(!$attempted->isEmpty()){
-            if($attempted->count()>=$questions[0]->quiz->attempts_allowed){
+            if($attempted->count()>=$questions[0]->quiz->allowed_attempts){
 
                 \Session::flash('flash_message', 'You have reached the maximum number of attempts for this quiz');
 
@@ -466,7 +466,6 @@ class CourseController extends Controller
 
 
     public function saveAnswers(Request $request){
-        // dd($request);
         $questions = questions::where('quiz_id',$request->quiz_id)->get();
         $totalScore = 0;
         $passed = 0;
@@ -484,6 +483,7 @@ class CourseController extends Controller
                 case 'multiple_choice':
                     $acceptableAns = explode('|',str_replace(' ', '', $correct_ans));
                     $check_corrects = [];
+                    $submitted_answers = [];
                     for($ans_num = 1; $ans_num<=5; $ans_num++){
                         $answerKey = "answer" . $ans_num . "_" . $qu->id;
     
@@ -493,6 +493,8 @@ class CourseController extends Controller
                             // dd($request->{$answerKey}." Actually is the answer given");
     
                             $answer = $request->{$answerKey};
+                            $submitted_answers[] = $answer; // Add to the list of submitted answers
+
                            
                             if (in_array($answer, $acceptableAns)) {
                                 $check_corrects[] = true;
@@ -501,19 +503,19 @@ class CourseController extends Controller
                             }               
                         }                       
                     }
-                    if (in_array(!false, $check_corrects, true)) {
+                    if (!in_array(false, $check_corrects, true) && count($submitted_answers) === count($acceptableAns)) {
                         $checkAnswer = true;
                         $score = $qu->score;
                         $totalScore+=$score;
                         $failed--;
                         $passed++;
                     }
-
+                    $submitted_answers_str = implode('|', $submitted_answers);
                     answers::create([
                         'user_id'=>Auth::id(),
                         'quiz_id'=>$qu->quiz_id,
                         'question_id'=>$qu->id,
-                        'answer'=>$answer,
+                        'answer'=>$submitted_answers_str,
                         'is_correct'=>$checkAnswer,
                         'score'=>$score,
                         'attempt'=>$request->attempts
@@ -600,6 +602,8 @@ class CourseController extends Controller
                 default:
                     break;
             }
+
+            $checkAnswer = false;
                 
         }
 
@@ -609,8 +613,9 @@ class CourseController extends Controller
                 'total_score'=>$totalScore,
                 'attempts'=>$request->attempts
         ]);
-        // dd($questions);
-        return view('courses.quiz-complete', compact('totalScore', 'passed', 'failed', 'quiz'));
+        $attempts = $request->attempts; 
+        $all_answers = answers::where('quiz_id',$qu->quiz_id)->where('attempt',$attempts)->get();
+        return view('courses.quiz-complete', compact('totalScore', 'passed', 'failed', 'quiz','attempts','all_answers'));
     }
 
     public function quizResult($quiz_id,$user_id){

@@ -57,7 +57,7 @@
                     <hr>
                     <fieldset>
                         <legend><h2>{!! $qu->question !!}</h2></legend>
-                        <small><em>Question Type: {{$qu->question_type}}</em></small>
+                        <small><em>Question Type: <b>{{ucwords(str_replace('_', ' ', $qu->question_type))}}</b></em></small>
 
                         @switch($qu->question_type)
                             @case('single_choice')
@@ -123,7 +123,7 @@
                 
                     @if(!$loop->last)
                         <!-- Display next button for all questions except the last one -->
-                        <a href="#" class="btn btn-primary btn-lg right float-right" data-ansnum="" id="next-question-button-{{$qu->id}}" onclick="nextQuestion({{$qu->id}})">Next</a>
+                        <a href="#" class="btn btn-primary btn-lg right float-right" data-ansnum="" id="next-question-button-{{$qu->id}}" onclick="nextQuestion({{$qu->id}})" style="margin-top: -30px;">Next 	<b>&rarr;</b></a>
                     @endif
                 </div>
             @endforeach
@@ -224,4 +224,5 @@
         // Prompt the user with a custom message
         event.returnValue = 'Please, are you sure you want to save/leave the page. This current Quiz Attempt will be closed. Do you want to proceed?';
     });
+
 </script>

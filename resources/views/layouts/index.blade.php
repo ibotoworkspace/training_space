@@ -247,10 +247,6 @@
 			]
 		});
 
-
-
-
-
 		$('.buttons-pdf').click(function(){
 			$("#products th:last-child, #products td:last-child").remove();
 		})
@@ -267,6 +263,23 @@
     s1.setAttribute('crossorigin','*');
     s0.parentNode.insertBefore(s1,s0);
     })();
+
+    $(document).ready(function () {
+            let lastClicked = null; // Track the last clicked radio button
+
+            $('input[type="radio"]').on('click', function () {
+                const $this = $(this);
+
+                if ($this.is(lastClicked)) {
+                    // If the same radio button is clicked, uncheck it
+                    $this.prop('checked', false);
+                    lastClicked = null; // Reset last clicked
+                } else {
+                    // Otherwise, set this radio button as the last clicked
+                    lastClicked = $this;
+                }
+            });
+        });
     </script>
     <!--End of Tawk.to Script-->
 </body>

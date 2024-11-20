@@ -76,7 +76,7 @@
                             $attempts = $quiz->attempts()->where('user_id', Auth::id())->get();
                         @endphp
 
-                        @if ($attempts && $attempts->count()==$quiz->attempts_allowed)
+                        @if ($attempts && $attempts->count()>=$quiz->allowed_attempts)
                                 <li>
                                     <a href="{{url('quiz-result', ['quiz_id' => $quiz->id, 'user_id' => Auth::id()])}}">Quiz Attempted, View your Score</a>
                                 </li>
