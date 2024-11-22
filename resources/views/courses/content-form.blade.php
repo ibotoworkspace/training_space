@@ -46,6 +46,8 @@
             <select name="material_type" id="material_type" class="form-control">
                 <option value="pdf">PDF</option>
                 <option value="word">Microsoft Word</option>
+                <option value="powerpoint">Microsoft PowerPoint</option>
+                <option value="excel">Microsoft Excel</option>
                 <option value="text">Text</option>
                 <option value="url">URL</option>
             </select>

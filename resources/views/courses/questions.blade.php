@@ -58,6 +58,7 @@
                     <fieldset>
                         <legend><h2>{!! $qu->question !!}</h2></legend>
                         <small><em>Question Type: <b>{{ucwords(str_replace('_', ' ', $qu->question_type))}}</b></em></small>
+                        <div  style="margin-bottom: 20px !important;"></div>
 
                         @switch($qu->question_type)
                             @case('single_choice')

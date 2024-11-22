@@ -25,7 +25,12 @@
                 <h1 class = "display-4">{{ $coursecontent->title }}</h4>
             </div>
             
-                @php $lastThreeLetters = substr($coursecontent->file_path, -4); @endphp
+                @php 
+                
+                $lastThreeLetters = substr($coursecontent->file_path, -4); 
+                $lastFourLetters = substr($coursecontent->file_path, -5); 
+                
+                @endphp
             
                 @if ($lastThreeLetters==".jpg" || $lastThreeLetters==".png" || $lastThreeLetters=="jpeg")
                     <div class="course-image">
@@ -45,6 +50,27 @@
 
                 @if ($lastThreeLetters==".pdf")
                     <iframe src="/{{$coursecontent->file_path}}" width="100%" height="800px"></iframe>
+
+                @endif
+
+                @if ($lastFourLetters==".docx" || $lastFourLetters==".pptx" || $lastFourLetters==".xlsx")
+                    {{-- <iframe src="/{{$coursecontent->file_path}}" width="100%" height="600px"></iframe> --}}
+
+                    <iframe 
+                        src="https://view.officeapps.live.com/op/embed.aspx?src=http://iboto.lms/public/{{$coursecontent->file_path}}" 
+                        width="100%" 
+                        height="600px" 
+                        frameborder="0">
+                    </iframe>
+
+                    <hr>
+
+                    {{-- <iframe 
+                        src="https://docs.google.com/gview?url=http://iboto.lms/{{$coursecontent->file_path}}&embedded=true" 
+                        width="100%" 
+                        height="600px" 
+                        frameborder="0">
+                    </iframe> --}}
 
                 @endif
                 
