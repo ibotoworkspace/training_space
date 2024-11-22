@@ -57,7 +57,7 @@
                     {{-- <iframe src="/{{$coursecontent->file_path}}" width="100%" height="600px"></iframe> --}}
 
                     <iframe 
-                        src="https://view.officeapps.live.com/op/embed.aspx?src=http://iboto.lms/public/{{$coursecontent->file_path}}" 
+                        src="https://view.officeapps.live.com/op/embed.aspx?src=https://training.ibotoempire.com/{{$coursecontent->file_path}}" 
                         width="100%" 
                         height="600px" 
                         frameborder="0">
@@ -65,12 +65,12 @@
 
                     <hr>
 
-                    {{-- <iframe 
-                        src="https://docs.google.com/gview?url=http://iboto.lms/{{$coursecontent->file_path}}&embedded=true" 
+                    <iframe 
+                        src="https://docs.google.com/gview?url=https://training.ibotoempire.com/{{$coursecontent->file_path}}&embedded=true" 
                         width="100%" 
                         height="600px" 
                         frameborder="0">
-                    </iframe> --}}
+                    </iframe>
 
                 @endif
                 
