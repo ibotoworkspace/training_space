@@ -11,7 +11,7 @@
             <option value="{{ $content->course_id ?? "" }}" selected>{{ $content->course->title ?? "" }}</option>
 
             @foreach($courses as $course)
-                <option value="{{ $content->id }}">{{ $content->title }}</option>
+                <option value="{{ $course->id }}">{{ $course->title }}</option>
             @endforeach
         </select>
     </div>

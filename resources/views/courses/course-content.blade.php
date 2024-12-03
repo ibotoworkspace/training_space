@@ -65,12 +65,12 @@
 
                     <hr>
 
-                    <iframe 
+                    {{-- <iframe 
                         src="https://docs.google.com/gview?url=https://training.ibotoempire.com/{{$coursecontent->file_path}}&embedded=true" 
                         width="100%" 
                         height="600px" 
                         frameborder="0">
-                    </iframe>
+                    </iframe> --}}
 
                 @endif
                 

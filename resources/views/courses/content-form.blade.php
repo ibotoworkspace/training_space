@@ -6,7 +6,8 @@
 
     <div class="form-group">
         <label for="course_id">Course Name:</label>
-        <select name="course_id" id="course_id" class="form-control">
+        <select name="course_id" id="course_id" class="form-control" required>
+            <option value="">Select a Course Name</option>
             <!-- Populate options dynamically from database -->
             @foreach($courses as $course)
                 <option value="{{ $course->id }}">{{ $course->title }}</option>

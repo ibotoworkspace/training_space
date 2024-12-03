@@ -56,7 +56,7 @@
         @if(($enroll !="") || (Auth::user() && Auth::user()->user_role=="Admin"))
             @if(isset($course->contents))
                 <ul>
-                    @foreach ($course->contents as $content)
+                    @foreach ($course->contents->sortBy('ordering') as $content)
                         <li><a href="{{route('course-content',[$content->id])}}">{{$content->material_title}}</a> - <small style="color: green; font-weight: bold;"><em>({{$content->material_type}})</em> - 
                         @if (Auth::user()->role->first()->name == 'Instructor' || Auth::user()->role->first()->name == "Admin")
                             <a href="{{url('edit-content/'.$content->id)}}">edit</a>
