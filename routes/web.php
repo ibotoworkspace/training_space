@@ -119,6 +119,9 @@ Route::get('/course-list', 'HomeController@courseList')->name('course-list');
 Route::get('/payment-list', 'HomeController@paymentList')->name('payment-list');
 Route::get('/content-list', 'CourseController@contentList')->name('content-list');
 
+// bulk action code for questions
+Route::post('/bulk-action', 'CourseController@bulkAction')->name('bulk-action');
+
 // ARTISAN COMMANDS
 Route::get('/artisan1/{command}', 'HomeController@Artisan1');
 Route::get('/artisan2/{command}/{param}', 'HomeController@Artisan2');

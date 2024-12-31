@@ -456,7 +456,8 @@ class CourseController extends Controller
 
     public function editQuestions($quiz_id){
         $questions = questions::where('quiz_id',$quiz_id)->get();
-        return view('all-questions',compact('questions'));
+        $quizzes = quizes::select('id','title','subtitle')->get();
+        return view('all-questions',compact('questions','quizzes'));
     }
 
     public function editQuestion($question_id){
@@ -720,6 +721,19 @@ class CourseController extends Controller
     /**
      * Process the questions file and save each question to the database.
      */
+
+     // Bulk action function, such that all the selected question_id will be updated of the quiz_id with the selected quiz
+     public function bulkAction(Request $request){
+        $quiz_id = $request->input('quiz_id');
+        $question_ids = $request->input('question_id');
+        foreach ($question_ids as $question_id) {
+            $question = questions::find($question_id);
+            $question->quiz_id = $quiz_id;
+            $question->save();
+        }
+        return redirect()->back();
+    }
+    
     
     protected function processQuestionsFile($file, $quizId)
     {

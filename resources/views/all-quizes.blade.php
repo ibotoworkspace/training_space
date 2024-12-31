@@ -54,7 +54,7 @@
                                 <a href="{{route('course-quiz',[$quiz->id])}}" class="btn btn-primary btn-xs">View</a>
                                 @if (Auth::user()->role->first()->name == 'Instructor' || Auth::user()->role->first()->name == "Admin")
                                     <a href="{{route('edit-quiz',$quiz->id)}}" class="btn btn-secondary btn-xs">Edit</a>
-                                    <a href="{{route('edit-questions',$quiz->id)}}" class="btn btn-info btn-xs">Edit Questions</a>
+                                    <a href="{{route('edit-questions',$quiz->id)}}" class="btn btn-info btn-xs">Manage Questions</a>
                                     <a href="{{route('question-form',$quiz->id)}}" class="btn btn-warning btn-xs">Add Question</a>
                                     <a href="{{url('delete-quiz/'.$quiz->id)}}" class="btn btn-danger" onclick="confirm('Are you sure want to delete this quiz?')">Delete</a>
 
