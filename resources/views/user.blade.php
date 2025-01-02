@@ -24,7 +24,7 @@
                 <tr>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
-                    <td>{{ $user->role->first()->name }}</td>
+                    <td>{{ $user->role->first()->name ?? '' }}</td>
                     <td>{{$user->courses->count()}}</td>
                     <td class="btn-group">
                         <a class="btn btn-success" href = "{{route('user-dashboard', [$user->id])}}">View Dashboard</a>
