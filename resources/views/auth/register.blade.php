@@ -46,6 +46,7 @@
                                     <option value = "3" selected>Student</option>
                                     <option value = "2">SDA</option>
                                     <option value="4">Instructor</option>
+                                    <option value="5">SubAdmin</option>
                                 </select>
                             </div>
                         </div>
