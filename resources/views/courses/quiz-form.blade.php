@@ -38,7 +38,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="category_id">Category</label>
+                                    <label for="category_id">Category/Class</label>
                                     <select id="category_id" class="form-control" name="category_id">
                                         @foreach($categories as $category)
                                             <option value="{{ $category->id }}">{{ $category->category_name }}</option>
@@ -49,7 +49,7 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="author">Instroduction</label>
+                                    <label for="author">Assign to a Student</label>
                                     <select id="author" class="form-control" name="author">
                                         @foreach($students as $author)
                                             <option value="{{ $author->id }}">{{ $author->name }}</option>
