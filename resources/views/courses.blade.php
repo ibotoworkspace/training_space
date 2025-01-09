@@ -86,7 +86,7 @@
 
                         <div class="col-md-6" style="float: left;">
                             <div class="card mb-4">
-                                <img class="card-img-top" src="{{'/'.$course->thumbnail}}" alt="{{ $course['thumbnail'] }}" height="250" width="100%" style="width: 100% !important; ">
+                                <img class="card-img-top" src="{{'/'.$course->thumbnail}}" alt="{{ $course['thumbnail'] }}" width="100%" style="width: 100% !important; ">
                                 {{-- <a href = "{{ route('course.show', [$course->id]) }}">{!! Html::image( '/storage/'.$course->thumbnail, 'Thumbnail') !!}</a> --}}
                                 <div class="card-body">
                                     <h2 class="card-title"><a href = "{{ route('course.show', [$course->id]) }}">{{ $course['title'] }}</a></h2>
