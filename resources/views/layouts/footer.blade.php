@@ -20,9 +20,9 @@
             <div class="companyarea">
             <h4>OUR SERVICES</h4>
             <ul>
-                <a href="https://ibotoempire.com/terms.html"><li>Career Training</li></a>
-                <li>Certification Training</li>
-                <li>Consultancy Services</li>
+                <li><a href="https://ibotoempire.com/terms.html">Career Training</a></li>
+                <li><a href="https://ibotoempire.com/our-services.html">Certification Training</a></li>
+                <li><a href="https://ibotoempire.com/our-services.html">Consultancy Services</a></li>
             </ul>
             </div>
         </div>
@@ -36,7 +36,7 @@
                 <li>6101 Cherry Avenue Suite 102A Fontana,</li>
                 <li>CA 92336 USA</li>
                 <li>+1(909) 559-9031</li>
-                <li>contactus@ibotoempire.com</li>
+                <li>info@ibotoempire.com</li>
                 <li>Mon to Fri: 9.00 AM 5.00 PM</li>
             </ul>                          
             </div>

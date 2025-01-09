@@ -19,7 +19,7 @@
                     <a class="nav-link" href="{{ route('course.index') }}">My Courses</a>
                 </li>
                 @endif
-                @if (Auth::check() && Auth::user()->role()->first()->name == "Admin")
+                @if (Auth::check() && Auth::user()->role()->first()->name == "Admin" ||  Auth::user()->role()->first()->name == "SubAdmin")
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('user.index') }}">Students/Instructors</a>
                     </li>

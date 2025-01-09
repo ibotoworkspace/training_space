@@ -19,8 +19,8 @@
             </div>
             <div class="row">
                 <div class="form-group col-md-4">
-                    {!! Form::label('category', 'Category:') !!}
-                    {!! Form::select('category', $categories->pluck('category_name', 'id'), null, ['class' => 'form-control', 'id' => 'category']) !!}
+                    {!! Form::label('category_id', 'Category:') !!}
+                    {!! Form::select('category_id', $categories->pluck('category_name', 'id'), null, ['class' => 'form-control', 'id' => 'category_id']) !!}
                 </div>
                 <div class="form-group col-md-4">
                     {!! Form::label('fee', 'Course Fee (USD):') !!}
