@@ -35,7 +35,8 @@
             <ul>
                 <li>6101 Cherry Avenue Suite 102A Fontana,</li>
                 <li>CA 92336 USA</li>
-                <li>1 (909) 684 7858, +1 (909) 9911398</li>
+                <li>Tel - Human Resources: +1 (909) 684 7858</li>
+                <li>Tel - Technical Support: +1 (909) 9911398</li>
                 <li>info@ibotoempire.com</li>
                 <li>Mon to Fri: 9.00 AM 5.00 PM</li>
             </ul>                          
