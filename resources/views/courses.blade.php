@@ -25,10 +25,6 @@
                         width: 100%;
                     }
 
-                    .carousel-item img {
-                        height: 500px !important;
-                        width: 100% !important;
-                    }
                 </style>
                 
                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
