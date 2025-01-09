@@ -44,7 +44,7 @@
                                 <a href="{{route('course-content',[$cont->id])}}" class="btn btn-primary btn-xs">View</a>
                                 @if (Auth::user()->role->first()->name == 'Instructor' || Auth::user()->role->first()->name == "Admin")
                                     <a href="{{route('edit-content',$cont->id)}}" class="btn btn-secondary btn-xs">Edit</a>
-                                    <a href="{{url('delete-content/'.$cont->id)}}" class="btn btn-danger" onclick="confirm('Are you sure want to delete this content?')">Delete</a>
+                                    <a href="{{url('delete-content/'.$cont->id)}}" class="btn btn-danger  roledlink Admin" onclick="confirm('Are you sure want to delete this content?')">Delete</a>
 
                                 @endif
                             </td>

@@ -31,7 +31,7 @@
                     <td>{{$pa->status}}</td>
                     <td>{{$pa->reference_no}}</td>
                     <td>{{$pa->created_at}}</td>
-                    <td><a href="{{url('dashboard')}}">Approve</a></td>
+                    <td><a href="{{url('dashboard')}}" class="btn btn-primary  roledlink Admin">Approve</a></td>
                 </tr>
             @endforeach
             </tbody>

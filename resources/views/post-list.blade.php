@@ -31,7 +31,7 @@
                     <td class="btn-group">
                         <a href="{{url('post/'.$po->id)}}" class="btn btn-primary">View</a>
                         <a href="{{url('update-post/'.$po->id)}}" class="btn btn-secondary">Update</a>
-                        <a href="{{url('delete-post/'.$po->id)}}" class="btn btn-danger" onclick="confirm('Are you sure want to delete this post?')">Delete</a>
+                        <a href="{{url('delete-post/'.$po->id)}}" class="btn btn-danger  roledlink Admin" onclick="confirm('Are you sure want to delete this post?')">Delete</a>
                     </td>
                 </tr>
             @endforeach

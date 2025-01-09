@@ -58,6 +58,8 @@ Route::get('/delete-content/{quiz_id}', 'CourseController@deleteContent')->name(
 Route::get('/create-category', 'HomeController@createCategory')->name('create-category');
 Route::post('/publish-category', 'HomeController@publishCategory')->name('publish-category');
 Route::get('/delete-category/{catid}', 'HomeController@deleteCategory')->name('delete-category');
+Route::get('/edit-category/{catid}', 'HomeController@editCategory')->name('edit-category');
+Route::post('/update-category', 'HomeController@updateCategory')->name('update-category');
 
 // For Quizes
 Route::get('/course-quiz/{quizid}', 'CourseController@courseQuiz')->name('course-quiz');

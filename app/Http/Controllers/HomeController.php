@@ -57,6 +57,14 @@ class HomeController extends Controller
         return redirect(route('create-category'));
     }
 
+    public function updateCategory(Request $request){
+        $category = categories::where('id',$request->category_id)->first();
+        $category->category_name = $request->category_name;
+        $category->description = $request->description;
+        $category->save();
+        \Session::flash('flash_message', 'The course category has been updated!');
+        return redirect(route('create-category'));
+    }
     public function publishPost(){
         $categories = categories::select('id','category_name')->get();
         $students = User::select('id','name')->get();
@@ -124,6 +132,11 @@ class HomeController extends Controller
         posts::updateOrCreate(['id'=>$request->post_id],$input);
         \Session::flash('flash_message', 'The post has been created!');
         return redirect()->back();
+    }
+
+    public function editCategory($catid){
+        $category = categories::find($catid);
+        return view('courses.edit-category', compact('category'));
     }
 
     public function deleteCategory($catid){

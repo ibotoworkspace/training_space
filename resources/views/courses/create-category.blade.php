@@ -27,7 +27,9 @@
                     <td>{{ $cat->category_name }}</td>
                     <td>{{ $cat->description }}</td>
                     <td>
-                        <a class="btn btn-danger" onclick="confirm('Are you sure you want to delete the category: {{$cat->category_name}} ?')" href = "{{route('delete-category', [$cat->id])}}">Delete</a>
+                        <a class="btn btn-info roledlink Admin SubAdmin" href = "{{route('edit-category', [$cat->id])}}">Edit</a>
+
+                        <a class="btn btn-danger roledlink Admin" onclick="confirm('Are you sure you want to delete the category: {{$cat->category_name}} ?')" href = "{{route('delete-category', [$cat->id])}}">Delete</a>
                     </td>
                 </tr>
             @endforeach

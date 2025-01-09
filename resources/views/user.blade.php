@@ -31,7 +31,7 @@
                         {!! Form::open(['method' =>"delete", 'action' => ['UserController@destroy', $user->id]]) !!}
                             <a class="btn btn-secondary" href = "{{route('user.edit', [$user->id])}}">Edit</a>
                             {{-- <a class="btn btn-danger" href = "{{ route('user.destroy', [$user->id]) }}"> --}}
-                                <input class="btn btn-danger" type = "submit" value = "Delete">
+                                <input class="btn btn-danger  roledlink Admin" type = "submit" value = "Delete">
                             {{-- </a> --}}
                         {!! Form::close() !!}
                     </td>

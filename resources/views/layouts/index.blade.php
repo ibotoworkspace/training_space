@@ -279,24 +279,29 @@
                     lastClicked = $this;
                 }
             });
+           
         });
 
-        <script>
-    $('.select2').select2({
-        theme: "classic"
-    });
-    @auth        
+        @auth        
     
-        var usrRole = "{{ auth()->user()->role }}";
+    var usrRole = "{{ auth()->user()->user_role }}";
 
-        $(".roledlink").hide();
+    $(".roledlink").hide();
 
-        function protect() {
-            $("." + usrRole).css("visibility", "visible");
-            $("." + usrRole).show();
-        }
-        protect();
-    @endauth
+    function protect() {
+        $("." + usrRole).css("visibility", "visible");
+        $("." + usrRole).show();
+
+    }
+    protect();
+
+
+@endauth
+
+    // $('.select2').select2({
+    //     theme: "classic"
+    // });
+    
     </script>
     <!--End of Tawk.to Script-->
 </body>

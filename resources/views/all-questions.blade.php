@@ -82,7 +82,7 @@
                                         <a href="{{route('edit-question',$ques->id)}}" class="btn btn-info">Edit</a>
                                         {{-- <a href="{{route('delete-question',$ques->id)}}" class="btn btn-info">Delete</a> --}}
                                     @endif
-                                    <a href="{{url('delete-question/'.$ques->id)}}" class="btn btn-danger" onclick="confirm('Are you sure want to delete this question?')">Delete</a>
+                                    <a href="{{url('delete-question/'.$ques->id)}}" class="btn btn-danger roledlink Admin" onclick="confirm('Are you sure want to delete this question?')">Delete</a>
 
                                 </td>
                             </tr>
