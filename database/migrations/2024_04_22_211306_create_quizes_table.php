@@ -19,14 +19,14 @@ class CreateQuizesTable extends Migration
             $table->string('subtitle')->nullable();
             $table->text('description')->nullable();
             $table->integer('course_id')->unsigned()->nullable();
-            $table->integer('category')->unsigned()->nullable();
+            $table->integer('category_id')->unsigned()->nullable();
             $table->string('duration')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->enum('status', ['draft', 'published'])->default('draft');
             $table->integer('author')->unsigned()->nullable();
             $table->text('remarks')->nullable();
-            $table->integer('attempts_allowed',10)->nullable();
+            $table->integer('attempts_allowed')->nullable();
 
             $table->timestamps();
 

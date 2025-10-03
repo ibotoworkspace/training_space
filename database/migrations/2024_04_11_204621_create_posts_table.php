@@ -21,11 +21,11 @@ class CreatePostsTable extends Migration
             $table->string('featured',120)->nullable();
             $table->integer('category_id')->unsigned()->nullable();
             $table->integer('user_id')->unsigned()->nullable();
-            $table->text('author')->nullable();
+            $table->integer('author_id')->unsigned()->nullable();
 
              // Foreign key constraints
              $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-             $table->foreign('author')->references('id')->on('users')->onDelete('cascade');
+             $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
              $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             
             $table->timestamps();

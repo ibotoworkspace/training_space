@@ -15,7 +15,7 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('quiz_id',10)->unsigned()->nullable();
+            $table->integer('quiz_id')->unsigned()->nullable();
             $table->text('question');
             $table->string('question_type', 100)->nullable();
             $table->string('answer1',255)->nullable();
@@ -24,7 +24,7 @@ class CreateQuestionsTable extends Migration
             $table->string('answer4',255)->nullable();
             $table->string('answer5',255)->nullable();
             $table->string('correct_answer', 100)->nullable();
-            $table->integer('score',5)->default(1);
+            $table->integer('score')->default(1);
             $table->text('remarks')->nullable();
             $table->integer('ordering')->nullable();
             $table->timestamps();
